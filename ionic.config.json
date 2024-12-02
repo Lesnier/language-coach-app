@@ -1,0 +1,7 @@
+{
+  "name": "lesson-coach",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

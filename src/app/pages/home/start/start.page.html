@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card color="yellow-light" button="true" style="height: 150px" [routerLink]="'/schedule'">
+          <ion-card-header>
+            <ion-icon name="calendar-sharp" size="large"></ion-icon>
+            <ion-card-title>Agendar</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col
+        ><ion-card color="green" button="true" style="height: 150px" [routerLink]="'/courses'">
+          <ion-card-header>
+            <ion-icon name="layers-sharp" size="large"></ion-icon>
+            <ion-card-title>Cursos</ion-card-title>
+          </ion-card-header>
+        </ion-card></ion-col
+      >
+    </ion-row>
+    <ion-row>
+      <ion-col
+        ><ion-card color="green-light" button="true" style="height: 150px">
+          <ion-card-header>
+            <ion-icon name="chatbubble-sharp" size="large"></ion-icon>
+            <ion-card-title>Foros</ion-card-title>
+          </ion-card-header>
+        </ion-card></ion-col
+      >
+      <ion-col
+        ><ion-card color="yellow" button="true" style="height: 150px">
+          <ion-card-header>
+            <ion-icon name="checkbox-sharp" size="large"></ion-icon>
+            <ion-card-title>Tareas</ion-card-title>
+          </ion-card-header>
+        </ion-card></ion-col
+      >
+    </ion-row>
+  </ion-grid>
+</ion-content>
