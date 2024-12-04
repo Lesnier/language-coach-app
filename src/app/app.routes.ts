@@ -1,4 +1,5 @@
 import { Routes } from "@angular/router";
+import {NewPage} from "./pages/home/homework/new-homework/new.page";
 
 export const routes: Routes = [
   {
@@ -45,6 +46,22 @@ export const routes: Routes = [
   {
     path: "modules",
     loadComponent: () => import("./pages/home/course/modules/modules.page").then((m) => m.ModulesPage),
+  },
+  {
+    path: "homeworks-list",
+    loadComponent: () => import("./pages/home/homework/homeworks-list/homeworks.page").then((m) => m.HomeworksPage),
+  },
+  {
+    path: "payments-list",
+    loadComponent: () => import("./pages/secretary/payments/payments-list/payments-list.page").then((m) => m.PaymentsListPage),
+  },
+  {
+    path: "new_homework",
+    loadComponent: () => import("./pages/home/homework/new-homework/new.page").then((m) => m.NewPage),
+  },
+  {
+    path: "new_payment",
+    loadComponent: () => import("./pages/secretary/payments/new-payment/new.page").then((m) => m.NewPage),
   },
   {
     path: "content",
