@@ -24,6 +24,10 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/home/foro/foro.page").then((m) => m.ForoPage),
   },
   {
+    path: 'thread/:id',
+    loadComponent: () => import('./pages/home/foro/thread/thread.page').then(m => m.ThreadPage)
+  },
+  {
     path: "homework",
     loadComponent: () => import("./pages/home/homework/homework.page").then((m) => m.HomeworkPage),
   },
@@ -38,6 +42,10 @@ export const routes: Routes = [
   {
     path: "documents",
     loadComponent: () => import("./pages/secretary/documents/documents.page").then((m) => m.DocumentsPage),
+  },
+  {
+    path: "new_document",
+    loadComponent: () => import("./pages/secretary/documents/new-document/new.page").then((m) => m.NewPage),
   },
   {
     path: "setting",

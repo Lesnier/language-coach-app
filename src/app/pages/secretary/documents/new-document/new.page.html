@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Subir Documento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid style="margin-top: 10px">
+    <ion-row>
+      <ion-col
+      >
+        <div class="upload-container">
+          <!-- Texto encima del avatar -->
+          <div class="upload-text">
+            <h3>Subir Documento</h3>
+          </div>
+
+          <!-- Contenedor del avatar con el input file -->
+          <ion-avatar class="upload-area" (click)="fileInput.click()">
+            <ion-icon *ngIf="!selectedDocument" name="camera-outline" class="camera-icon"></ion-icon>
+            <img *ngIf="selectedDocument" [src]="selectedDocument" />
+          </ion-avatar>
+
+          <!-- Input oculto -->
+          <input
+            type="file"
+            #fileInput
+            (change)="onFileSelected($event)"
+            style="display: none;" />
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="12">
+        <ion-button expand="block" color="secondary" style="margin: 0 10px">Aceptar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
