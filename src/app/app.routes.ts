@@ -1,9 +1,13 @@
 import { Routes } from "@angular/router";
-import {NewPage} from "./pages/home/homework/new-homework/new.page";
 
 export const routes: Routes = [
   {
     path: "",
+    redirectTo: "login",
+    pathMatch: "full",
+  },
+  {
+    path: "home",
     redirectTo: "start",
     pathMatch: "full",
   },
@@ -75,4 +79,9 @@ export const routes: Routes = [
     path: "content",
     loadComponent: () => import("./pages/home/course/content/content.page").then((m) => m.ContentPage),
   },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
+  },
+
 ];
