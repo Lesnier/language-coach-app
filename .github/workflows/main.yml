@@ -36,4 +36,4 @@ jobs:
            server: ${{ secrets.CPANEL_FTP_SERVER }}
            username: ${{ secrets.CPANEL_FTP_USER }}
            password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-           local-dir: ./ # Directorio raíz de tu sitio en el repositorio
+           local-dir: ./www/ # Directorio raíz de tu sitio en el repositorio
