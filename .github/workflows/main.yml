@@ -1,0 +1,39 @@
+name: Deploy Ionic App to cPanel via FTP
+
+on:
+  push:
+    branches:
+      - main # Cambia a la rama que desees usar para despliegues
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+      
+    steps:
+      # 1. Clonar el repositorio
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2. Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Ajusta según tu proyecto
+
+      # 3. Instalar dependencias
+      - name: Install Dependencies
+        run: npm install
+
+      # 4. Construir la aplicación Ionic para producción
+      - name: Build Ionic App
+        run: npm run build --prod
+
+      # 5. Subir archivos a cPanel vía FTP
+      - name: Deploy to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+           server: ${{ secrets.CPANEL_FTP_SERVER }}
+           username: ${{ secrets.CPANEL_FTP_USER }}
+           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+           local-dir: ./www/ # Directorio raíz de tu sitio en el repositorio
