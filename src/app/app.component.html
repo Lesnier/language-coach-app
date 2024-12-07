@@ -1,33 +1,35 @@
-<ion-app *ngIf="showLayout">
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Jorge Camilo Vasques</ion-list-header>
-          <ion-note>jcamilovasques&#64;gmail.com</ion-note>
+<ion-app>
+  <ng-container *ngIf="currentUrl !== '/login' && currentUrl !== '/'; else loginLayout">
+    <ion-split-pane contentId="main-content">
+      <ion-menu contentId="main-content" type="overlay">
+        <ion-content>
+          <ion-list id="inbox-list">
+            <ion-list-header>Jorge Camilo Vasques {{currentUrl}}</ion-list-header>
+            <ion-note>jcamilovasques&#64;gmail.com</ion-note>
 
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+              <ion-item routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
+                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+
+          <ion-list id="labels-list">
+            <ion-list-header>Labels</ion-list-header>
+
+            <ion-item lines="none" *ngFor="let label of labels" [button]="true">
+              <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+              <ion-label>{{ label.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+      <ion-router-outlet id="main-content"></ion-router-outlet>
+    </ion-split-pane>
+  </ng-container>
 
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
-
-          <ion-item lines="none" *ngFor="let label of labels" [button]="true">
-            <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-            <ion-label>{{ label.title }}</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
-</ion-app>
-
-<ion-app *ngIf="currentUrl === '/' || currentUrl === '/login'">
-  <ion-router-outlet id="main-content2"></ion-router-outlet>
+  <ng-template #loginLayout>
+    <ion-router-outlet id="login-content"></ion-router-outlet>
+  </ng-template>
 </ion-app>
