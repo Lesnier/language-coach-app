@@ -12,14 +12,42 @@
     <ion-row>
       <ion-col>
         <ion-card>
-          <ion-datetime></ion-datetime>
+          <ion-datetime
+            [(ngModel)]="fechaModel"
+            displayFormat="YYYY-MM-DDTHH:mm"
+            pickerFormat="YYYY-MM-DDTHH:mm"
+          >
+          </ion-datetime>
         </ion-card>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button [routerLink]="'/start'" color="green" expand="block" style="margin-left: 10px; margin-right: 10px">Agendar</ion-button>
+        <ion-button
+          color="green"
+          expand="block"
+          (click)="agendar()"
+          style="margin-left: 10px; margin-right: 10px"
+          >Agendar</ion-button
+        >
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-note color="danger" *ngIf="invalidDate"> Fecha invalida </ion-note>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-list>
+      @for (item of agendas; track $index) {
+      <ion-item>
+        <ion-icon name="calendar-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{item.date}}</h2>
+          <p>{{item.time}}</p>
+        </ion-label>
+      </ion-item>
+      }
+    </ion-list>
   </ion-grid>
 </ion-content>

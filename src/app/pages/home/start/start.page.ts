@@ -14,6 +14,7 @@ import { calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleS
   imports: [IonIcon, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonRouterLink, RouterLink, RouterLinkActive],
 })
 export class StartPage implements OnInit {
+  
   constructor() {
     addIcons({ calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleSharp, checkboxSharp });
   }

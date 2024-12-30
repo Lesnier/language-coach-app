@@ -1,18 +1,109 @@
-import { Component, OnInit } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { RouterLink, RouterLinkActive } from "@angular/router";
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonDatetime, IonRow, IonCardHeader, IonCard, IonIcon, IonCardTitle, IonCol, IonGrid, IonButton } from "@ionic/angular/standalone";
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButtons,
+  IonMenuButton,
+  IonDatetime,
+  IonRow,
+  IonCard,
+  IonIcon,
+  IonCol,
+  IonItem,
+  IonGrid,
+  IonButton,
+  IonLabel,
+  IonList,
+  IonNote,
+} from '@ionic/angular/standalone';
+import { UtilsService } from 'src/app/services/utils.service';
+import { ApiService } from 'src/app/services/api.service';
+import { HttpClient } from '@angular/common/http';
+import { addIcons } from 'ionicons';
+import { calendarOutline } from 'ionicons/icons';
+import { agenda, agendas } from 'src/app/models/interfaces';
 
 @Component({
-  selector: "app-schedule",
-  templateUrl: "./schedule.page.html",
-  styleUrls: ["./schedule.page.scss"],
+  selector: 'app-schedule',
+  templateUrl: './schedule.page.html',
+  styleUrls: ['./schedule.page.scss'],
   standalone: true,
-  imports: [IonButton, IonGrid, IonCol, IonCardTitle, IonIcon, IonCard, IonCardHeader, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonDatetime, IonMenuButton, RouterLink, RouterLinkActive],
+  imports: [
+    IonNote,
+    IonList,
+    IonLabel,
+    IonButton,
+    IonGrid,
+    IonCol,
+    IonIcon,
+    IonCard,
+    IonRow,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
+    FormsModule,
+    IonButtons,
+    IonDatetime,
+    IonMenuButton,
+    IonItem,
+  ],
 })
 export class SchedulePage implements OnInit {
-  constructor() {}
+  utils = inject(UtilsService);
+  api = inject(ApiService);
+  http = inject(HttpClient);
 
-  ngOnInit() {}
+  invalidDate: boolean = false;
+
+  fechaModel: string = '';
+  fechaActual: Date;
+
+  agendas: agendas[] = [];
+
+  constructor() {
+    this.fechaActual = new Date();
+
+    addIcons({ calendarOutline });
+  }
+
+  ngOnInit() {
+    this.getAgendas();
+  }
+
+  agendar() {
+    const fechaCompleta = new Date(this.fechaModel);
+
+    const token = localStorage.getItem('access_token');
+
+    const agendarData: agenda = {
+      date: fechaCompleta.toISOString().split('T')[0],
+      time: fechaCompleta.toTimeString().slice(0, 5),
+    };
+
+    if (fechaCompleta > this.fechaActual) {
+      if (token) {
+        this.api.postAgenda(agendarData, token).subscribe((res) => {
+          console.log(res);
+        });
+      }
+    } else {
+      this.invalidDate = true;
+    }
+    this.getAgendas();
+  }
+
+  getAgendas() {
+    let token = localStorage.getItem('access_token');
+    if (token) {
+      this.api.getAgendas(token).subscribe((res) => {
+        this.agendas = res.agendas;
+      });
+    }
+  }
 }
