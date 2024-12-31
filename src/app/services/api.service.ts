@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// interface LoginResponse {
-//   access_token: string;
-//   token_type: string;
-// }
-
 @Injectable({
   providedIn: 'root',
 })

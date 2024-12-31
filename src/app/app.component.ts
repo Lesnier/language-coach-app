@@ -35,8 +35,9 @@ import {
   logInOutline,
 } from 'ionicons/icons';
 import { ApiService } from './services/api.service';
-import { UtilsService } from './services/utils.service';
+
 import { User } from './models/interfaces';
+import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -62,10 +63,11 @@ import { User } from './models/interfaces';
   ],
 })
 export class AppComponent implements OnInit, DoCheck {
-  utils = inject(UtilsService);
   api = inject(ApiService);
+  auth = inject(AuthService);
 
-  loggedUser: User = this.utils.loadUser();
+  loggedUser: User = JSON.parse(localStorage.getItem('user') ?? '{}');
+  ;
 
   public appPages = [
     { title: 'Inicio', url: '/start', icon: 'home' },
@@ -109,16 +111,16 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    this.loggedUser = this.utils.loadUser();
+    this.loggedUser = this.loggedUser;
   }
 
   onLogout() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.logout(token).subscribe((res) => {
-        console.log(res);
         localStorage.removeItem('access_token');
         localStorage.removeItem('user');
+
         this.router.navigate(['/login']);
       });
   }

@@ -31,3 +31,29 @@ export interface data {
   new_password: string;
   confirm_password: string;
 }
+
+export interface cursos {
+  id: number; 
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Lesson {
+  id: number; 
+  name: string; 
+  class_content: string;
+  module_id: number;
+  file_id: number | null;
+  created_at: string; 
+  updated_at: string;
+}
+
+
+export interface Course {
+  course_id: number;
+  id: number; 
+  created_at: string;
+  updated_at: string;
+  lessons: Lesson[];
+}

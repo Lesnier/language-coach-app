@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 import { NavController } from '@ionic/angular';
+import { Course, Lesson } from 'src/app/models/interfaces';
 @Component({
   selector: 'app-modules',
   templateUrl: './modules.page.html',
@@ -63,6 +64,7 @@ export class ModulesPage implements OnInit {
     if (token)
       this.api.getCourse(token, this.id).subscribe((res) => {
         this.modules = res.modules;
+        console.log(this.modules)
       });
   }
   back(){

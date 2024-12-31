@@ -20,7 +20,7 @@ import {
   IonList,
   IonNote,
 } from '@ionic/angular/standalone';
-import { UtilsService } from 'src/app/services/utils.service';
+
 import { ApiService } from 'src/app/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { addIcons } from 'ionicons';
@@ -55,7 +55,7 @@ import { NavController } from '@ionic/angular';
   ],
 })
 export class SchedulePage implements OnInit {
-  utils = inject(UtilsService);
+
   api = inject(ApiService);
   http = inject(HttpClient);
   navCtrl = inject(NavController);

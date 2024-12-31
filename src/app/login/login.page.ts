@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import {  ApiService } from '../services/api.service';
 import { Observable, tap, throwError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -23,7 +24,8 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private api: ApiService
+    private api: ApiService,
+    private auth: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -49,6 +51,7 @@ export class LoginPage {
         this.fetchUserDetails().subscribe(
           () => {
             this.router.navigate(['/start']);
+           
           },
           (error) => {
             console.error('Failed to fetch user details:', error);

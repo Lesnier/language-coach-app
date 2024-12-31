@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router} from '@angular/router';
 import {
   IonContent,
   IonHeader,
@@ -9,7 +9,6 @@ import {
   IonToolbar,
   IonButtons,
   IonMenuButton,
-  IonRouterLink,
   IonCardHeader,
   IonCol,
   IonCard,
@@ -17,25 +16,20 @@ import {
   IonRow,
   IonCardTitle,
   IonGrid,
-  IonAccordionGroup,
-  IonAccordion,
-  IonItem,
-  IonLabel,
   IonButton,
-  IonCardSubtitle,
+
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { caretForwardSharp, chevronBackOutline, golfSharp, logInSharp } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
-import { UtilsService } from 'src/app/services/utils.service';
 import { NavController } from '@ionic/angular';
+import { cursos } from 'src/app/models/interfaces';
 @Component({
   selector: 'app-course',
   templateUrl: './course.page.html',
   styleUrls: ['./course.page.scss'],
   standalone: true,
   imports: [
-    IonCardSubtitle,
     IonCardTitle,
     IonRow,
     IonIcon,
@@ -51,9 +45,6 @@ import { NavController } from '@ionic/angular';
     CommonModule,
     FormsModule,
     IonMenuButton,
-    IonRouterLink,
-    IonRouterLink,
-    RouterLink,
     IonGrid,
   ],
 })
@@ -63,7 +54,6 @@ export class CoursePage implements OnInit {
   route = inject(Router);
   navCtrl = inject(NavController);
 
-  cursos: any[] = [];
   constructor() {
     addIcons({ caretForwardSharp, golfSharp, logInSharp ,chevronBackOutline});
   }
@@ -73,6 +63,7 @@ export class CoursePage implements OnInit {
     if (token) {
       this.api.getCourses(token).subscribe((res) => {
         this.cursos = res;
+        console.log(this.cursos)
       });
     }
   }

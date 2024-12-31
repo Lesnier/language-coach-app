@@ -25,7 +25,6 @@ import {
   IonIcon
 } from '@ionic/angular/standalone';
 import { data, User } from 'src/app/models/interfaces';
-import { UtilsService } from 'src/app/services/utils.service';
 import { ApiService } from 'src/app/services/api.service';
 
 
@@ -58,10 +57,9 @@ import { ApiService } from 'src/app/services/api.service';
   ],
 })
 export class SettingPage {
-  utils = inject(UtilsService);
   api = inject(ApiService);
 
-  user: User = this.utils.loadUser();
+  user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
   date: any;
   data: data = {
     current_password: '123456789',
