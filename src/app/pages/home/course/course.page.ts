@@ -50,10 +50,10 @@ import { cursos } from 'src/app/models/interfaces';
 })
 export class CoursePage implements OnInit {
   api = inject(ApiService);
-  utils = inject(UtilsService);
   route = inject(Router);
   navCtrl = inject(NavController);
 
+  cursos: cursos[] = [];
   constructor() {
     addIcons({ caretForwardSharp, golfSharp, logInSharp ,chevronBackOutline});
   }
