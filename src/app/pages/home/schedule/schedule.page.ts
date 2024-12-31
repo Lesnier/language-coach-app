@@ -24,9 +24,9 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { ApiService } from 'src/app/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { addIcons } from 'ionicons';
-import { calendarOutline } from 'ionicons/icons';
+import { calendarOutline, chevronBackOutline } from 'ionicons/icons';
 import { agenda, agendas } from 'src/app/models/interfaces';
-
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.page.html',
@@ -58,6 +58,7 @@ export class SchedulePage implements OnInit {
   utils = inject(UtilsService);
   api = inject(ApiService);
   http = inject(HttpClient);
+  navCtrl = inject(NavController);
 
   invalidDate: boolean = false;
 
@@ -69,7 +70,7 @@ export class SchedulePage implements OnInit {
   constructor() {
     this.fechaActual = new Date();
 
-    addIcons({ calendarOutline });
+    addIcons({ calendarOutline,chevronBackOutline });
   }
 
   ngOnInit() {
@@ -105,5 +106,9 @@ export class SchedulePage implements OnInit {
         this.agendas = res.agendas;
       });
     }
+  }
+
+  back(){
+    this.navCtrl.back();
   }
 }

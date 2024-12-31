@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  DoCheck,
-  inject,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, DoCheck, inject, OnInit } from '@angular/core';
 import {
   Router,
   NavigationEnd,
@@ -27,8 +20,6 @@ import {
   IonLabel,
   IonRouterOutlet,
   IonRouterLink,
-  IonButtons,
-  IonButton,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -40,20 +31,18 @@ import {
   flowerSharp,
   bookmarkOutline,
   bookmarkSharp,
-  reload,
+  logOut,
+  logInOutline,
 } from 'ionicons/icons';
 import { ApiService } from './services/api.service';
 import { UtilsService } from './services/utils.service';
 import { User } from './models/interfaces';
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   standalone: true,
   imports: [
-    IonButton,
-    IonButtons,
     RouterLink,
     RouterLinkActive,
     CommonModule,
@@ -73,20 +62,24 @@ import { User } from './models/interfaces';
   ],
 })
 export class AppComponent implements OnInit, DoCheck {
-
   utils = inject(UtilsService);
   api = inject(ApiService);
-  
+
   loggedUser: User = this.utils.loadUser();
 
   public appPages = [
     { title: 'Inicio', url: '/start', icon: 'home' },
     { title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked' },
     { title: 'Configuraciones', url: '/setting', icon: 'flower' },
+    { title: 'Logout', url: '/login', icon: 'log-in-outline' },
   ];
   public labels = [
     { title: 'Blog', url: '/folder/inbox', icon: 'home' },
-    { title: 'Nuestra Historia', url: '/folder/outbox', icon: 'file-tray-stacked'},
+    {
+      title: 'Nuestra Historia',
+      url: '/folder/outbox',
+      icon: 'file-tray-stacked',
+    },
   ];
 
   showLayout = true;
@@ -102,6 +95,7 @@ export class AppComponent implements OnInit, DoCheck {
       flowerSharp,
       bookmarkOutline,
       bookmarkSharp,
+      logInOutline,
     });
   }
 
@@ -116,5 +110,16 @@ export class AppComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     this.loggedUser = this.utils.loadUser();
+  }
+
+  onLogout() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.logout(token).subscribe((res) => {
+        console.log(res);
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user');
+        this.router.navigate(['/login']);
+      });
   }
 }

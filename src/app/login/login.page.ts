@@ -8,7 +8,7 @@ import {
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { ApiService } from '../services/api.service';
+import {  ApiService } from '../services/api.service';
 import { Observable, tap, throwError } from 'rxjs';
 @Component({
   selector: 'app-login',
@@ -23,7 +23,7 @@ export class LoginPage {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private apiService: ApiService
+    private api: ApiService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -42,7 +42,7 @@ export class LoginPage {
 
     const { email, password } = this.loginForm.value;
 
-    this.apiService.login(email, password).subscribe(
+    this.api.login(email, password).subscribe(
       (response) => {
         console.log('Login successful:', response);
         localStorage.setItem('access_token', response.access_token); 
@@ -63,7 +63,7 @@ export class LoginPage {
   fetchUserDetails(): Observable<any> {
     const token = localStorage.getItem('access_token');
     if (token) {
-      return this.apiService.getUserDetails(token).pipe(
+      return this.api.getUserDetails(token).pipe(
         tap((userDetails) => {
 
           localStorage.setItem('user', JSON.stringify(userDetails));

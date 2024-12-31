@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink, RouterLinkActive } from "@angular/router";
-
+import { NavController } from '@ionic/angular';
+import { chevronBackOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 import {
   IonContent,
   IonHeader,
@@ -27,7 +29,14 @@ import {
     IonRouterLink, IonRouterLink, RouterLink, RouterLinkActive, IonIcon, IonRow, IonButton],
 })
 export class PaymentsListPage implements OnInit {
-  constructor() {}
+  navCtrl = inject(NavController);
+  constructor() {
+    addIcons({chevronBackOutline})
+  }
 
   ngOnInit() {}
+
+  back(){
+    this.navCtrl.back();
+  }
 }

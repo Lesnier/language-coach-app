@@ -1,19 +1,18 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import {
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
+import {
   IonHeader,
   IonTitle,
   IonGrid,
   IonRow,
   IonCol,
   IonContent,
-  IonCard,
-  IonIcon,
   IonToolbar,
   IonButtons,
   IonMenuButton,
@@ -22,11 +21,13 @@ import {
   IonButton,
   IonDatetime,
   IonText,
-  IonLabel,
   IonPopover,
+  IonIcon
 } from '@ionic/angular/standalone';
-import { User } from 'src/app/models/interfaces';
+import { data, User } from 'src/app/models/interfaces';
 import { UtilsService } from 'src/app/services/utils.service';
+import { ApiService } from 'src/app/services/api.service';
+
 
 @Component({
   selector: 'app-setting',
@@ -34,18 +35,12 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./setting.page.scss'],
   standalone: true,
   imports: [
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
     IonHeader,
     IonTitle,
     IonGrid,
     IonRow,
     IonCol,
     IonContent,
-    IonCard,
-    IonIcon,
     IonToolbar,
     IonButtons,
     IonMenuButton,
@@ -54,17 +49,44 @@ import { UtilsService } from 'src/app/services/utils.service';
     IonButton,
     IonDatetime,
     IonText,
-    IonLabel,
     IonPopover,
     FormsModule,
     DatePipe,
+    CommonModule,
+    FormsModule,
+    IonIcon
   ],
 })
-export class SettingPage implements OnInit {
+export class SettingPage {
   utils = inject(UtilsService);
-  date:any;
-  user: User = this.utils.loadUser();
-  constructor() {}
+  api = inject(ApiService);
 
-  ngOnInit() {}
+  user: User = this.utils.loadUser();
+  date: any;
+  data: data = {
+    current_password: '123456789',
+    new_password: '12345678',
+    confirm_password: '12345678',
+  };
+  changePasswordForm: FormGroup;
+  successMessage: string = '';
+  errorMessage: string = '';
+
+  constructor(private fb: FormBuilder) {
+    this.changePasswordForm = this.fb.group({
+      current_password: ['', [Validators.required]],
+      new_password: ['', [Validators.required, Validators.minLength(8)]],
+      confirm_password: ['', [Validators.required]],
+    });
+
+
+  }
+
+  onSubmit(): void {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.changePassword(this.data, token).subscribe((res) => {
+        console.log(res);
+      });
+  }
 }

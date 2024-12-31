@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
-interface LoginResponse {
-  access_token: string;
-  token_type: string;
-}
+// interface LoginResponse {
+//   access_token: string;
+//   token_type: string;
+// }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'https://language-coach-back.lesinnovations.tech/api'; // Replace with your actual API URL
+  private apiUrl = 'https://language-coach-back.lesinnovations.tech/api';
 
   constructor(private http: HttpClient) {}
 
@@ -35,10 +34,14 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/agendas`, data, { headers });
   }
   
-
   getCourses(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/courses`, { headers });
+  }
+
+  getCourse(token: string,id:any): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/courses/${id}`, { headers });
   }
 
 
@@ -46,4 +49,11 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/user`, { headers });
   }
+
+ changePassword(data: {current_password: string;  new_password: string; confirm_password: string;}, token:string): Observable<any> {
+  const headers = new HttpHeaders().set('Authorization',`Bearer${token}`);
+    return this.http.post(`${this.apiUrl}/change-password`, data ,{headers});
+  }
+
+
 }

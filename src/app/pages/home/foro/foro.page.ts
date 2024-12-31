@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink, RouterLinkActive } from "@angular/router";
-
+import { NavController } from '@ionic/angular';
 import {
   IonContent,
   IonHeader,
@@ -16,6 +16,8 @@ import {
   IonLabel, IonRouterLink,
   IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonGrid, IonIcon, IonRow, IonButton
 } from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import { chevronBackOutline } from "ionicons/icons";
 
 @Component({
   selector: "app-foro-list",
@@ -28,10 +30,17 @@ import {
 })
 
 export class ForoPage implements OnInit {
+ navCtrl = inject(NavController);
+  constructor() {
 
-  constructor() { }
+    addIcons({chevronBackOutline})
+   }
 
   ngOnInit() {
   }
 
+  
+  back(){
+    this.navCtrl.back();
+  }
 }

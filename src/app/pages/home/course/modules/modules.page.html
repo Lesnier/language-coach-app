@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Modulos</ion-title>
@@ -9,23 +12,18 @@
 
 <ion-content [fullscreen]="true">
   <ion-accordion-group expand="inset">
+
+    @for (modulo of modules; track $index) {
     <ion-accordion value="first">
       <ion-item slot="header" color="light">
-        <ion-label>First Accordion</ion-label>
+        <ion-label>{{modulo.name}}</ion-label>
       </ion-item>
-      <div class="ion-padding" slot="content">First Content</div>
+      @for (clase of modulo.lessons; track $index) {
+      <div class="ion-padding" slot="content">{{clase.name}}</div>
+    }
     </ion-accordion>
-    <ion-accordion value="second">
-      <ion-item slot="header" color="light">
-        <ion-label>Second Accordion</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">Second Content</div>
-    </ion-accordion>
-    <ion-accordion value="third">
-      <ion-item slot="header" color="light">
-        <ion-label>Third Accordion</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">Third Content</div>
-    </ion-accordion>
+  }
+    
+  
   </ion-accordion-group>
 </ion-content>
