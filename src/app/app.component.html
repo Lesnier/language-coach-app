@@ -29,12 +29,14 @@
             </ion-menu-toggle>
           }
 
-          <ion-menu-toggle autoHide="false" (click)="onLogout()">
-                 <ion-item  routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-                 <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
-                 <ion-label>Logout</ion-label>
-                </ion-item>
-          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" (click)="onLogout()">
+            
+            <ion-item   routerLink="['/login']" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
+            <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
+            <ion-label>Loggout</ion-label>
+           </ion-item>
+       
+     </ion-menu-toggle>
           
           </ion-list>
 
