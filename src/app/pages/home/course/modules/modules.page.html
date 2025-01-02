@@ -11,19 +11,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  @for (modulo of modules; track $index) {
   <ion-accordion-group expand="inset">
-
-    @for (modulo of modules; track $index) {
     <ion-accordion value="first">
       <ion-item slot="header" color="light">
         <ion-label>{{modulo.name}}</ion-label>
       </ion-item>
       @for (clase of modulo.lessons; track $index) {
       <div class="ion-padding" slot="content">{{clase.name}}</div>
-    }
+      }
     </ion-accordion>
-  }
-    
-  
   </ion-accordion-group>
+  }
 </ion-content>

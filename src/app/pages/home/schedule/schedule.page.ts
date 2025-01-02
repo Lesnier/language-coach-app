@@ -88,13 +88,14 @@ export class SchedulePage implements OnInit {
     };
 
     if (fechaCompleta > this.fechaActual) {
-      if (token) {
+      const diaSemana = fechaCompleta.getDay();
+      if (token && diaSemana !==0 && diaSemana !== 6) {
         this.api.postAgenda(agendarData, token).subscribe((res) => {
-          console.log(res);
+        this.invalidDate = false;
         });
+      } else {
+        this.invalidDate = true;
       }
-    } else {
-      this.invalidDate = true;
     }
     this.getAgendas();
   }

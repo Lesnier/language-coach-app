@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, DoCheck {
   auth = inject(AuthService);
 
   loggedUser: User = JSON.parse(localStorage.getItem('user') ?? '{}');
-  ;
+  
 
   public appPages = [
     { title: 'Inicio', url: '/start', icon: 'home' },

@@ -4,8 +4,8 @@
       <ion-menu contentId="main-content" type="overlay">
         <ion-content>
           <ion-list id="inbox-list">
-            <ion-list-header>Jorge Camilo Vasques {{currentUrl}}</ion-list-header>
-            <ion-note>jcamilovasques&#64;gmail.com</ion-note>
+            <ion-list-header>{{loggedUser.name}}</ion-list-header>
+            <ion-note>{{loggedUser.email}}</ion-note>
 
           @if (this.loggedUser.role_id === 4) {
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">

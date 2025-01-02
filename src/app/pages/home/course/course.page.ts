@@ -63,7 +63,6 @@ export class CoursePage implements OnInit {
     if (token) {
       this.api.getCourses(token).subscribe((res) => {
         this.cursos = res;
-        console.log(this.cursos)
       });
     }
   }

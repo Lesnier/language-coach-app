@@ -36,7 +36,9 @@ export class ForoPage implements OnInit {
     addIcons({chevronBackOutline})
    }
 
+
   ngOnInit() {
+  
   }
 
   

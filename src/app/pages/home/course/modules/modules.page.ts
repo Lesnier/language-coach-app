@@ -49,7 +49,6 @@ export class ModulesPage implements OnInit {
   navCtrl = inject(NavController);
   id: any;
   modules: any[] = [];
-  clases: any[] = [];
   constructor() {
     addIcons({chevronBackOutline})
   }
@@ -64,9 +63,9 @@ export class ModulesPage implements OnInit {
     if (token)
       this.api.getCourse(token, this.id).subscribe((res) => {
         this.modules = res.modules;
-        console.log(this.modules)
       });
   }
+  
   back(){
     this.navCtrl.back();
   }
