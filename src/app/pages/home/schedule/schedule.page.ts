@@ -27,6 +27,7 @@ import { addIcons } from 'ionicons';
 import { calendarOutline, chevronBackOutline } from 'ionicons/icons';
 import { agenda, agendas } from 'src/app/models/interfaces';
 import { NavController } from '@ionic/angular';
+import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.page.html',
@@ -55,10 +56,10 @@ import { NavController } from '@ionic/angular';
   ],
 })
 export class SchedulePage implements OnInit {
-
   api = inject(ApiService);
   http = inject(HttpClient);
   navCtrl = inject(NavController);
+  utils = inject(UtilsService);
 
   invalidDate: boolean = false;
 
@@ -70,7 +71,7 @@ export class SchedulePage implements OnInit {
   constructor() {
     this.fechaActual = new Date();
 
-    addIcons({ calendarOutline,chevronBackOutline });
+    addIcons({ calendarOutline, chevronBackOutline });
   }
 
   ngOnInit() {
@@ -89,9 +90,10 @@ export class SchedulePage implements OnInit {
 
     if (fechaCompleta > this.fechaActual) {
       const diaSemana = fechaCompleta.getDay();
-      if (token && diaSemana !==0 && diaSemana !== 6) {
+      if (token && diaSemana !== 0 && diaSemana !== 6) {
         this.api.postAgenda(agendarData, token).subscribe((res) => {
-        this.invalidDate = false;
+          this.utils.showToast('Agregado con exito', 'success');
+          this.invalidDate = false;
         });
       } else {
         this.invalidDate = true;
@@ -109,7 +111,7 @@ export class SchedulePage implements OnInit {
     }
   }
 
-  back(){
+  back() {
     this.navCtrl.back();
   }
 }

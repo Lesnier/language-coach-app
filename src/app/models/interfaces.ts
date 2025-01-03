@@ -57,3 +57,12 @@ export interface Course {
   updated_at: string;
   lessons: Lesson[];
 }
+
+export interface models {
+  course_id: number;            // Identificador único del curso
+  created_at: string;           // Fecha y hora de creación en formato ISO 8601
+  id: number;                   // Identificador único del modelo del curso
+  lessons: Lesson[];            // Array de lecciones asociadas al curso
+  name: string;                 // Nombre del curso
+  updated_at: string;           // Fecha y hora de la última actualización en formato ISO 8601
+}

@@ -9,7 +9,7 @@
 
           @if (this.loggedUser.role_id === 4) {
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-              @if (p.title === 'Secretaría' ||  p.title === 'Configuraciones') {
+              @if (p.title === 'Secretaría' ||  p.title === 'Configuraciones' || p.title === 'Documentos' || p.title === 'Pagos') {
                 <ion-item   routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
                 <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
@@ -20,7 +20,7 @@
 
           @if (this.loggedUser.role_id === 2) {
             <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-              @if (p.title === 'Inicio' ||  p.title === 'Configuraciones') {
+              @if (p.title === 'Inicio' ||  p.title === 'Configuraciones' || p.title === 'Agendar' || p.title === 'Cursos' || p.title === 'Foro' || p.title === 'Tareas') {
                    <ion-item   routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
                    <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
                    <ion-label>{{ p.title }}</ion-label>

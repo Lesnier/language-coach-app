@@ -13,14 +13,20 @@ import {
   IonItem,
   IonLabel,
   IonButton,
-  IonIcon
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 import { NavController } from '@ionic/angular';
 import { Course, Lesson } from 'src/app/models/interfaces';
+import { ContentPage } from '../content/content.page';
 @Component({
   selector: 'app-modules',
   templateUrl: './modules.page.html',
@@ -40,17 +46,19 @@ import { Course, Lesson } from 'src/app/models/interfaces';
     FormsModule,
     IonMenuButton,
     IonButton,
-    IonIcon
+    IonIcon,
+    RouterLink
   ],
 })
 export class ModulesPage implements OnInit {
   api = inject(ApiService);
   route = inject(ActivatedRoute);
   navCtrl = inject(NavController);
+  router = inject(Router);
   id: any;
   modules: any[] = [];
   constructor() {
-    addIcons({chevronBackOutline})
+    addIcons({ chevronBackOutline });
   }
 
   ngOnInit() {
@@ -65,8 +73,14 @@ export class ModulesPage implements OnInit {
         this.modules = res.modules;
       });
   }
-  
-  back(){
+
+  back() {
     this.navCtrl.back();
+  }
+
+  goContent(idM:number,idL:number) {
+    this.router.navigate(['/content'], {
+      queryParams: { id: this.id , idM: idM , idL:idL },
+    });
   }
 }

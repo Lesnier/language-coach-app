@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   FormsModule,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import {
@@ -22,11 +23,12 @@ import {
   IonDatetime,
   IonText,
   IonPopover,
-  IonIcon
+  IonIcon,
+  IonLabel,
 } from '@ionic/angular/standalone';
 import { data, User } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
-
+import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-setting',
@@ -53,10 +55,12 @@ import { ApiService } from 'src/app/services/api.service';
     DatePipe,
     CommonModule,
     FormsModule,
-    IonIcon
+    IonIcon,
+    IonLabel,
+    ReactiveFormsModule,
   ],
 })
-export class SettingPage {
+export class SettingPage implements OnInit {
   api = inject(ApiService);
 
   user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
@@ -66,25 +70,43 @@ export class SettingPage {
     new_password: '12345678',
     confirm_password: '12345678',
   };
+  utils = inject(UtilsService);
   changePasswordForm: FormGroup;
-  successMessage: string = '';
-  errorMessage: string = '';
 
   constructor(private fb: FormBuilder) {
-    this.changePasswordForm = this.fb.group({
-      current_password: ['', [Validators.required]],
-      new_password: ['', [Validators.required, Validators.minLength(8)]],
-      confirm_password: ['', [Validators.required]],
-    });
-
-
+    this.changePasswordForm = this.fb.group(
+      {
+        current_password: ['', [Validators.required]],
+        new_password: ['', [Validators.required, Validators.minLength(8)]],
+        confirm_password: ['', [Validators.required]],
+      },
+      {
+        validators: this.passwordsMatchValidator,
+      }
+    );
   }
 
-  onSubmit(): void {
-    const token = localStorage.getItem('access_token');
-    if (token)
-      this.api.changePassword(this.data, token).subscribe((res) => {
-        console.log(res);
-      });
+  passwordsMatchValidator(form: FormGroup) {
+    const newPassword = form.get('new_password')?.value;
+    const confirmPassword = form.get('confirm_password')?.value;
+
+    return newPassword === confirmPassword ? null : { passwordsMismatch: true };
+  }
+
+  onSubmit() {
+    if (this.changePasswordForm.valid) {
+      const token = localStorage.getItem('access_token');
+      if (token)
+        this.api
+          .changePassword(this.changePasswordForm.value, token)
+          .subscribe((res) => {
+            this.utils.showToast('Password Changed', 'success');
+          });
+    } else {
+      console.log('Formulario inválido');
+    }
+  }
+  ngOnInit(): void {
+    console.log();
   }
 }

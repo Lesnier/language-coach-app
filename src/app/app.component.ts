@@ -33,6 +33,14 @@ import {
   bookmarkSharp,
   logOut,
   logInOutline,
+  readerSharp,
+  cashSharp,
+  checkboxSharp,
+  chatbubbleSharp,
+  layersOutline,
+  layersSharp,
+  calendarSharp,
+  calendarOutline,
 } from 'ionicons/icons';
 import { ApiService } from './services/api.service';
 
@@ -72,6 +80,12 @@ export class AppComponent implements OnInit, DoCheck {
   public appPages = [
     { title: 'Inicio', url: '/start', icon: 'home' },
     { title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked' },
+    { title: 'Agendar', url: '/schedule', icon: 'calendar' },
+    { title: 'Cursos', url: '/courses', icon: 'layers' },
+    { title: 'Foro', url: '/foro', icon: 'chatbubble' },
+    { title: 'Tareas', url: '/homeworks-list', icon: 'checkbox' },
+    { title: 'Documentos', url: '/documents', icon: 'reader' },
+    { title: 'Pagos', url: '/payments-list', icon: 'cash' },
     { title: 'Configuraciones', url: '/setting', icon: 'flower' },
     { title: 'Logout', url: '/login', icon: 'log-in-outline' },
   ];
@@ -98,6 +112,9 @@ export class AppComponent implements OnInit, DoCheck {
       bookmarkOutline,
       bookmarkSharp,
       logInOutline,
+      readerSharp,
+      cashSharp,
+      calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleSharp, checkboxSharp
     });
   }
 

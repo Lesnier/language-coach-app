@@ -45,10 +45,30 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/user`, { headers });
   }
 
- changePassword(data: {current_password: string;  new_password: string; confirm_password: string;}, token:string): Observable<any> {
-  const headers = new HttpHeaders().set('Authorization',`Bearer${token}`);
-    return this.http.post(`${this.apiUrl}/change-password`, data ,{headers});
+  
+  
+  getForums(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/forums`, { headers });
   }
+
+  getThreads(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/threads`, { headers });
+  }
+  
+  getInfo(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/user-info`, { headers });
+  }
+  
+
+
+  changePassword(data: any, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}/change-password`, data, { headers });
+  }
+
 
 
 }
