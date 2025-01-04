@@ -29,6 +29,7 @@ import {
   IonCardContent,
   IonList,
   IonFooter,
+  
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -57,6 +58,7 @@ import { UtilsService } from 'src/app/services/utils.service';
     IonIcon,
     IonButton,
     IonTextarea,
+    IonInput
   ],
 })
 export class ThreadPage implements OnInit {
@@ -70,6 +72,32 @@ export class ThreadPage implements OnInit {
   threads: any[] = [];
   threadreplys: any[] = [];
   comments: any[] = [];
+  messages: any[] = [
+    {
+      sender: 'Jorge',
+      message: 'Tengo un error en la instalación',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+    },
+    {
+      sender: 'Admin',
+      message: 'Prueba otra vez',
+      isAdmin: true,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+    },
+    {
+      sender: 'Jorge',
+      message: '¿Puedes ser más específico? No estoy seguro de qué hacer.',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+    },
+    {
+      sender: 'Admin',
+      message: 'Claro, intenta desinstalar completamente la aplicación y luego vuelve a instalarla. Asegúrate de tener una conexión a internet estable durante el proceso.',
+      isAdmin: true,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+    }
+  ];
   newComment: any = {
     id: 0,
     username: '',

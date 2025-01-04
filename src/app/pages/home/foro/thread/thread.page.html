@@ -19,47 +19,28 @@
       <ion-title size="large">Comentarios</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <div id="container">
-    <ion-list>
-      <ion-item>
-        <ion-label>
-          <h2>Jorge</h2>
-          <p>tengo un error en la instalacion</p>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <h2>Admin</h2>
-          <p>Prueba otra vez</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
+  <div class="chat-container">
+    @for (message of messages; track $index) {
+    <div class="message-wrapper" [class.admin-message]="message.isAdmin">
+      <div class="message-content">
+        <div class="bubble">
+          <h3>{{ message.sender }}</h3>
+          <p>{{ message.message }}</p>
+        </div>
+      </div>
+    </div>
+    }
   </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <form (ngSubmit)="addComment()" #commentForm="ngForm">
-      <ion-item>
-        <ion-textarea 
-          [(ngModel)]="newComment.content" 
-          name="content" 
-          required 
-          placeholder="Escribe tu comentario..."
-          rows="1"
-          auto-grow="true"
-        ></ion-textarea>
-        <ion-button 
-          slot="end" 
-          fill="clear" 
-          type="submit" 
-          [disabled]="!commentForm.form.valid"
-        >
-          <ion-icon name="send"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </form>
+    <ion-item lines="none">
+      <ion-input placeholder="Escribe un mensaje..." class="message-input"></ion-input>
+      <ion-button slot="end" fill="clear">
+        <ion-icon name="send" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
   </ion-toolbar>
 </ion-footer>
 

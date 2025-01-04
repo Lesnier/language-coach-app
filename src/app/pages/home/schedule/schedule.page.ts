@@ -80,30 +80,38 @@ export class SchedulePage implements OnInit {
   }
 
   agendar() {
+
     const fechaCompleta = new Date(this.fechaModel);
+
+
+    fechaCompleta.setDate(fechaCompleta.getDate() - 1);
+
 
     const token = localStorage.getItem('access_token');
 
     const agendarData: agenda = {
-      date: fechaCompleta.toISOString().split('T')[0],
-      time: fechaCompleta.toTimeString().slice(0, 5),
+        date: fechaCompleta.toISOString().split('T')[0], 
+        time: fechaCompleta.toTimeString().slice(0, 5), 
     };
 
+
     if (fechaCompleta > this.fechaActual) {
-      const diaSemana = fechaCompleta.getDay();
-      if (token && diaSemana !== 0 && diaSemana !== 6) {
-        this.api.postAgenda(agendarData, token).subscribe((res) => {
-          this.utils.showToast('Agregado con exito', 'success');
-          this.invalidDate = false;
-        });
-      } else {
+        const diaSemana = fechaCompleta.getDay();
+        if (token && diaSemana !== 0 && diaSemana !== 6) {
+            this.api.postAgenda(agendarData, token).subscribe((res) => {
+                this.utils.showToast('Agregado con exito', 'success');
+                this.invalidDate = false;
+            });
+        } else {
+            this.invalidDate = true;
+        }
+    } else {
         this.invalidDate = true;
-      }
-    }else{
-      this.invalidDate = true;
     }
+
     this.getAgendas();
-  }
+}
+
 
   getAgendas() {
     let token = localStorage.getItem('access_token');
@@ -116,5 +124,10 @@ export class SchedulePage implements OnInit {
 
   back() {
     this.navCtrl.back();
+  }
+
+  prueba(){
+    console.log(this.fechaModel);
+    
   }
 }
