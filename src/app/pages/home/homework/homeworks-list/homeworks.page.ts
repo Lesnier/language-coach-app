@@ -18,6 +18,7 @@ import {
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { chevronBackOutline } from "ionicons/icons";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-homeworks-list",
@@ -30,11 +31,19 @@ import { chevronBackOutline } from "ionicons/icons";
 })
 export class HomeworksPage implements OnInit {
   navCtrl = inject(NavController);
+  api = inject(ApiService)
+  tasks:any[] = [];
   constructor() {
     addIcons({chevronBackOutline})
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    const token = localStorage.getItem('access_token');
+    if(token)
+    this.api.getTask(token).subscribe(res=>{
+  console.log(res);
+  })
+  }
 
   back(){
     this.navCtrl.back();

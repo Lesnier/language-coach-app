@@ -73,7 +73,7 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit, DoCheck {
   api = inject(ApiService);
   auth = inject(AuthService);
-
+router = inject(Router)
   loggedUser: User = JSON.parse(localStorage.getItem('user') ?? '{}');
   
 
@@ -101,7 +101,7 @@ export class AppComponent implements OnInit, DoCheck {
   showLayout = true;
   currentUrl: string = '';
 
-  constructor(private router: Router) {
+  constructor() {
     addIcons({
       homeOutline,
       homeSharp,
@@ -119,6 +119,7 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
@@ -128,7 +129,11 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    this.loggedUser = this.loggedUser;
+    let user:User = JSON.parse(localStorage.getItem('user') ?? '{}');
+    if(user){
+      this.loggedUser = user;
+    }
+        
   }
 
   onLogout() {
@@ -137,7 +142,6 @@ export class AppComponent implements OnInit, DoCheck {
       this.api.logout(token).subscribe((res) => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('user');
-
         this.router.navigate(['/login']);
       });
   }

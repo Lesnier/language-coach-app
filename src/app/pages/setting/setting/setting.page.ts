@@ -55,7 +55,6 @@ import { UtilsService } from 'src/app/services/utils.service';
     DatePipe,
     CommonModule,
     FormsModule,
-    IonIcon,
     IonLabel,
     ReactiveFormsModule,
   ],
@@ -65,11 +64,6 @@ export class SettingPage implements OnInit {
 
   user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
   date: any;
-  data: data = {
-    current_password: '123456789',
-    new_password: '12345678',
-    confirm_password: '12345678',
-  };
   utils = inject(UtilsService);
   changePasswordForm: FormGroup;
 
@@ -94,6 +88,8 @@ export class SettingPage implements OnInit {
   }
 
   onSubmit() {
+
+    
     if (this.changePasswordForm.valid) {
       const token = localStorage.getItem('access_token');
       if (token)

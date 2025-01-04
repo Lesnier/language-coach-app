@@ -61,13 +61,24 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/user-info`, { headers });
   }
-  
-
 
   changePassword(data: any, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/change-password`, data, { headers });
   }
+
+
+  getTask(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/tasks`, { headers });
+  }
+
+  getFiles(token:string , id:number):Observable<any>{
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/files`,{headers})
+  }
+
+
 
 
 

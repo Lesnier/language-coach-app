@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,9 +8,11 @@ import {
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import {  ApiService } from '../services/api.service';
+import { ApiService } from '../services/api.service';
 import { Observable, tap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { User } from '../models/interfaces';
+import { UtilsService } from '../services/utils.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -20,6 +22,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginPage {
   loginForm: FormGroup;
+  utils = inject(UtilsService);
 
   constructor(
     private fb: FormBuilder,
@@ -46,20 +49,25 @@ export class LoginPage {
 
     this.api.login(email, password).subscribe(
       (response) => {
-        console.log('Login successful:', response);
-        localStorage.setItem('access_token', response.access_token); 
+        this.utils.showToast('Login successful', 'success');
+        this;
+        localStorage.setItem('access_token', response.access_token);
         this.fetchUserDetails().subscribe(
           () => {
-            this.router.navigate(['/start']);
-           
+            const user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
+            if (user.role_id === 4) {
+              this.router.navigate(['/secretary']);
+            } else {
+              this.router.navigate(['/start']);
+            }
           },
           (error) => {
-            console.error('Failed to fetch user details:', error);
+            this.utils.showToast('Login failed', 'danger');
           }
         );
       },
       (error) => {
-        console.error('Login failed:', error);
+        this.utils.showToast('Login failed', 'danger');
       }
     );
   }
@@ -68,7 +76,6 @@ export class LoginPage {
     if (token) {
       return this.api.getUserDetails(token).pipe(
         tap((userDetails) => {
-
           localStorage.setItem('user', JSON.stringify(userDetails));
         })
       );

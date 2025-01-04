@@ -16,7 +16,7 @@ import {
   IonButton,
   IonButtons,
   IonMenuButton,
-  IonIcon
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -39,9 +39,8 @@ import { chevronBackOutline } from 'ionicons/icons';
     FormsModule,
     IonButton,
     IonButtons,
-  IonMenuButton,
-  IonIcon
-
+    IonMenuButton,
+    IonIcon,
   ],
 })
 export class ContentPage implements OnInit, DoCheck {
@@ -50,17 +49,19 @@ export class ContentPage implements OnInit, DoCheck {
   api = inject(ApiService);
   sanitizer = inject(DomSanitizer);
   navCtrl = inject(NavController);
+
   id: any;
   idM: any;
   idL: any;
 
   rawContent: string = '';
   class_content: SafeHtml = '';
-  lesson: string = '';
+  lesson_name: string = '';
+  lesson_file:number = 0;
   constructor() {
-        addIcons({ chevronBackOutline });
+    
+    addIcons({ chevronBackOutline });
   }
-  
 
   ngOnInit() {
     this.route.queryParamMap.subscribe((result) => {
@@ -77,43 +78,55 @@ export class ContentPage implements OnInit, DoCheck {
           if (element.id == this.idM) {
             element.lessons.forEach((les: Lesson) => {
               if (les.id == this.idL) {
+                console.log(les);
+
                 this.rawContent = les.class_content;
-                this.lesson = les.name;
+                this.lesson_name = les.name;
               }
             });
           }
         });
       });
+    if (token)
+      this.api.getFiles(token,4).subscribe((res) => {
+    res.forEach((element:any) => {
+      if(element.id == 4){
+        this.lesson_file = element.file;
+      }
+    });
+  
+      });
   }
 
   ngDoCheck(): void {
-    
     const processedContent = this.processContent(this.rawContent);
 
-    this.class_content = this.sanitizer.bypassSecurityTrustHtml(processedContent);
+    this.class_content =
+      this.sanitizer.bypassSecurityTrustHtml(processedContent);
   }
 
   private processContent(content: string): string {
-
     content = content.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
 
     content = content.replace(/(.+?)(\n\n|$)/g, '<p>$1</p>');
 
     const listItems = content.match(/(?:^|\n)- (.+?)(?=\n|$)/g);
-    
+
     if (listItems) {
-        // Si hay elementos de lista, los envolvemos en <ul>
-        const listHtml = listItems.map(item => `<li>${item.replace(/^- /, '')}</li>`).join('');
-        content = content.replace(/(?:^|\n)- .+?(?=\n|$)/g, '');
-        content += `<ul>${listHtml}</ul>`;
+      // Si hay elementos de lista, los envolvemos en <ul>
+      const listHtml = listItems
+        .map((item) => `<li>${item.replace(/^- /, '')}</li>`)
+        .join('');
+      content = content.replace(/(?:^|\n)- .+?(?=\n|$)/g, '');
+      content += `<ul>${listHtml}</ul>`;
     }
 
     content = content.replace(/<p><\/p>/g, '');
 
     return content.trim();
-}
+  }
 
-back() {
-  this.navCtrl.back();
-}
+  back() {
+    this.navCtrl.back();
+  }
 }

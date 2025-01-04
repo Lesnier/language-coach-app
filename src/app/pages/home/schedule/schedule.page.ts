@@ -75,6 +75,7 @@ export class SchedulePage implements OnInit {
   }
 
   ngOnInit() {
+    this.fechaModel =new Date().toISOString();
     this.getAgendas();
   }
 
@@ -98,6 +99,8 @@ export class SchedulePage implements OnInit {
       } else {
         this.invalidDate = true;
       }
+    }else{
+      this.invalidDate = true;
     }
     this.getAgendas();
   }
