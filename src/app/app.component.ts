@@ -43,7 +43,6 @@ import {
   calendarOutline,
 } from 'ionicons/icons';
 import { ApiService } from './services/api.service';
-
 import { User } from './models/interfaces';
 import { AuthService } from './services/auth.service';
 @Component({
@@ -73,7 +72,8 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit, DoCheck {
   api = inject(ApiService);
   auth = inject(AuthService);
-router = inject(Router)
+router = inject(Router);
+
   loggedUser: User = JSON.parse(localStorage.getItem('user') ?? '{}');
   
 
@@ -145,4 +145,5 @@ router = inject(Router)
         this.router.navigate(['/login']);
       });
   }
+
 }

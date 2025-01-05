@@ -13,7 +13,6 @@ export class UtilsService {
       color: color,
       position: 'top',
       duration: 1500,
-      mode: 'ios',
     });
     toast.present();
   }

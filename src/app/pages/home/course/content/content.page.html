@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -16,7 +16,11 @@
       <ion-title size="large">{{ lesson_name }}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <div class="lesson-content">
-    <div [innerHTML]="class_content"></div>
+  
+  <div class="lesson-container">
+    <div class="lesson-image-container">
+      <img [src]="lesson_file" [alt]="lesson_name" class="lesson-image">
+    </div>
+    <div class="lesson-content" [innerHTML]="class_content"></div>
   </div>
 </ion-content>

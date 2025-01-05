@@ -78,9 +78,7 @@ export class ForoPage implements OnInit {
         this.title = res[0].name        
       });
       this.api.getThreads(token).subscribe(res=>{
-        this.threads = res;
-        console.log(res);
-        
+        this.threads = res;        
       })
     }
   }

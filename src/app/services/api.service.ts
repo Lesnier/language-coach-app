@@ -28,25 +28,22 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/agendas`, data, { headers });
   }
-  
+
   getCourses(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/courses`, { headers });
   }
 
-  getCourse(token: string,id:any): Observable<any> {
+  getCourse(token: string, id: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/courses/${id}`, { headers });
   }
-
 
   getUserDetails(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/user`, { headers });
   }
 
-  
-  
   getForums(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/forums`, { headers });
@@ -56,7 +53,18 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/threads`, { headers });
   }
-  
+
+  postThreadReply(
+    token: string,
+    threadId: any,
+    response: string
+  ): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const body = { response };
+    return this.http.post(`${this.apiUrl}/threadreply/${threadId}`, body, {
+      headers,
+    });
+  }
   getInfo(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/user-info`, { headers });
@@ -67,19 +75,18 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/change-password`, data, { headers });
   }
 
-
   getTask(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/tasks`, { headers });
   }
 
-  getFiles(token:string , id:number):Observable<any>{
-    const headers = new HttpHeaders().set('Authorization',`Bearer ${token}`);
-    return this.http.get(`${this.apiUrl}/files`,{headers})
+  getFiles(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/files`, { headers });
   }
 
-
-
-
-
+  uploadFile(token: string, data: any): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}/files`, data, { headers });
+  }
 }

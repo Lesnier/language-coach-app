@@ -35,6 +35,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { chevronBackOutline, send } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { UtilsService } from 'src/app/services/utils.service';
+import { User } from 'src/app/models/interfaces';
 
 @Component({
   selector: 'app-thread',
@@ -68,118 +69,42 @@ export class ThreadPage implements OnInit {
   navCtrl = inject(NavController);
   route = inject(ActivatedRoute);
   utils = inject(UtilsService);
-  threads: any[] = [];
-  threadreplys: any[] = [];
+  user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
+  users: User[] = [];
   comments: any[] = [];
-   messages = [
-    {
-      sender: 'Jorge',
-      color: 'black',
-      message: 'Tengo un error en la instalación',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Jesus',
-      color: 'white',
-      message: 'Prueba otra vez',
-      isAdmin: true,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Jorge',
-      color: 'black',
-      message: '¿Puedes ser más específico? No estoy seguro de qué hacer.',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Jesus',
-      color: 'white',
-      message:
-        'Claro, intenta desinstalar completamente la aplicación y luego vuelve a instalarla. Asegúrate de tener una conexión a internet estable durante el proceso.',
-      isAdmin: true,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-
-    {
-      sender: 'Admin',
-      color: 'red',
-      message: '¿Alguien más tiene problemas con la conexión?',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Luis',
-      color: 'black',
-      message: 'Sí, yo también tengo problemas. La aplicación no se abre.',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Jesus',
-      color: 'white',
-      message: 'Intenta reiniciar tu dispositivo, a veces eso ayuda.',
-      isAdmin: true,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Jorge',
-      color: 'black',
-      message:
-        'He reiniciado mi dispositivo y sigue sin funcionar. ¿Qué más puedo intentar?',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Jesus',
-      color: 'white',
-      message:
-        'Por favor, asegúrate de que la aplicación esté actualizada a la última versión.',
-      isAdmin: true,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Ana',
-      color: 'black',
-      message:
-        'Acabo de actualizar y ahora funciona correctamente. Gracias por la ayuda.',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-    {
-      sender: 'Luis',
-      color: 'black',
-      message:
-        '¡Perfecto! Yo también lo haré. Espero que eso solucione mi problema.',
-      isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
-    },
-  ];
-  
-  newComment: any = {
-    id: 0,
-    username: '',
-    content: '',
-  };
+  newComment: string = '';
 
   constructor() {
     addIcons({ send, chevronBackOutline });
   }
   ngOnInit(): void {
-    const token = localStorage.getItem('access_token');
-    if (token)
-      console.log(
-        this.api.getThreads(token).subscribe((res) => {
-          console.log(res);
-        })
-      );
+    this.getThreads();
+
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log('ID recibido:', this.id);
   }
 
-  addComment() {}
+  addComment() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api
+        .postThreadReply(token, this.id, this.newComment)
+        .subscribe((res) => {
+          this.getThreads();
+        });
+  }
   back() {
     this.navCtrl.back();
+  }
+
+  getThreads() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.getThreads(token).subscribe((res) => {
+        res.forEach((element: any) => {
+          if (this.id == element.id) {
+            this.comments = element.threadreplys;
+          }
+        });
+      });
   }
 }

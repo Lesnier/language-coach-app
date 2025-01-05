@@ -21,10 +21,11 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Lesson, models } from 'src/app/models/interfaces';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+
 @Component({
   selector: 'app-content',
   templateUrl: './content.page.html',
@@ -49,6 +50,7 @@ export class ContentPage implements OnInit, DoCheck {
   api = inject(ApiService);
   sanitizer = inject(DomSanitizer);
   navCtrl = inject(NavController);
+  private apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
 
   id: any;
   idM: any;
@@ -56,10 +58,10 @@ export class ContentPage implements OnInit, DoCheck {
 
   rawContent: string = '';
   class_content: SafeHtml = '';
+  file_id: number | null = 0;
   lesson_name: string = '';
-  lesson_file:number = 0;
+  lesson_file: string = '';
   constructor() {
-    
     addIcons({ chevronBackOutline });
   }
 
@@ -78,8 +80,11 @@ export class ContentPage implements OnInit, DoCheck {
           if (element.id == this.idM) {
             element.lessons.forEach((les: Lesson) => {
               if (les.id == this.idL) {
-                console.log(les);
-
+        
+                
+                this.file_id = les.file_id;
+            
+                
                 this.rawContent = les.class_content;
                 this.lesson_name = les.name;
               }
@@ -88,13 +93,17 @@ export class ContentPage implements OnInit, DoCheck {
         });
       });
     if (token)
-      this.api.getFiles(token,4).subscribe((res) => {
-    res.forEach((element:any) => {
-      if(element.id == 4){
-        this.lesson_file = element.file;
-      }
-    });
-  
+      this.api.getFiles(token).subscribe((res) => {
+        res.forEach((element: any) => {
+          if (element.id == this.file_id) {
+            const file = element.file;
+            const data = JSON.parse(file);
+            const downloadLink = data[0].download_link;
+            this.lesson_file = this.apiUrl + downloadLink;
+          
+            
+          }
+        });
       });
   }
 

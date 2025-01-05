@@ -1,15 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-
       <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      este es el forum de laravel, cualquier duda por aca
-    </ion-title>
+    <ion-title> este es el forum de laravel, cualquier duda por aca </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -20,27 +17,52 @@
     </ion-toolbar>
   </ion-header>
   <div class="chat-container">
-    @for (message of messages; track $index) {
-    <div class="message-wrapper" [class.admin-message]="message.isAdmin">
+    @for (comment of comments; track $index) { @if (this.user.id ===
+    comment.user_id) {
+    <div class="message-wrapper"[class.admin-message]="true">
       <div class="message-content">
-        <div class="bubble">
-          <h3 style="color: {{message.color}};">{{ message.sender }}</h3>
-          <p >{{ message.message }}</p>
+        <div class="bubble-container">
+          <div class="bubble">
+            <p>{{ comment.response }}</p>
+          </div>
         </div>
       </div>
     </div>
-    }
+    }@else {
+    <div class="message-wrapper">
+      <div class="message-content">
+        <div class="bubble-container">
+          <div class="bubble">
+            <p>{{ comment.response }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    } }
   </div>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-item lines="none">
-      <ion-input placeholder="Escribe un mensaje..." class="message-input"></ion-input>
-      <ion-button slot="end" fill="clear">
-        <ion-icon name="send" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-item>
+    <form (ngSubmit)="addComment()" #commentForm="ngForm">
+      <ion-item>
+        <ion-textarea
+          [(ngModel)]="newComment"
+          name="content"
+          required
+          placeholder="Escribe tu comentario..."
+          rows="1"
+          auto-grow="true"
+        ></ion-textarea>
+        <ion-button
+          slot="end"
+          fill="clear"
+          type="submit"
+          [disabled]="!commentForm.form.valid"
+        >
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </form>
   </ion-toolbar>
 </ion-footer>
-

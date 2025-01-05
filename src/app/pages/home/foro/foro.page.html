@@ -15,7 +15,7 @@
 
   <ion-grid style="margin-top: 10px">
     @for (thread of threads; track $index) {
-    <ion-row [routerLink]="['/thread', 1]"> 
+    <ion-row [routerLink]="['/thread', thread.id]"> 
       <ion-col
       ><ion-card color="azul-light" button="true" style="margin: 0 10px">
         <ion-grid>
