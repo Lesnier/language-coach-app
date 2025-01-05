@@ -84,7 +84,7 @@ export class SchedulePage implements OnInit {
     const fechaCompleta = new Date(this.fechaModel);
 
 
-    fechaCompleta.setDate(fechaCompleta.getDate() - 1);
+    fechaCompleta.setDate(fechaCompleta.getDate());
 
 
     const token = localStorage.getItem('access_token');
