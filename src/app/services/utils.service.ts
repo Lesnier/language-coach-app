@@ -7,19 +7,13 @@ export class UtilsService {
   toastController = inject(ToastController);
 
   constructor() {}
-  async showToast(message:string,color:string) {
+  async showToast(msg: string,color:string) {
     const toast = await this.toastController.create({
-      message: message,
-      duration: 2000, // Duración en milisegundos
-      position: 'top', // Puede ser 'top', 'middle', o 'bottom'
-      color: color, // Color del toast (opcional)
-      buttons: [
-        {
-          side: 'end',
-          icon: 'close',
-          role: 'cancel',
-        },
-      ],
+      message: msg,
+      color: color,
+      position: 'top',
+      duration: 1500,
+      mode: 'ios',
     });
     toast.present();
   }

@@ -24,8 +24,8 @@
     <div class="message-wrapper" [class.admin-message]="message.isAdmin">
       <div class="message-content">
         <div class="bubble">
-          <h3>{{ message.sender }}</h3>
-          <p>{{ message.message }}</p>
+          <h3 style="color: {{message.color}};">{{ message.sender }}</h3>
+          <p >{{ message.message }}</p>
         </div>
       </div>
     </div>

@@ -29,7 +29,6 @@ import {
   IonCardContent,
   IonList,
   IonFooter,
-  
 } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
@@ -58,7 +57,7 @@ import { UtilsService } from 'src/app/services/utils.service';
     IonIcon,
     IonButton,
     IonTextarea,
-    IonInput
+    IonInput,
   ],
 })
 export class ThreadPage implements OnInit {
@@ -72,32 +71,92 @@ export class ThreadPage implements OnInit {
   threads: any[] = [];
   threadreplys: any[] = [];
   comments: any[] = [];
-  messages: any[] = [
+   messages = [
     {
       sender: 'Jorge',
+      color: 'black',
       message: 'Tengo un error en la instalación',
       isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     },
     {
-      sender: 'Admin',
+      sender: 'Jesus',
+      color: 'white',
       message: 'Prueba otra vez',
       isAdmin: true,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     },
     {
       sender: 'Jorge',
+      color: 'black',
       message: '¿Puedes ser más específico? No estoy seguro de qué hacer.',
       isAdmin: false,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     },
     {
-      sender: 'Admin',
-      message: 'Claro, intenta desinstalar completamente la aplicación y luego vuelve a instalarla. Asegúrate de tener una conexión a internet estable durante el proceso.',
+      sender: 'Jesus',
+      color: 'white',
+      message:
+        'Claro, intenta desinstalar completamente la aplicación y luego vuelve a instalarla. Asegúrate de tener una conexión a internet estable durante el proceso.',
       isAdmin: true,
-      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
-    }
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+
+    {
+      sender: 'Admin',
+      color: 'red',
+      message: '¿Alguien más tiene problemas con la conexión?',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+    {
+      sender: 'Luis',
+      color: 'black',
+      message: 'Sí, yo también tengo problemas. La aplicación no se abre.',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+    {
+      sender: 'Jesus',
+      color: 'white',
+      message: 'Intenta reiniciar tu dispositivo, a veces eso ayuda.',
+      isAdmin: true,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+    {
+      sender: 'Jorge',
+      color: 'black',
+      message:
+        'He reiniciado mi dispositivo y sigue sin funcionar. ¿Qué más puedo intentar?',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+    {
+      sender: 'Jesus',
+      color: 'white',
+      message:
+        'Por favor, asegúrate de que la aplicación esté actualizada a la última versión.',
+      isAdmin: true,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+    {
+      sender: 'Ana',
+      color: 'black',
+      message:
+        'Acabo de actualizar y ahora funciona correctamente. Gracias por la ayuda.',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
+    {
+      sender: 'Luis',
+      color: 'black',
+      message:
+        '¡Perfecto! Yo también lo haré. Espero que eso solucione mi problema.',
+      isAdmin: false,
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
+    },
   ];
+  
   newComment: any = {
     id: 0,
     username: '',
@@ -123,5 +182,4 @@ export class ThreadPage implements OnInit {
   back() {
     this.navCtrl.back();
   }
-
 }
