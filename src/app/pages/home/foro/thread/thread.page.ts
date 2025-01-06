@@ -58,7 +58,7 @@ import { User } from 'src/app/models/interfaces';
     IonTextarea,
   ],
 })
-export class ThreadPage implements OnInit, DoCheck {
+export class ThreadPage implements OnInit {
   id: string | null = null;
   name: string = '';
   title: string = '';
@@ -72,15 +72,23 @@ export class ThreadPage implements OnInit, DoCheck {
   newComment: string = '';
 
   @ViewChild('chatcontent') chatContent!: IonContent;
-  ngDoCheck(): void {
-    this.getThreads();
-  }
+
   constructor() {
     addIcons({ send, chevronBackOutline });
   }
   ngOnInit(): void {
-    this.getThreads();
+    this.send();
     this.id = this.route.snapshot.paramMap.get('id');
+  }
+
+  send() {
+    console.log("asd");
+    
+    const token = localStorage.getItem('access_token');
+    if (token) this.api.connectWithToken(token);
+    this.api.getThreadReplies(1).subscribe((res) => {
+      console.log(res);
+    });
   }
 
   addComment() {
@@ -90,6 +98,7 @@ export class ThreadPage implements OnInit, DoCheck {
         .postThreadReply(token, this.id, this.newComment)
         .subscribe((res) => {
           this.newComment = '';
+          this.getThreads();
         });
   }
   back() {
