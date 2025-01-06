@@ -56,10 +56,9 @@ import { User } from 'src/app/models/interfaces';
     IonIcon,
     IonButton,
     IonTextarea,
-    
   ],
 })
-export class ThreadPage implements OnInit {
+export class ThreadPage implements OnInit, DoCheck {
   id: string | null = null;
   name: string = '';
   title: string = '';
@@ -73,27 +72,25 @@ export class ThreadPage implements OnInit {
   newComment: string = '';
 
   @ViewChild('chatcontent') chatContent!: IonContent;
-
+  ngDoCheck(): void {
+    this.getThreads();
+  }
   constructor() {
     addIcons({ send, chevronBackOutline });
   }
   ngOnInit(): void {
-    this.getThreads()
+    this.getThreads();
     this.id = this.route.snapshot.paramMap.get('id');
-
   }
 
-   addComment() {
+  addComment() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api
         .postThreadReply(token, this.id, this.newComment)
         .subscribe((res) => {
           this.newComment = '';
-          this.getThreads();
         });
-     
-      
   }
   back() {
     this.navCtrl.back();
