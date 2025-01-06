@@ -60,6 +60,7 @@ export class ContentPage implements OnInit, DoCheck {
   class_content: SafeHtml = '';
   file_id: number | null = 0;
   lesson_name: string = '';
+  file_name:string = '';
   lesson_file: string = '';
   constructor() {
     addIcons({ chevronBackOutline });
@@ -80,8 +81,6 @@ export class ContentPage implements OnInit, DoCheck {
           if (element.id == this.idM) {
             element.lessons.forEach((les: Lesson) => {
               if (les.id == this.idL) {
-        
-                
                 this.file_id = les.file_id;
             
                 
@@ -98,31 +97,24 @@ export class ContentPage implements OnInit, DoCheck {
           if (element.id == this.file_id) {
             const file = element.file;
             const data = JSON.parse(file);
+            this.file_name = data[0].original_name.split('.').slice(0, -1).join('.');
+console.log(this.file_name);
             const downloadLink = data[0].download_link;
             this.lesson_file = this.apiUrl + downloadLink;
-          
-            
           }
         });
       });
   }
-
   ngDoCheck(): void {
     const processedContent = this.processContent(this.rawContent);
-
     this.class_content =
       this.sanitizer.bypassSecurityTrustHtml(processedContent);
   }
-
   private processContent(content: string): string {
     content = content.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
-
     content = content.replace(/(.+?)(\n\n|$)/g, '<p>$1</p>');
-
     const listItems = content.match(/(?:^|\n)- (.+?)(?=\n|$)/g);
-
     if (listItems) {
-      // Si hay elementos de lista, los envolvemos en <ul>
       const listHtml = listItems
         .map((item) => `<li>${item.replace(/^- /, '')}</li>`)
         .join('');
@@ -131,7 +123,6 @@ export class ContentPage implements OnInit, DoCheck {
     }
 
     content = content.replace(/<p><\/p>/g, '');
-
     return content.trim();
   }
 

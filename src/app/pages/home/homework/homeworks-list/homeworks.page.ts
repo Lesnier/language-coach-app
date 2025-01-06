@@ -82,10 +82,11 @@ export class HomeworksPage implements OnInit {
   }
 
   ngOnInit() {
+
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.getTask(token).subscribe((res) => {
-        this.tasks = res;
+        this.tasks = res;        
       });
   }
 

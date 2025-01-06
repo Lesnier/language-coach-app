@@ -93,26 +93,23 @@ export class NewPage implements OnInit {
   }
 
   crear(): void {
-    
     if (!this.data.name || !this.data.type || !this.data.file) {
       alert('Todos los campos son obligatorios');
       return;
     }
 
-    // Convertir los datos a un formato aceptable para el backend
     const payload = {
       name: this.data.name,
       type: this.data.type,
-      file: this.data.file, // Aquí va el JSON string
+      file: this.data.file,
     };
     console.log(payload);
-    
+
     const token = localStorage.getItem('access_token');
     if (token)
-      this.api.uploadFile(token, payload).subscribe( res=>{
-    console.log(res);
-    }
-      );
+      this.api.uploadFile(token, payload).subscribe((res) => {
+        console.log(res);
+      });
   }
 
   back() {

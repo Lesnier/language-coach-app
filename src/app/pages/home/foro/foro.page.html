@@ -1,7 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-
       <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -12,23 +11,24 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-grid style="margin-top: 10px">
     @for (thread of threads; track $index) {
-    <ion-row [routerLink]="['/thread', thread.id]"> 
+    <ion-row [routerLink]="['/thread', thread.id]">
       <ion-col
-      ><ion-card color="azul-light" button="true" style="margin: 0 10px">
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col size="10">
-              <ion-card-header>
-                <ion-card-title>{{thread.comment}}</ion-card-title>
-              </ion-card-header>
-            </ion-col>
-          </ion-row>
-        </ion-grid> </ion-card
-      ></ion-col>
+        ><ion-card color="azul-light" button="true" style="margin: 0 10px">
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="10">
+                <ion-card-header>
+                  <ion-card-title>{{thread.comment}}</ion-card-title>
+                </ion-card-header>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+       </ion-col
+      >
     </ion-row>
-  }
+    }
   </ion-grid>
 </ion-content>

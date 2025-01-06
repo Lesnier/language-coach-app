@@ -117,3 +117,27 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+/* Estilos para el modo claro */
+:root {
+  --color-fondo: #FFFFFF;
+  --color-texto: #000000;
+  --color-acento: #007BFF;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+      --color-fondo: #121212;
+      --color-texto: #E0E0E0;
+      --color-acento: #BB86FC;
+  }
+}
+
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+a, button {
+  color: var(--color-acento);
+}

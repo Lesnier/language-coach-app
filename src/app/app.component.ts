@@ -120,6 +120,9 @@ router = inject(Router);
 
   ngOnInit() {
 
+
+    
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
@@ -146,4 +149,5 @@ router = inject(Router);
       });
   }
 
+  
 }

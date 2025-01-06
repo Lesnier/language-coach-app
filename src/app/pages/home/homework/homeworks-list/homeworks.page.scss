@@ -1,5 +1,5 @@
 .task-card {
-    background-color: #3880ff; // Ionic primary blue color
+    background-color: #3880ff;
     margin-bottom: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -9,12 +9,14 @@
     }
   
     h2 {
+      color: white;
       font-size: 18px;
       font-weight: bold;
       margin: 0;
     }
   
     p {
+      color: white;
       margin: 8px 0;
       font-size: 14px;
     }
@@ -25,26 +27,6 @@
       --padding-end: 4px;
     }
   }
-  
-  ion-content {
-    --background: #f4f5f8;
-  }
-  
-  @media (max-width: 576px) {
-    .task-card {
-      h2 {
-        font-size: 16px;
-      }
-  
-      p {
-        font-size: 12px;
-      }
-  
-      ion-button {
-        --padding-start: 2px;
-        --padding-end: 2px;
-      }
-    }
-  }
+
   
   

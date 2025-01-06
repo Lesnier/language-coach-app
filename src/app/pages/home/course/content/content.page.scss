@@ -1,16 +1,12 @@
-ion-header {
-    ion-toolbar {
-      --background: #f4f5f8;
-    }
-  }
+
   
   .lesson-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff;
+
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
   }
   
   .lesson-image-container {
@@ -23,7 +19,7 @@ ion-header {
     height: 200px;
     object-fit: cover;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
   }
   
   .lesson-content {
@@ -32,10 +28,10 @@ ion-header {
       color: #333;
       font-size: 24px;
       margin-bottom: 15px;
-      border-bottom: 2px solid #f0f0f0;
+      
       padding-bottom: 10px;
     }
-  
+
     h3 {
       color: #444;
       font-size: 20px;
@@ -62,29 +58,7 @@ ion-header {
       }
     }
   }
+
   
-  ion-content {
-    --background: #f4f5f8;
-  }
-  
-  @media (max-width: 600px) {
-    .lesson-container {
-      padding: 15px;
-    }
-  
-    .lesson-content {
-      h2 {
-        font-size: 22px;
-      }
-  
-      h3 {
-        font-size: 18px;
-      }
-  
-      p, ul li {
-        font-size: 14px;
-      }
-    }
-  }
-  
+
   

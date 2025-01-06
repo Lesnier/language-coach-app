@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DoCheck, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavController } from '@ionic/angular';
@@ -44,8 +44,6 @@ import { User } from 'src/app/models/interfaces';
   standalone: true,
   imports: [
     IonFooter,
-    IonList,
-    IonLabel,
     IonItem,
     IonButtons,
     IonContent,
@@ -58,7 +56,7 @@ import { User } from 'src/app/models/interfaces';
     IonIcon,
     IonButton,
     IonTextarea,
-    IonInput,
+    
   ],
 })
 export class ThreadPage implements OnInit {
@@ -74,23 +72,28 @@ export class ThreadPage implements OnInit {
   comments: any[] = [];
   newComment: string = '';
 
+  @ViewChild('chatcontent') chatContent!: IonContent;
+
   constructor() {
     addIcons({ send, chevronBackOutline });
   }
   ngOnInit(): void {
-    this.getThreads();
-
+    this.getThreads()
     this.id = this.route.snapshot.paramMap.get('id');
+
   }
 
-  addComment() {
+   addComment() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api
         .postThreadReply(token, this.id, this.newComment)
         .subscribe((res) => {
+          this.newComment = '';
           this.getThreads();
         });
+     
+      
   }
   back() {
     this.navCtrl.back();
@@ -103,6 +106,9 @@ export class ThreadPage implements OnInit {
         res.forEach((element: any) => {
           if (this.id == element.id) {
             this.comments = element.threadreplys;
+            setTimeout(() => {
+              this.chatContent.scrollToBottom(200);
+            }, 0);
           }
         });
       });

@@ -25,7 +25,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   imports: [
     IonCardContent,
     IonCardTitle,
-    IonCardSubtitle,
     IonCardHeader,
     IonCard,
     IonBackButton,
