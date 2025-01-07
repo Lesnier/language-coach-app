@@ -13,7 +13,6 @@ import { Observable, tap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/interfaces';
 import { UtilsService } from '../services/utils.service';
-import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -24,7 +23,7 @@ import { ToastController } from '@ionic/angular';
 export class LoginPage {
   loginForm: FormGroup;
   utils = inject(UtilsService);
-  toastController = inject(ToastController);
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -50,7 +49,7 @@ export class LoginPage {
 
     this.api.login(email, password).subscribe(
       (response) => {
-        this.showToast('Login successful', 'success');
+        this.utils.showToast('Login successful', 'success');
         this;
         localStorage.setItem('access_token', response.access_token);
         this.fetchUserDetails().subscribe(
@@ -63,12 +62,12 @@ export class LoginPage {
             }
           },
           (error) => {
-            this.showToast('Login failed', 'danger');
+            this.utils.showToast('Login failed', 'danger');
           }
         );
       },
       (error) => {
-        this.showToast('Login failed', 'danger');
+        this.utils.showToast('Login failed', 'danger');
       }
     );
   }
@@ -83,14 +82,5 @@ export class LoginPage {
     } else {
       return throwError('No access token found');
     }
-  }
-  async showToast(msg: string,color:string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      color: color,
-      position: 'top',
-      duration: 1500,
-    });
-    toast.present();
   }
 }

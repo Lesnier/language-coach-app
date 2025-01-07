@@ -25,10 +25,10 @@ import {
   IonPopover,
   IonLabel,
 } from '@ionic/angular/standalone';
-import { User } from 'src/app/models/interfaces';
+import {  User } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { ToastController } from '@ionic/angular';
+
 @Component({
   selector: 'app-setting',
   templateUrl: './setting.page.html',
@@ -65,7 +65,7 @@ export class SettingPage implements OnInit {
   date: any;
   utils = inject(UtilsService);
   changePasswordForm: FormGroup;
-  toastController = inject(ToastController);
+
   constructor(private fb: FormBuilder) {
     this.changePasswordForm = this.fb.group(
       {
@@ -87,26 +87,21 @@ export class SettingPage implements OnInit {
   }
 
   onSubmit() {
+
+    
     if (this.changePasswordForm.valid) {
       const token = localStorage.getItem('access_token');
       if (token)
         this.api
           .changePassword(this.changePasswordForm.value, token)
           .subscribe((res) => {
-            this.showToast('Password Changed', 'success');
+            this.utils.showToast('Password Changed', 'success');
           });
     } else {
       console.log('Formulario inválido');
     }
   }
-  ngOnInit(): void {}
-  async showToast(msg: string, color: string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      color: color,
-      position: 'top',
-      duration: 1500,
-    });
-    toast.present();
+  ngOnInit(): void {
+  
   }
 }

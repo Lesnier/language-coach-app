@@ -20,7 +20,7 @@ import {
   IonList,
   IonNote,
 } from '@ionic/angular/standalone';
-import { ToastController } from '@ionic/angular';
+
 import { ApiService } from 'src/app/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { addIcons } from 'ionicons';
@@ -60,8 +60,9 @@ export class SchedulePage implements OnInit {
   http = inject(HttpClient);
   navCtrl = inject(NavController);
   utils = inject(UtilsService);
-  toastController = inject(ToastController);
+
   invalidDate: boolean = false;
+  createdDate: boolean = false;
 
   fechaModel: string = '';
   fechaActual: Date;
@@ -75,43 +76,40 @@ export class SchedulePage implements OnInit {
   }
 
   ngOnInit() {
-    this.fechaModel =new Date().toISOString();
+    this.fechaModel = new Date().toISOString();
     this.getAgendas();
   }
 
   agendar() {
-
     const fechaCompleta = new Date(this.fechaModel);
 
-
     fechaCompleta.setDate(fechaCompleta.getDate());
-
 
     const token = localStorage.getItem('access_token');
 
     const agendarData: agenda = {
-        date: fechaCompleta.toISOString().split('T')[0], 
-        time: fechaCompleta.toTimeString().slice(0, 5), 
+      date: fechaCompleta.toISOString().split('T')[0],
+      time: fechaCompleta.toTimeString().slice(0, 5),
     };
 
-
     if (fechaCompleta > this.fechaActual) {
-        const diaSemana = fechaCompleta.getDay();
-        if (token && diaSemana !== 0 && diaSemana !== 6) {
-            this.api.postAgenda(agendarData, token).subscribe((res) => {
-                this.showToast('Agregado con exito', 'success');
-                this.invalidDate = false;
-            });
-        } else {
-            this.invalidDate = true;
-        }
-    } else {
+      const diaSemana = fechaCompleta.getDay();
+      if (token && diaSemana !== 0 && diaSemana !== 6) {
+        this.api.postAgenda(agendarData, token).subscribe((res) => {
+          this.createdDate = true;
+          this.invalidDate = false;
+        });
+      } else {
+        this.createdDate = false;
         this.invalidDate = true;
+      }
+    } else {
+      this.createdDate = false;
+      this.invalidDate = true;
     }
 
     this.getAgendas();
-}
-
+  }
 
   getAgendas() {
     let token = localStorage.getItem('access_token');
@@ -126,19 +124,7 @@ export class SchedulePage implements OnInit {
     this.navCtrl.back();
   }
 
-  prueba(){
+  prueba() {
     console.log(this.fechaModel);
-    
-  }
-
-
-  async showToast(msg: string,color:string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      color: color,
-      position: 'top',
-      duration: 1500,
-    });
-    toast.present();
   }
 }
