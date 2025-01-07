@@ -20,7 +20,7 @@ import {
   IonList,
   IonNote,
 } from '@ionic/angular/standalone';
-
+import { ToastController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { addIcons } from 'ionicons';
@@ -60,7 +60,7 @@ export class SchedulePage implements OnInit {
   http = inject(HttpClient);
   navCtrl = inject(NavController);
   utils = inject(UtilsService);
-
+  toastController = inject(ToastController);
   invalidDate: boolean = false;
 
   fechaModel: string = '';
@@ -99,7 +99,7 @@ export class SchedulePage implements OnInit {
         const diaSemana = fechaCompleta.getDay();
         if (token && diaSemana !== 0 && diaSemana !== 6) {
             this.api.postAgenda(agendarData, token).subscribe((res) => {
-                this.utils.showToast('Agregado con exito', 'success');
+                this.showToast('Agregado con exito', 'success');
                 this.invalidDate = false;
             });
         } else {
@@ -129,5 +129,16 @@ export class SchedulePage implements OnInit {
   prueba(){
     console.log(this.fechaModel);
     
+  }
+
+
+  async showToast(msg: string,color:string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      color: color,
+      position: 'top',
+      duration: 1500,
+    });
+    toast.present();
   }
 }
