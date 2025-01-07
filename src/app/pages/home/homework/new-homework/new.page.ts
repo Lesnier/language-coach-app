@@ -76,38 +76,26 @@ export class NewPage implements OnInit {
     if (input.files && input.files[0]) {
       const file = input.files[0];
 
-      // Simula datos del archivo (puedes adaptar estos datos según tu lógica)
       this.data = {
-        name: file.name,
-        type: file.type,
-        file: JSON.stringify([
-          {
-            download_link: `files/${new Date().toLocaleString('en-US', {
-              month: 'long',
-            })}${new Date().getFullYear()}/${file.name.replace(/ /g, '_')}`,
-            original_name: file.name,
-          },
-        ]),
+        course_id: 1,
+        teacherNote: 'file.type',
+        imageFile: file
       };
+      console.log(this.data);
     }
   }
 
   crear(): void {
-    if (!this.data.name || !this.data.type || !this.data.file) {
-      alert('Todos los campos son obligatorios');
-      return;
-    }
-
     const payload = {
-      name: this.data.name,
-      type: this.data.type,
-      file: this.data.file,
+      course_id: this.data.course_id,
+      teacher_note: this.data.teacherNote,
+      imageFile: this.data.imageFile,
     };
     console.log(payload);
 
     const token = localStorage.getItem('access_token');
     if (token)
-      this.api.uploadFile(token, payload).subscribe((res) => {
+      this.api.uploadTask(token, payload).subscribe((res) => {
         console.log(res);
       });
   }

@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Documentos</ion-title>
   </ion-toolbar>
@@ -25,14 +25,11 @@
     </ion-row>
   </ion-grid>
   <ion-list>
-    <ion-list-header>
-      <ion-label>Files</ion-label>
-    </ion-list-header>
     @for (file of documentos; track $index) {
-    <ion-item>
+    <ion-item (click)="view(file.download_link)">
       <ion-icon slot="start"></ion-icon>
       <ion-label>
-        <h2>{{file }}</h2>
+        <a href="{{apiUrl +file.download_link}}">{{file.original_name}}</a>
       </ion-label>
     </ion-item>
     }

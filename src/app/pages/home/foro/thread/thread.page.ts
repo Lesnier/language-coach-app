@@ -69,7 +69,11 @@ export class ThreadPage implements OnInit {
   user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
   users: User[] = [];
   comments: any[] = [];
-  newComment: string = '';
+  messages: any[] = [];
+  newComment = {
+    text: '',
+    name: this.user.name,
+  };
 
   @ViewChild('chatcontent') chatContent!: IonContent;
 
@@ -77,27 +81,17 @@ export class ThreadPage implements OnInit {
     addIcons({ send, chevronBackOutline });
   }
   ngOnInit(): void {
-    this.send();
+    this.getThreads();
     this.id = this.route.snapshot.paramMap.get('id');
-  }
-
-  send() {
-    console.log("asd");
-    
-    const token = localStorage.getItem('access_token');
-    if (token) this.api.connectWithToken(token);
-    this.api.getThreadReplies(1).subscribe((res) => {
-      console.log(res);
-    });
   }
 
   addComment() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api
-        .postThreadReply(token, this.id, this.newComment)
+        .postThreadReply(token, this.id, JSON.stringify(this.newComment))
         .subscribe((res) => {
-          this.newComment = '';
+          this.newComment.text = '';
           this.getThreads();
         });
   }
@@ -112,9 +106,16 @@ export class ThreadPage implements OnInit {
         res.forEach((element: any) => {
           if (this.id == element.id) {
             this.comments = element.threadreplys;
-            setTimeout(() => {
-              this.chatContent.scrollToBottom(200);
-            }, 0);
+
+            for (let i = 0; i < this.comments.length; i++) {
+              this.comments[i].response = JSON.parse(this.comments[i].response)
+              
+            }
+            console.log(this.comments);
+            
+            // setTimeout(() => {
+            //   this.chatContent.scrollToBottom(200);
+            // }, 0);
           }
         });
       });

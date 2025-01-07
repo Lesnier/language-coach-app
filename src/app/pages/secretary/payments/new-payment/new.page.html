@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Registrar Pago</ion-title>
@@ -18,12 +21,10 @@
             <h3>Subir foto</h3>
           </div>
 
-          <!-- Contenedor del avatar con el input file -->
+
           <ion-avatar class="upload-area" (click)="fileInput.click()">
-            <!-- Icono de cámara si no hay imagen seleccionada -->
-            <ion-icon *ngIf="!selectedImage" name="camera-outline" class="camera-icon"></ion-icon>
-            <!-- Imagen seleccionada como fondo -->
-            <img *ngIf="selectedImage" [src]="selectedImage" />
+            <ion-icon *ngIf="!selectedDocument" name="camera-outline" class="camera-icon"></ion-icon>
+            <img *ngIf="selectedDocument" [src]="selectedDocument" />
           </ion-avatar>
 
           <!-- Input oculto -->
@@ -42,16 +43,22 @@
     <ion-row style="margin: 0 10px 10px">
       <ion-col size="12" size-md="12"
       ><ion-item>
-        <ion-input placeholder="Ingresar Monto"></ion-input>
+        <ion-input [(ngModel)]="this.transaction_code" placeholder="Numero de transaccion"></ion-input>
+      </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin: 0 10px 10px">
+      <ion-col size="12" size-md="12"
+      ><ion-item>
+        <ion-input [(ngModel)]="this.user_id" placeholder="id del usuario"></ion-input>
       </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
-
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="12">
-        <ion-button expand="block" color="secondary" style="margin: 0 10px">Aceptar</ion-button>
+        <ion-button expand="block" color="secondary" (click)="submit()" style="margin: 0 10px">Aceptar</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

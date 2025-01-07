@@ -1,10 +1,11 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
+      <ion-menu-button></ion-menu-button>
+
     </ion-buttons>
     <ion-title>Pagos</ion-title>
   </ion-toolbar>
@@ -14,54 +15,36 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="12">
-        <ion-button expand="block" color="secondary" style="margin: 10px 10px" [routerLink]="'/new_payment'">Añadir pago</ion-button>
+        <ion-button
+          expand="block"
+          color="secondary"
+          style="margin: 10px 10px"
+          [routerLink]="'/new_payment'"
+          >Añadir pago</ion-button
+        >
       </ion-col>
     </ion-row>
   </ion-grid>
 
-
   <ion-grid style="margin-top: 10px">
+    @for (item of this.payments; track $index) {
     <ion-row>
       <ion-col
-      ><ion-card color="azul-light" button="true" style="margin: 0 10px">
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col size="10">
-              <ion-card-header>
-                <ion-card-title>14/8/2024 – Pago 1 </ion-card-title>
-              </ion-card-header>
-            </ion-col>
-          </ion-row>
-        </ion-grid> </ion-card
-      ></ion-col>
+        ><ion-card (click)="goPayment(item.id)" color="azul-light" button="true" style="margin: 0 10px">
+          <ion-grid>
+            <ion-row class="ion-align-items-center">
+              <ion-col size="10">
+                <ion-card-header>
+                  <ion-card-title
+                    >{{item.created_at  | date:'yyyy-MM-dd'}} – Pago {{item.id}}
+                  </ion-card-title>
+                </ion-card-header>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card></ion-col
+      >
     </ion-row>
-    <ion-row>
-      <ion-col
-      ><ion-card color="azul-light" button="true" style="margin: 0 10px">
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col size="10">
-              <ion-card-header>
-                <ion-card-title>20/8/2024 – Pago 2</ion-card-title>
-              </ion-card-header>
-            </ion-col>
-          </ion-row>
-        </ion-grid> </ion-card
-      ></ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col
-      ><ion-card color="azul-light" button="true" style="margin: 0 10px">
-        <ion-grid>
-          <ion-row class="ion-align-items-center">
-            <ion-col size="10">
-              <ion-card-header>
-                <ion-card-title>25/8/2024 – Pago 3 </ion-card-title>
-              </ion-card-header>
-            </ion-col>
-          </ion-row>
-        </ion-grid> </ion-card
-      ></ion-col>
-    </ion-row>
+    }
   </ion-grid>
 </ion-content>

@@ -4,9 +4,6 @@ import { FormsModule } from '@angular/forms';
 import {
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
   IonCol,
   IonContent,
   IonGrid,
@@ -17,26 +14,19 @@ import {
   IonToolbar,
   IonIcon,
   IonList,
-  IonCardContent,
-  IonText,
-  IonItemOption,
-  IonItemOptions,
   IonLabel,
   IonItem,
-  IonItemSliding,
   IonListHeader,
 } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
-  archive,
   chevronBackOutline,
   cloudDownloadOutline,
   trashOutline,
 } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
-
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.page.html',
@@ -44,13 +34,8 @@ import { ApiService } from 'src/app/services/api.service';
   standalone: true,
   imports: [
     IonListHeader,
-    IonItemSliding,
     IonItem,
     IonLabel,
-    IonItemOptions,
-    IonItemOption,
-    IonText,
-    IonCardContent,
     IonList,
     IonContent,
     IonHeader,
@@ -60,9 +45,6 @@ import { ApiService } from 'src/app/services/api.service';
     CommonModule,
     FormsModule,
     IonButton,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
     IonCol,
     IonGrid,
     IonRow,
@@ -74,23 +56,28 @@ import { ApiService } from 'src/app/services/api.service';
 export class DocumentsPage implements OnInit {
   navCtrl = inject(NavController);
   api = inject(ApiService);
+  router = inject(Router);
 
   constructor() {
     addIcons({ chevronBackOutline, cloudDownloadOutline, trashOutline });
   }
   file: any[] = [];
   documentos: any[] = [];
+   apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
 
   ngOnInit() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.getFiles(token).subscribe((res) => {
-        res.forEach((element: any) => {
-          let a = JSON.parse(element.file);
 
-          this.file.push(a[0].original_name);
+        res.forEach((element: any) => {
+          if (element.file != null) {
+            let a = JSON.parse(element.file);
+            this.file.push(a[0]);
+          }
         });
         this.filterPdfFiles();
+
       });
   }
 
@@ -99,6 +86,9 @@ export class DocumentsPage implements OnInit {
   }
 
   filterPdfFiles() {
-    this.documentos = this.file.filter((file) => file.endsWith('.pdf'));
+    this.documentos = this.file.filter((file) => file.original_name.endsWith('.pdf'));
+  }
+  view(link: string) {
+    this.router.navigate([this.apiUrl + link]);
   }
 }

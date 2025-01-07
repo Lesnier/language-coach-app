@@ -8,36 +8,24 @@ import {
   IonToolbar,
   IonButtons,
   IonMenuButton,
-  IonAccordion,
-  IonAccordionGroup,
-  IonItem,
-  IonLabel,
   IonAvatar,
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonCol,
   IonGrid,
   IonIcon,
   IonRow,
   IonButton,
-  IonInput,
 } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
-
+import { NavController } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
 @Component({
   selector: 'app-new',
   templateUrl: './new.page.html',
   styleUrls: ['./new.page.scss'],
   standalone: true,
   imports: [
-    IonLabel,
-    IonItem,
-    IonAccordionGroup,
-    IonInput,
     IonAvatar,
-    IonAccordion,
     IonButtons,
     IonContent,
     IonHeader,
@@ -46,10 +34,6 @@ import { ApiService } from 'src/app/services/api.service';
     CommonModule,
     FormsModule,
     IonMenuButton,
-    IonCard,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardTitle,
     IonCol,
     IonGrid,
     IonIcon,
@@ -59,7 +43,10 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class NewPage implements OnInit {
   api = inject(ApiService);
-  constructor() {}
+  navCtrl = inject(NavController);
+  constructor() {
+    addIcons({chevronBackOutline})
+  }
   data: any;
   selectedDocument: string | null = null;
 
@@ -103,7 +90,11 @@ console.log(payload);
     }
   }
 
+  back() {
+    this.navCtrl.back();
+  }
+
   ngOnInit() {
-    console.log();
+
   }
 }

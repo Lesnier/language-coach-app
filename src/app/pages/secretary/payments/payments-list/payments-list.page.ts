@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { chevronBackOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
@@ -12,31 +12,72 @@ import {
   IonToolbar,
   IonButtons,
   IonMenuButton,
-  IonAccordion,
-  IonAccordionGroup,
-  IonItem,
-  IonLabel, IonRouterLink,
-  IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonGrid, IonIcon, IonRow, IonButton
-} from "@ionic/angular/standalone";
+  IonRouterLink,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonRow,
+  IonButton,
+} from '@ionic/angular/standalone';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
-  selector: "app-payments-list",
-  templateUrl: "./payments-list.page.html",
-  styleUrls: ["./payments-list.page.scss"],
+  selector: 'app-payments-list',
+  templateUrl: './payments-list.page.html',
+  styleUrls: ['./payments-list.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonItem, IonAccordionGroup, IonAccordion, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar,
-    CommonModule, FormsModule, IonMenuButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonGrid,
-    IonRouterLink, IonRouterLink, RouterLink, RouterLinkActive, IonIcon, IonRow, IonButton],
+  imports: [
+    IonButtons,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    CommonModule,
+    FormsModule,
+    IonMenuButton,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCol,
+    IonGrid,
+    IonRouterLink,
+    IonRouterLink,
+    RouterLink,
+    IonIcon,
+    IonRow,
+    IonButton,
+  ],
 })
 export class PaymentsListPage implements OnInit {
   navCtrl = inject(NavController);
+  api = inject(ApiService);
+  router = inject(Router);
   constructor() {
-    addIcons({chevronBackOutline})
+    addIcons({ chevronBackOutline });
   }
 
-  ngOnInit() {}
+  payments: any[] = [];
+  ngOnInit() {
+    this.getPayments();
+  }
 
-  back(){
+  back() {
     this.navCtrl.back();
+  }
+
+  getPayments() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.getPayments(token).subscribe((res) => {
+        console.log(res);
+        this.payments = res;
+      });
+  }
+
+  goPayment(id:number) {
+    this.router.navigate(['/payments'],{queryParams:{id:id}});
   }
 }

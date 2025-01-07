@@ -10,15 +10,8 @@ import {
   IonToolbar,
   IonButtons,
   IonMenuButton,
-  IonAccordion,
-  IonAccordionGroup,
-  IonItem,
-  IonLabel,
   IonRouterLink,
   IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonCol,
   IonGrid,
   IonIcon,
@@ -45,10 +38,6 @@ import { ApiService } from 'src/app/services/api.service';
     IonText,
     IonCardContent,
     IonList,
-    IonLabel,
-    IonItem,
-    IonAccordionGroup,
-    IonAccordion,
     IonButtons,
     IonContent,
     IonHeader,
@@ -58,9 +47,6 @@ import { ApiService } from 'src/app/services/api.service';
     FormsModule,
     IonMenuButton,
     IonCard,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardTitle,
     IonCol,
     IonGrid,
     IonRouterLink,
@@ -82,12 +68,7 @@ export class HomeworksPage implements OnInit {
   }
 
   ngOnInit() {
-
-    const token = localStorage.getItem('access_token');
-    if (token)
-      this.api.getTask(token).subscribe((res) => {
-        this.tasks = res;        
-      });
+    this.getTask();
   }
 
   back() {
@@ -100,7 +81,22 @@ export class HomeworksPage implements OnInit {
     });
   }
 
-  editTask() {}
+  deleteTask(id: number) {
+    console.log(id);
 
-  deleteTask() {}
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.deleteTask(token, id).subscribe((res) => {
+        console.log(res);
+        this.getTask();
+      });
+  }
+
+  getTask() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.getTask(token).subscribe((res) => {
+        this.tasks = res;
+      });
+  }
 }

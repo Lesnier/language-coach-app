@@ -23,10 +23,9 @@ import {
   IonDatetime,
   IonText,
   IonPopover,
-  IonIcon,
   IonLabel,
 } from '@ionic/angular/standalone';
-import { data, User } from 'src/app/models/interfaces';
+import {  User } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -103,6 +102,6 @@ export class SettingPage implements OnInit {
     }
   }
   ngOnInit(): void {
-    console.log();
+  
   }
 }
