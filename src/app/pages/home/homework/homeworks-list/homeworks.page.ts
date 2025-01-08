@@ -82,12 +82,9 @@ export class HomeworksPage implements OnInit {
   }
 
   deleteTask(id: number) {
-    console.log(id);
-
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.deleteTask(token, id).subscribe((res) => {
-        console.log(res);
         this.getTask();
       });
   }

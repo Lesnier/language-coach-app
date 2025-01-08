@@ -25,7 +25,7 @@ import {
   IonPopover,
   IonLabel,
 } from '@ionic/angular/standalone';
-import {  User } from 'src/app/models/interfaces';
+import { User } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -87,8 +87,6 @@ export class SettingPage implements OnInit {
   }
 
   onSubmit() {
-
-    
     if (this.changePasswordForm.valid) {
       const token = localStorage.getItem('access_token');
       if (token)
@@ -101,7 +99,5 @@ export class SettingPage implements OnInit {
       console.log('Formulario inválido');
     }
   }
-  ngOnInit(): void {
-  
-  }
+  ngOnInit(): void {}
 }

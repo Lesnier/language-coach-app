@@ -33,36 +33,37 @@ export interface data {
 }
 
 export interface cursos {
-  id: number; 
+  id: number;
   name: string;
   created_at: string;
   updated_at: string;
 }
 
 export interface Lesson {
-  id: number; 
-  name: string; 
+  id: number;
+  name: string;
   class_content: string;
   module_id: number;
   file_id: number | null;
-  created_at: string; 
+  created_at: string;
   updated_at: string;
 }
 
-
 export interface Course {
   course_id: number;
-  id: number; 
+  id: number;
   created_at: string;
   updated_at: string;
   lessons: Lesson[];
 }
 
 export interface models {
-  course_id: number;            // Identificador único del curso
-  created_at: string;           // Fecha y hora de creación en formato ISO 8601
-  id: number;                   // Identificador único del modelo del curso
-  lessons: Lesson[];            // Array de lecciones asociadas al curso
-  name: string;                 // Nombre del curso
-  updated_at: string;           // Fecha y hora de la última actualización en formato ISO 8601
+  course_id: number;
+  created_at: string;
+  id: number;
+  lessons: Lesson[];
+  name: string;
+  updated_at: string;
 }
+
+  

@@ -16,7 +16,6 @@ import {
   IonCardSubtitle,
   IonCardHeader,
   IonCard,
-
 } from '@ionic/angular/standalone';
 import { chevronBackOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';

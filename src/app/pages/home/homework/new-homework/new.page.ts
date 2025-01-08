@@ -9,15 +9,8 @@ import {
   IonToolbar,
   IonButtons,
   IonMenuButton,
-  IonAccordion,
-  IonAccordionGroup,
   IonItem,
-  IonLabel,
   IonAvatar,
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
   IonCol,
   IonGrid,
   IonIcon,
@@ -28,6 +21,7 @@ import {
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new',
@@ -35,12 +29,9 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./new.page.scss'],
   standalone: true,
   imports: [
-    IonLabel,
     IonItem,
-    IonAccordionGroup,
     IonInput,
     IonAvatar,
-    IonAccordion,
     IonButtons,
     IonContent,
     IonHeader,
@@ -49,10 +40,6 @@ import { ApiService } from 'src/app/services/api.service';
     CommonModule,
     FormsModule,
     IonMenuButton,
-    IonCard,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCardTitle,
     IonCol,
     IonGrid,
     IonIcon,
@@ -64,6 +51,7 @@ export class NewPage implements OnInit {
   navCtrl = inject(NavController);
   api = inject(ApiService);
   data: any;
+  router = inject(Router);
   ngOnInit(): void {
     console.log();
   }
@@ -71,6 +59,7 @@ export class NewPage implements OnInit {
     addIcons({ chevronBackOutline });
   }
   selectedImage: boolean = false;
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -79,9 +68,8 @@ export class NewPage implements OnInit {
       this.data = {
         course_id: 1,
         teacherNote: 'file.type',
-        imageFile: file
+        imageFile: file,
       };
-      console.log(this.data);
     }
   }
 
@@ -91,12 +79,11 @@ export class NewPage implements OnInit {
       teacher_note: this.data.teacherNote,
       imageFile: this.data.imageFile,
     };
-    console.log(payload);
 
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.uploadTask(token, payload).subscribe((res) => {
-        console.log(res);
+        this.router.navigate(['/homeworks-list'])
       });
   }
 

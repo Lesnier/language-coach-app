@@ -63,13 +63,15 @@ export class DocumentsPage implements OnInit {
   }
   file: any[] = [];
   documentos: any[] = [];
-   apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
+  apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
 
   ngOnInit() {
+    this.getFiles();
+  }
+  getFiles() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.getFiles(token).subscribe((res) => {
-
         res.forEach((element: any) => {
           if (element.file != null) {
             let a = JSON.parse(element.file);
@@ -77,7 +79,6 @@ export class DocumentsPage implements OnInit {
           }
         });
         this.filterPdfFiles();
-
       });
   }
 
@@ -86,7 +87,9 @@ export class DocumentsPage implements OnInit {
   }
 
   filterPdfFiles() {
-    this.documentos = this.file.filter((file) => file.original_name.endsWith('.pdf'));
+    this.documentos = this.file.filter((file) =>
+      file.original_name.endsWith('.pdf')
+    );
   }
   view(link: string) {
     this.router.navigate([this.apiUrl + link]);
