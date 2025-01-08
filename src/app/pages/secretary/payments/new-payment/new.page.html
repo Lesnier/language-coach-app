@@ -1,10 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
-      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Registrar Pago</ion-title>
   </ion-toolbar>
@@ -13,17 +13,19 @@
 <ion-content [fullscreen]="true">
   <ion-grid style="margin-top: 10px">
     <ion-row>
-      <ion-col
-      >
+      <ion-col>
         <div class="upload-container">
           <!-- Texto encima del avatar -->
           <div class="upload-text">
             <h3>Subir foto</h3>
           </div>
 
-
           <ion-avatar class="upload-area" (click)="fileInput.click()">
-            <ion-icon *ngIf="!selectedDocument" name="camera-outline" class="camera-icon"></ion-icon>
+            <ion-icon
+              *ngIf="!selectedDocument"
+              name="camera-outline"
+              class="camera-icon"
+            ></ion-icon>
             <img *ngIf="selectedDocument" [src]="selectedDocument" />
           </ion-avatar>
 
@@ -33,7 +35,8 @@
             #fileInput
             (change)="onFileSelected($event)"
             accept="image/*"
-            style="display: none;" />
+            style="display: none"
+          />
         </div>
       </ion-col>
     </ion-row>
@@ -42,25 +45,43 @@
   <ion-grid>
     <ion-row style="margin: 0 10px 10px">
       <ion-col size="12" size-md="12"
-      ><ion-item>
-        <ion-input [(ngModel)]="this.transaction_code" placeholder="Numero de transaccion"></ion-input>
-      </ion-item>
+        ><ion-item>
+          <ion-input
+            [(ngModel)]="this.transaction_code"
+            placeholder="Numero de transaccion"
+          ></ion-input>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row style="margin: 0 10px 10px">
       <ion-col size="12" size-md="12"
-      ><ion-item>
-        <ion-input [(ngModel)]="this.user_id" placeholder="id del usuario"></ion-input>
-      </ion-item>
+        ><ion-item>
+          <ion-select
+            [(ngModel)]="this.user_id"
+            label="Usuario"
+            placeholder="Usuario"
+          >
+            @for (item of this.students; track $index) {
+            <ion-select-option value="{{item.id}}"
+              >{{item.name}}</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-md="12">
-        <ion-button expand="block" color="secondary" (click)="submit()" style="margin: 0 10px">Aceptar</ion-button>
+        <ion-button
+          expand="block"
+          color="secondary"
+          (click)="submit()"
+          style="margin: 0 10px"
+          >Aceptar</ion-button
+        >
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

@@ -77,7 +77,8 @@ export class PaymentsListPage implements OnInit {
       });
   }
 
-  goPayment(id:number) {
-    this.router.navigate(['/payments'],{queryParams:{id:id}});
+  goPayment(id: number) {
+    this.router.navigate(['/payments'], { queryParams: { id: id } });
   }
+
 }

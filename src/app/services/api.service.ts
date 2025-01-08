@@ -53,6 +53,13 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/threads`, { headers });
   }
 
+
+  getStudents(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/students`, { headers });
+  }
+  
+
   postThreadReply(
     token: string,
     threadId: any,

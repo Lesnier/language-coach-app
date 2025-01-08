@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   IonContent,
   IonHeader,
@@ -10,13 +10,14 @@ import {
   IonMenuButton,
   IonItem,
   IonAvatar,
-
   IonCol,
   IonGrid,
   IonIcon,
   IonRow,
   IonButton,
   IonInput,
+  IonSelectOption,
+  IonSelect
 } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
 import { NavController } from '@ionic/angular';
@@ -44,6 +45,10 @@ import { chevronBackOutline } from 'ionicons/icons';
     IonIcon,
     IonRow,
     IonButton,
+    IonSelectOption,
+    IonSelect,
+    FormsModule,
+    ReactiveFormsModule,
   ],
 })
 export class NewPage implements OnInit {
@@ -53,20 +58,17 @@ export class NewPage implements OnInit {
   user_id: number = 0;
   transaction_code: string = '';
   selectedDocument: string | null = null;
-
+  students: any[] = [];
   constructor() {
-    addIcons({chevronBackOutline})
+    addIcons({ chevronBackOutline });
   }
 
   submit(): void {
-
     const payload = {
       user_id: this.data.user_id,
       transaction_code: this.data.transaction_code,
       image: this.data.image,
     };
-
-    console.log(payload);
 
     const token = localStorage.getItem('access_token');
     if (token)
@@ -97,5 +99,14 @@ export class NewPage implements OnInit {
     this.navCtrl.back();
   }
 
-  ngOnInit() {}
+  getStudent() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.getStudents(token).subscribe((res) => {
+        this.students = res.Students;
+      });
+  }
+  ngOnInit() {
+    this.getStudent();
+  }
 }
