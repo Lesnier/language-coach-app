@@ -34,7 +34,7 @@
           <input
             type="file"
             #fileInput
-            (change)="onFileSelected($event)"
+            (change)="onFileChange($event)"
             style="display: none"
           />
         </div>
@@ -46,7 +46,7 @@
     <ion-row>
       <ion-col size="12" size-md="12">
         <ion-button
-          (click)="submit()"
+          (click)="onSubmit()"
           expand="block"
           color="secondary"
           style="margin: 0 10px"

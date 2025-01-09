@@ -52,7 +52,7 @@ export class PaymentsPage implements OnInit {
   id: any;
   document: any;
   route = inject(ActivatedRoute);
-  apiUrl = 'https://language-coach-back.lesinnovations.tech/api';
+  apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
   constructor() {
     addIcons({ chevronBackOutline });
   }

@@ -40,7 +40,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HomeworkPage implements OnInit {
   api = inject(ApiService);
   route = inject(ActivatedRoute);
-  private apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/files/';
+  apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
   task: any;
   id: string | null = null;
   constructor() {}

@@ -11,7 +11,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
   <ion-grid style="margin-top: 10px">
     <ion-row>
       <ion-col>
@@ -37,20 +36,23 @@
           <input
             type="file"
             #fileInput
-            (change)="onFileSelected($event)"
+            (change)="onFileChange($event)"
             accept="image/*"
             style="display: none"
           />
         </div>
       </ion-col>
     </ion-row>
-  </ion-grid>
-
-  <ion-grid>
     <ion-row style="margin: 0 10px 10px">
       <ion-col size="12" size-md="12"
         ><ion-item>
-          <ion-input placeholder="Ingresar Nota"></ion-input>
+          <ion-select [(ngModel)]="this.course_id" label="Curso" placeholder="Curso">
+            @for (item of this.courses; track $index) {
+            <ion-select-option value="{{item.id}}"
+              >{{item.name}}</ion-select-option
+            >
+            }
+          </ion-select>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -61,7 +63,7 @@
       <ion-col size="12" size-md="12">
         <ion-button
           expand="block"
-          (click)="crear()"
+          (click)="onSubmit()"
           color="secondary"
           style="margin: 0 10px"
           >Aceptar</ion-button

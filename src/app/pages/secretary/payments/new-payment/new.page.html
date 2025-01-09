@@ -33,7 +33,7 @@
           <input
             type="file"
             #fileInput
-            (change)="onFileSelected($event)"
+            (change)="onFileChange($event)"
             accept="image/*"
             style="display: none"
           />
@@ -47,7 +47,7 @@
       <ion-col size="12" size-md="12"
         ><ion-item>
           <ion-input
-            [(ngModel)]="this.transaction_code"
+            [(ngModel)]="transaction_code"
             placeholder="Numero de transaccion"
           ></ion-input>
         </ion-item>
@@ -57,7 +57,7 @@
       <ion-col size="12" size-md="12"
         ><ion-item>
           <ion-select
-            [(ngModel)]="this.user_id"
+            [(ngModel)]="user_id"
             label="Usuario"
             placeholder="Usuario"
           >

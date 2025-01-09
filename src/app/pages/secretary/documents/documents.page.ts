@@ -72,13 +72,10 @@ export class DocumentsPage implements OnInit {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.getFiles(token).subscribe((res) => {
-        res.forEach((element: any) => {
-          if (element.file != null) {
-            let a = JSON.parse(element.file);
-            this.file.push(a[0]);
-          }
-        });
-        this.filterPdfFiles();
+        this.documentos = res;
+        console.log(this.documentos);
+
+        // this.filterPdfFiles();
       });
   }
 
@@ -87,9 +84,11 @@ export class DocumentsPage implements OnInit {
   }
 
   filterPdfFiles() {
-    this.documentos = this.file.filter((file) =>
-      file.original_name.endsWith('.pdf')
-    );
+    this.documentos = this.file.filter((file) => {
+
+      file.name.endsWith('.pdf');
+    });
+    console.log(this.documentos);
   }
   view(link: string) {
     this.router.navigate([this.apiUrl + link]);

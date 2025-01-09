@@ -1,7 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-
       <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
@@ -30,7 +29,7 @@
     <ion-item (click)="view(file.download_link)">
       <ion-icon slot="start"></ion-icon>
       <ion-label>
-        <a href="{{apiUrl +file.download_link}}">{{file.original_name}}</a>
+        <a href="{{apiUrl +file.file}}">{{file.name}}</a>
       </ion-label>
     </ion-item>
     }

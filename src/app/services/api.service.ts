@@ -53,12 +53,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/threads`, { headers });
   }
 
-
   getStudents(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/students`, { headers });
   }
-  
 
   postThreadReply(
     token: string,
@@ -100,6 +98,8 @@ export class ApiService {
   }
   uploadFile(token: string, data: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log(data);
+
     return this.http.post(`${this.apiUrl}/files`, data, { headers });
   }
 

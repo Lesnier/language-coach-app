@@ -45,56 +45,37 @@ export class NewPage implements OnInit {
   api = inject(ApiService);
   navCtrl = inject(NavController);
   constructor() {
-    addIcons({chevronBackOutline})
+    addIcons({ chevronBackOutline });
   }
-  data: any;
+
   selectedDocument: string | null = null;
 
-  submit(): void {
-    if (!this.data.name || !this.data.type || !this.data.file) {
-      alert('Todos los campos son obligatorios');
-      return;
-    }
+  name: string = '';
+  type: string = '';
+  file!: File;
 
-    const payload = {
-      name: this.data.name,
-      type: this.data.type,
-      file: this.data.file,
-    };
+  onFileChange(event: any) {
+    this.file = event.target.files[0];
+    this.name = event.target.files[0].name;
+    this.type = event.target.files[0].type;
+  }
 
-console.log(payload);
+  onSubmit() {
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('type', this.type);
+    formData.append('file', this.file);
 
     const token = localStorage.getItem('access_token');
     if (token)
-      this.api.uploadFile(token, payload).subscribe((res) => {
-        console.log(res);
+      this.api.uploadFile(token, formData).subscribe((response) => {
+        console.log('File uploaded successfully:', response);
       });
-  }
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      this.data = {
-        name: file.name,
-        type: file.type,
-        file: JSON.stringify([
-          {
-            download_link: `files/${new Date().toLocaleString('en-US', {
-              month: 'long',
-            })}${new Date().getFullYear()}/${file.name.replace(/ /g, '_')}`,
-            original_name: file.name,
-          },
-        ]),
-      };
-    }
   }
 
   back() {
     this.navCtrl.back();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 }

@@ -17,6 +17,8 @@ import {
   IonRow,
   IonButton,
   IonInput,
+  IonSelectOption,
+  IonSelect,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
@@ -45,49 +47,57 @@ import { Router } from '@angular/router';
     IonIcon,
     IonRow,
     IonButton,
+    IonSelectOption,
+    IonSelect,
   ],
 })
 export class NewPage implements OnInit {
   navCtrl = inject(NavController);
   api = inject(ApiService);
-  data: any;
+  course_id: string = '';
+  courses: any[] = [];
+  teacherNote: string = 'sin evaluar';
+  imageFile!: File;
   router = inject(Router);
+
   ngOnInit(): void {
-    console.log();
+    this.getCourses();
   }
+
   constructor() {
     addIcons({ chevronBackOutline });
   }
+
   selectedImage: boolean = false;
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-
-      this.data = {
-        course_id: 1,
-        teacherNote: 'file.type',
-        imageFile: file,
-      };
-    }
+  onFileChange(event: any) {
+    this.imageFile = event.target.files[0];
   }
 
-  crear(): void {
-    const payload = {
-      course_id: this.data.course_id,
-      teacher_note: this.data.teacherNote,
-      imageFile: this.data.imageFile,
-    };
+  onSubmit(): void {
+    const formData = new FormData();
+    formData.append('teacher_note', this.teacherNote);
+    formData.append('course_id', this.course_id);
+    formData.append('image', this.imageFile);
 
     const token = localStorage.getItem('access_token');
     if (token)
-      this.api.uploadTask(token, payload).subscribe((res) => {
-        this.router.navigate(['/homeworks-list'])
+      this.api.uploadTask(token, formData).subscribe((res) => {
+        console.log(res);
+        this.router.navigate(['/homeworks-list']);
       });
   }
 
   back() {
     this.navCtrl.back();
+  }
+
+  getCourses() {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      this.api.getCourses(token).subscribe((res) => {
+        this.courses = res;
+      });
+    }
   }
 }

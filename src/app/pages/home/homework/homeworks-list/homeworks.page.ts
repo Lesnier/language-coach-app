@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -94,6 +94,8 @@ export class HomeworksPage implements OnInit {
     if (token)
       this.api.getTask(token).subscribe((res) => {
         this.tasks = res;
+        console.log(this.tasks);
+        
       });
   }
 }
