@@ -16,7 +16,7 @@ import {
 } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import {environment} from "../../../../environments/environment";
 @Component({
   selector: 'app-homework',
   templateUrl: './homework.page.html',
@@ -40,7 +40,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HomeworkPage implements OnInit {
   api = inject(ApiService);
   route = inject(ActivatedRoute);
-  apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
+  apiUrl = environment.apiUrl;
   task: any;
   id: string | null = null;
   constructor() {}

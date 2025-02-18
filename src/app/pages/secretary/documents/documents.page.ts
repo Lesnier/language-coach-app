@@ -27,6 +27,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
+import {environment} from "../../../../environments/environment";
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.page.html',
@@ -63,7 +64,7 @@ export class DocumentsPage implements OnInit {
   }
   file: any[] = [];
   documentos: any[] = [];
-  apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
+  apiUrl = environment.apiUrl;
 
   ngOnInit() {
     this.getFiles();

@@ -25,7 +25,7 @@ import {DomSanitizer, SafeHtml, SafeUrl} from '@angular/platform-browser';
 import {NavController} from '@ionic/angular';
 import {addIcons} from 'ionicons';
 import {chevronBackOutline} from 'ionicons/icons';
-
+import {environment} from "../../../../../environments/environment";
 @Component({
   selector: 'app-content',
   templateUrl: './content.page.html',
@@ -50,8 +50,8 @@ export class ContentPage implements OnInit, DoCheck {
   api = inject(ApiService);
   sanitizer = inject(DomSanitizer);
   navCtrl = inject(NavController);
-  // private apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
-  private apiUrl = 'http://localhost:8000/storage/';
+
+  private apiUrl = environment.apiUrl;
 
   id: any;
   idM: any;

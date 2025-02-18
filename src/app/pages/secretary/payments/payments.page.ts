@@ -22,6 +22,7 @@ import { addIcons } from 'ionicons';
 import { NavController } from '@ionic/angular';
 import { ApiService } from 'src/app/services/api.service';
 import { ActivatedRoute } from '@angular/router';
+import {environment} from "../../../../environments/environment";
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.page.html',
@@ -52,7 +53,7 @@ export class PaymentsPage implements OnInit {
   id: any;
   document: any;
   route = inject(ActivatedRoute);
-  apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
+  apiUrl = environment.apiUrl;
   constructor() {
     addIcons({ chevronBackOutline });
   }
