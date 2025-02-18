@@ -16,9 +16,13 @@
       <ion-col>
         <ion-card>
           <ion-datetime
+            #datePicker
             [(ngModel)]="fechaModel"
             displayFormat="YYYY-MM-DDTHH:mm"
             pickerFormat="YYYY-MM-DDTHH:mm"
+            presentation="date"
+            locale="es-ES"
+            class="custom-datetime"
           >
           </ion-datetime>
         </ion-card>
@@ -43,15 +47,39 @@
 
   <ion-grid>
     <ion-list>
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>Lista de Agendamientos</ion-label>
+        </ion-item-divider>
       @for (item of agendas; track $index) {
-      <ion-item>
+        <ion-item style="border-radius: 8px; margin: 10px; background-color: lightgray; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);">
         <ion-icon name="calendar-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h2>{{item.date}}</h2>
-          <p>{{item.time}}</p>
-        </ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <h2>{{item.date}}</h2>
+                <p>{{item.time}}</p>
+              </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>
+                <h2>Profesor</h2>
+                <p *ngIf="item.professor_id !== null">{{item.professor.name}}</p>
+              </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>
+                <h2>Estado</h2>
+                <ion-badge *ngIf="item.state === 'Active'" color="success">{{ item.state }}</ion-badge>
+                <ion-badge *ngIf="item.state === 'Cancelled'" color="danger">{{ item.state }}</ion-badge>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
       }
+      </ion-item-group>
     </ion-list>
   </ion-grid>
 </ion-content>

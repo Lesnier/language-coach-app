@@ -26,7 +26,7 @@ import {
   IonButton,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline } from 'ionicons/icons';
+import { chevronBackOutline, chatbubblesOutline } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -68,17 +68,17 @@ export class ForoPage implements OnInit {
   api = inject(ApiService);
   title:string = '';
   constructor() {
-    addIcons({ chevronBackOutline });
+    addIcons({ chevronBackOutline,chatbubblesOutline });
   }
 
   ngOnInit() {
     const token = localStorage.getItem('access_token');
     if (token){
       this.api.getForums(token).subscribe((res) => {
-        this.title = res[0].name        
+        this.title = res[0].name
       });
       this.api.getThreads(token).subscribe(res=>{
-        this.threads = res;        
+        this.threads = res;
       })
     }
   }

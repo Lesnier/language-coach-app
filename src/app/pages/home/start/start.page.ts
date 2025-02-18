@@ -2,7 +2,24 @@ import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink, RouterLinkActive } from "@angular/router";
-import { IonCardHeader, IonCardTitle,  IonHeader, IonTitle, IonGrid, IonRow, IonCol, IonContent, IonCard, IonIcon, IonToolbar, IonButtons,IonButton, IonMenuButton, IonRouterLink } from "@ionic/angular/standalone";
+import {
+    IonCardHeader,
+    IonCardTitle,
+    IonHeader,
+    IonTitle,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonContent,
+    IonCard,
+    IonIcon,
+    IonToolbar,
+    IonButtons,
+    IonButton,
+    IonMenuButton,
+    IonRouterLink,
+    IonItemDivider, IonItemGroup, IonLabel
+} from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleSharp, checkboxSharp, chevronBackOutline } from "ionicons/icons";
 
@@ -12,10 +29,10 @@ import { calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleS
   templateUrl: "./start.page.html",
   styleUrls: ["./start.page.scss"],
   standalone: true,
-  imports: [IonIcon, IonCardHeader, IonCardTitle,  IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonButton,IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonRouterLink, RouterLink, RouterLinkActive],
+    imports: [IonIcon, IonCardHeader, IonCardTitle, IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonButton, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonRouterLink, RouterLink, RouterLinkActive, IonItemDivider, IonItemGroup, IonLabel],
 })
 export class StartPage implements OnInit {
-  
+
   constructor() {
     addIcons({ calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleSharp, checkboxSharp });
   }

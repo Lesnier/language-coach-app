@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {Availability} from "../models/interfaces";
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'https://language-coach-back.lesinnovations.tech/api';
+  // private apiUrl = 'https://language-coach-back.lesinnovations.tech/api';
+  public apiUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -111,4 +113,19 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post(`${this.apiUrl}/payments`, data, { headers });
   }
+
+  private daysAvailableSubject = new BehaviorSubject<Availability[]>([]); // Inicia con un array vacío
+  daysAvailable$ = this.daysAvailableSubject.asObservable(); // Observable accesible desde fuera
+
+  getAvailabilities(token: string){
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this.http.get<Availability[]>(`${this.apiUrl}/availabilities`, { headers }).subscribe( availabilities => {
+      this.daysAvailableSubject.next(availabilities);
+    });
+  }
+
+
+
+
+
 }

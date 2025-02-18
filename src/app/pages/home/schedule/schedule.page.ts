@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {firstValueFrom} from 'rxjs';
 import {
   IonContent,
   IonHeader,
@@ -18,16 +19,18 @@ import {
   IonButton,
   IonLabel,
   IonList,
-  IonNote,
+  IonNote, IonBadge, IonItemGroup, IonItemDivider,
 } from '@ionic/angular/standalone';
 
-import { ApiService } from 'src/app/services/api.service';
-import { HttpClient } from '@angular/common/http';
-import { addIcons } from 'ionicons';
-import { calendarOutline, chevronBackOutline } from 'ionicons/icons';
-import { agenda, agendas } from 'src/app/models/interfaces';
-import { NavController } from '@ionic/angular';
-import { UtilsService } from 'src/app/services/utils.service';
+import {ApiService} from 'src/app/services/api.service';
+import {HttpClient} from '@angular/common/http';
+import {addIcons} from 'ionicons';
+import {calendarOutline, chevronBackOutline} from 'ionicons/icons';
+import {agenda, agendas, Availability} from 'src/app/models/interfaces';
+import {NavController} from '@ionic/angular';
+import {UtilsService} from 'src/app/services/utils.service';
+import {Observable} from "rxjs";
+
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.page.html',
@@ -53,6 +56,9 @@ import { UtilsService } from 'src/app/services/utils.service';
     IonDatetime,
     IonMenuButton,
     IonItem,
+    IonBadge,
+    IonItemGroup,
+    IonItemDivider,
   ],
 })
 export class SchedulePage implements OnInit {
@@ -60,6 +66,8 @@ export class SchedulePage implements OnInit {
   http = inject(HttpClient);
   navCtrl = inject(NavController);
   utils = inject(UtilsService);
+  @ViewChild(IonDatetime, {static: false}) datePicker!: IonDatetime;
+  availabilities: Availability[] = [];
 
   invalidDate: boolean = false;
   createdDate: boolean = false;
@@ -69,15 +77,16 @@ export class SchedulePage implements OnInit {
 
   agendas: agendas[] = [];
 
+
   constructor() {
     this.fechaActual = new Date();
-
-    addIcons({ calendarOutline, chevronBackOutline });
+    addIcons({calendarOutline, chevronBackOutline});
   }
 
   ngOnInit() {
     this.fechaModel = new Date().toISOString();
     this.getAgendas();
+    this.getAvailabilities();
   }
 
   agendar() {
@@ -120,11 +129,45 @@ export class SchedulePage implements OnInit {
     }
   }
 
+  getAvailabilities() {
+    let token = localStorage.getItem('access_token');
+    if (token) {
+      this.api.getAvailabilities(token);
+      this.api.daysAvailable$.subscribe((availabilities: Availability[]) => {
+        if (availabilities) {
+          this.availabilities = availabilities;
+          if (this.datePicker) {
+            this.datePicker.isDateEnabled = (dateString: string) => this.isDateEnabled(dateString);
+          }
+        }
+      })
+    }
+  }
+
   back() {
     this.navCtrl.back();
   }
 
-  prueba() {
-    console.log(this.fechaModel);
-  }
+  allowedRanges = [
+    {start: new Date(2025, 1, 18), end: new Date(2025, 1, 20)},
+    {start: new Date(2025, 2, 19), end: new Date(2025, 2, 20)}
+  ];
+
+  availableDays = [
+    {date: new Date(2025, 1, 18)},
+    {date: new Date(2025, 1, 19)}
+  ];
+
+  isDateEnabled = (dateString: string): boolean => {
+    const date = new Date(dateString);
+    return this.availabilities.some(item => {
+      date.setHours(0, 0, 0, 0);
+      let availableDay = new Date(item.day_of_week);
+      availableDay.setHours(0, 0, 0, 0);
+      return date.getTime() == availableDay.getTime();
+    })
+
+  };
+
+
 }

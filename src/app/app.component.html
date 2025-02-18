@@ -4,45 +4,41 @@
       <ion-menu contentId="main-content" type="overlay">
         <ion-content>
           <ion-list id="inbox-list">
-            <ion-list-header>{{loggedUser.name}}</ion-list-header>
-            <ion-note>{{loggedUser.email}}</ion-note>
+            <ion-list-header>{{ loggedUser.name }}</ion-list-header>
+            <ion-note>{{ loggedUser.email }}</ion-note>
 
-          @if (this.loggedUser.role_id === 4) {
-            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-              @if (p.title === 'Secretaría' ||  p.title === 'Configuraciones' || p.title === 'Documentos' || p.title === 'Pagos') {
-                <ion-item   routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-                </ion-item>
-            }
-            </ion-menu-toggle>
-          }
-
-          @if (this.loggedUser.role_id === 2) {
-            <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-              @if (p.title === 'Inicio' ||  p.title === 'Configuraciones' || p.title === 'Agendar' || p.title === 'Cursos' || p.title === 'Foro' || p.title === 'Tareas') {
-                   <ion-item   routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-                   <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                   <ion-label>{{ p.title }}</ion-label>
+            <ng-container *ngIf="loggedUser.role_id === 4">
+              <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+                <ng-container *ngIf="p.title === 'Secretaría' || p.title === 'Configuraciones' || p.title === 'Documentos' || p.title === 'Pagos'">
+                  <ion-item routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
+                    <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                    <ion-label>{{ p.title }}</ion-label>
                   </ion-item>
-               }
-            </ion-menu-toggle>
-          }
+                </ng-container>
+              </ion-menu-toggle>
+            </ng-container>
 
-          <ion-menu-toggle auto-hide="false" style="cursor: pointer;"  (click)="onLogout()">
-            
-            <ion-item    routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-            <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
-            <ion-label>Loggout</ion-label>
-           </ion-item>
-       
-     </ion-menu-toggle>
-          
+            <ng-container *ngIf="loggedUser.role_id === 2">
+              <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+                <ng-container *ngIf="p.title === 'Inicio' || p.title === 'Configuraciones' || p.title === 'Agendar' || p.title === 'Cursos' || p.title === 'Foro' || p.title === 'Tareas'">
+                  <ion-item routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
+                    <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                    <ion-label>{{ p.title }}</ion-label>
+                  </ion-item>
+                </ng-container>
+              </ion-menu-toggle>
+            </ng-container>
+
+            <ion-menu-toggle auto-hide="false" style="cursor: pointer;" (click)="onLogout()">
+              <ion-item routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
+                <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
+                <ion-label>Logout</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
           </ion-list>
 
           <ion-list id="labels-list">
             <ion-list-header>Labels</ion-list-header>
-
             <ion-item lines="none" *ngFor="let label of labels" [button]="true">
               <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
               <ion-label>{{ label.title }}</ion-label>

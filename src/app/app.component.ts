@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, DoCheck, inject, OnInit } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, DoCheck, inject, OnInit} from '@angular/core';
 import {
   Router,
   NavigationEnd,
@@ -21,7 +21,7 @@ import {
   IonRouterOutlet,
   IonRouterLink,
 } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
+import {addIcons} from 'ionicons';
 import {
   homeOutline,
   homeSharp,
@@ -42,9 +42,10 @@ import {
   calendarSharp,
   calendarOutline,
 } from 'ionicons/icons';
-import { ApiService } from './services/api.service';
-import { User } from './models/interfaces';
-import { AuthService } from './services/auth.service';
+import {ApiService} from './services/api.service';
+import {User} from './models/interfaces';
+import {AuthService} from './services/auth.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -72,25 +73,25 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit, DoCheck {
   api = inject(ApiService);
   auth = inject(AuthService);
-router = inject(Router);
+  router = inject(Router);
 
   loggedUser: User = JSON.parse(localStorage.getItem('user') ?? '{}');
-  
+
 
   public appPages = [
-    { title: 'Inicio', url: '/start', icon: 'home' },
-    { title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked' },
-    { title: 'Agendar', url: '/schedule', icon: 'calendar' },
-    { title: 'Cursos', url: '/courses', icon: 'layers' },
-    { title: 'Foro', url: '/foro', icon: 'chatbubble' },
-    { title: 'Tareas', url: '/homeworks-list', icon: 'checkbox' },
-    { title: 'Documentos', url: '/documents', icon: 'reader' },
-    { title: 'Pagos', url: '/payments-list', icon: 'cash' },
-    { title: 'Configuraciones', url: '/setting', icon: 'flower' },
-    { title: 'Logout', url: '/login', icon: 'log-in-outline' },
+    {title: 'Inicio', url: '/start', icon: 'home'},
+    {title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked'},
+    {title: 'Agendar', url: '/schedule', icon: 'calendar'},
+    {title: 'Cursos', url: '/courses', icon: 'layers'},
+    {title: 'Foro', url: '/foro', icon: 'chatbubble'},
+    {title: 'Tareas', url: '/homeworks-list', icon: 'checkbox'},
+    {title: 'Documentos', url: '/documents', icon: 'reader'},
+    {title: 'Pagos', url: '/payments-list', icon: 'cash'},
+    {title: 'Configuraciones', url: '/setting', icon: 'flower'},
+    {title: 'Logout', url: '/login', icon: 'log-in-outline'},
   ];
   public labels = [
-    { title: 'Blog', url: '/folder/inbox', icon: 'home' },
+    {title: 'Blog', url: '/folder/inbox', icon: 'home'},
     {
       title: 'Nuestra Historia',
       url: '/folder/outbox',
@@ -121,8 +122,6 @@ router = inject(Router);
   ngOnInit() {
 
 
-    
-
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
@@ -132,11 +131,11 @@ router = inject(Router);
   }
 
   ngDoCheck(): void {
-    let user:User = JSON.parse(localStorage.getItem('user') ?? '{}');
-    if(user){
+    let user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
+    if (user) {
       this.loggedUser = user;
     }
-        
+
   }
 
   onLogout() {
@@ -149,5 +148,5 @@ router = inject(Router);
       });
   }
 
-  
+
 }

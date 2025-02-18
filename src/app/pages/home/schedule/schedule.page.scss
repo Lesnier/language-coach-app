@@ -1,0 +1,28 @@
+//:host {
+//  --allowed-date-color: #4CAF50; /* Verde para fechas permitidas */
+//  --disabled-date-color: #393939; /* Gris para fechas deshabilitadas */
+//}
+//
+//.custom-datetime::part(calendar-day) {
+//  color: #393939; /* Todas las fechas en gris */
+//  font-weight: bold;
+//}
+//
+//.custom-datetime::part(active) {
+//  color: #eaeaea; /* Todas las fechas en gris */
+//  font-weight: bold;
+//}
+//
+//.custom-datetime::part(disabled) {
+//  color: #4c4c4c; /* Todas las fechas en gris */
+//  font-weight: normal !important;
+//}
+//
+//
+//
+//.custom-datetime::part(calendar-day-selected),
+//.custom-datetime::part(calendar-day-today) {
+//  color: white !important;
+//  background-color: var(--allowed-date-color) !important; /* Cambiar color de fondo de fechas permitidas */
+//  border-radius: 80%;
+//}

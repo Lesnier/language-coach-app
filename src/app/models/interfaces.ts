@@ -24,7 +24,13 @@ export interface agendas {
   updatedAt: string;
   date: string;
   time: string;
+  professor_id: number;
+  professor: User;
+  student: User;
+  state: string;
 }
+
+
 
 export interface data {
   current_password: string;
@@ -66,4 +72,11 @@ export interface models {
   updated_at: string;
 }
 
-  
+export interface Availability {
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+}
+
+
+

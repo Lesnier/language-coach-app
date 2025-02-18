@@ -6,8 +6,8 @@ import {
   OnInit,
   Sanitizer,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {
   IonContent,
   IonHeader,
@@ -18,13 +18,13 @@ import {
   IonMenuButton,
   IonIcon,
 } from '@ionic/angular/standalone';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
-import { Lesson, models } from 'src/app/models/interfaces';
-import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
-import { NavController } from '@ionic/angular';
-import { addIcons } from 'ionicons';
-import { chevronBackOutline } from 'ionicons/icons';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ApiService} from 'src/app/services/api.service';
+import {Lesson, models} from 'src/app/models/interfaces';
+import {DomSanitizer, SafeHtml, SafeUrl} from '@angular/platform-browser';
+import {NavController} from '@ionic/angular';
+import {addIcons} from 'ionicons';
+import {chevronBackOutline} from 'ionicons/icons';
 
 @Component({
   selector: 'app-content',
@@ -50,7 +50,8 @@ export class ContentPage implements OnInit, DoCheck {
   api = inject(ApiService);
   sanitizer = inject(DomSanitizer);
   navCtrl = inject(NavController);
-  private apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
+  // private apiUrl = 'https://language-coach-back.lesinnovations.tech/storage/';
+  private apiUrl = 'http://localhost:8000/storage/';
 
   id: any;
   idM: any;
@@ -60,10 +61,11 @@ export class ContentPage implements OnInit, DoCheck {
   class_content: SafeHtml = '';
   file_id: number | null = 0;
   lesson_name: string = '';
-  file_name:string = '';
+  file_name: string = '';
   lesson_file: string = '';
+
   constructor() {
-    addIcons({ chevronBackOutline });
+    addIcons({chevronBackOutline});
   }
 
   ngOnInit() {
@@ -82,8 +84,8 @@ export class ContentPage implements OnInit, DoCheck {
             element.lessons.forEach((les: Lesson) => {
               if (les.id == this.idL) {
                 this.file_id = les.file_id;
-            
-                
+
+
                 this.rawContent = les.class_content;
                 this.lesson_name = les.name;
               }
@@ -98,18 +100,20 @@ export class ContentPage implements OnInit, DoCheck {
             const file = element.file;
             const data = JSON.parse(file);
             this.file_name = data[0].original_name.split('.').slice(0, -1).join('.');
-console.log(this.file_name);
+            console.log(this.file_name);
             const downloadLink = data[0].download_link;
             this.lesson_file = this.apiUrl + downloadLink;
           }
         });
       });
   }
+
   ngDoCheck(): void {
     const processedContent = this.processContent(this.rawContent);
     this.class_content =
       this.sanitizer.bypassSecurityTrustHtml(processedContent);
   }
+
   private processContent(content: string): string {
     content = content.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
     content = content.replace(/(.+?)(\n\n|$)/g, '<p>$1</p>');

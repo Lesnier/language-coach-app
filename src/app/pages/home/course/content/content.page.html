@@ -16,13 +16,12 @@
       <ion-title size="large">{{ lesson_name }}</ion-title>
     </ion-toolbar>
   </ion-header>
-  
-  <div class="lesson-container">
 
-    <div class="lesson-content" [innerHTML]="class_content"></div>
+  <div class="lesson-container">
     <div class="lesson-image-container">
       <img [src]="lesson_file" [alt]="lesson_name" class="lesson-image">
-      <p>{{this.file_name}}</p>
     </div>
+    <div class="lesson-content" [innerHTML]="class_content"></div>
+
   </div>
 </ion-content>
