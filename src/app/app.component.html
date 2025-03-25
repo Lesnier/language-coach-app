@@ -1,5 +1,7 @@
 <ion-app>
-  <ng-container *ngIf="currentUrl !== '/login' && currentUrl !== '/'; else loginLayout">
+  <ng-container
+    *ngIf="currentUrl !== '/login' && currentUrl !== '/'; else loginLayout"
+  >
     <ion-split-pane contentId="main-content">
       <ion-menu contentId="main-content" type="overlay">
         <ion-content>
@@ -8,10 +10,31 @@
             <ion-note>{{ loggedUser.email }}</ion-note>
 
             <ng-container *ngIf="loggedUser.role_id === 4">
-              <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-                <ng-container *ngIf="p.title === 'Secretaría' || p.title === 'Configuraciones' || p.title === 'Documentos' || p.title === 'Pagos'">
-                  <ion-item routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-                    <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-menu-toggle
+                auto-hide="false"
+                *ngFor="let p of appPages; let i = index"
+              >
+                <ng-container
+                  *ngIf="
+                    p.title === 'Secretaría' ||
+                    p.title === 'Configuraciones' ||
+                    p.title === 'Documentos' ||
+                    p.title === 'Pagos'
+                  "
+                >
+                  <ion-item
+                    routerLink="{{ p.url }}"
+                    routerDirection="root"
+                    lines="none"
+                    detail="false"
+                    routerLinkActive="selected"
+                  >
+                    <ion-icon
+                      aria-hidden="true"
+                      slot="start"
+                      [ios]="p.icon + '-outline'"
+                      [md]="p.icon + '-sharp'"
+                    ></ion-icon>
                     <ion-label>{{ p.title }}</ion-label>
                   </ion-item>
                 </ng-container>
@@ -19,19 +42,56 @@
             </ng-container>
 
             <ng-container *ngIf="loggedUser.role_id === 2">
-              <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-                <ng-container *ngIf="p.title === 'Inicio' || p.title === 'Configuraciones' || p.title === 'Agendar' || p.title === 'Cursos' || p.title === 'Foro' || p.title === 'Tareas'">
-                  <ion-item routerLink="{{ p.url }}" routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-                    <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-menu-toggle
+                auto-hide="false"
+                *ngFor="let p of appPages; let i = index"
+              >
+                <ng-container
+                  *ngIf="
+                    p.title === 'Inicio' ||
+                    p.title === 'Configuraciones' ||
+                    p.title === 'Agendar' ||
+                    p.title === 'AgendarTest' ||
+                    p.title === 'Cursos' ||
+                    p.title === 'Foro' ||
+                    p.title === 'Tareas'
+                  "
+                >
+                  <ion-item
+                    routerLink="{{ p.url }}"
+                    routerDirection="root"
+                    lines="none"
+                    detail="false"
+                    routerLinkActive="selected"
+                  >
+                    <ion-icon
+                      aria-hidden="true"
+                      slot="start"
+                      [ios]="p.icon + '-outline'"
+                      [md]="p.icon + '-sharp'"
+                    ></ion-icon>
                     <ion-label>{{ p.title }}</ion-label>
                   </ion-item>
                 </ng-container>
               </ion-menu-toggle>
             </ng-container>
 
-            <ion-menu-toggle auto-hide="false" style="cursor: pointer;" (click)="onLogout()">
-              <ion-item routerDirection="root" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" name="log-in-outline"></ion-icon>
+            <ion-menu-toggle
+              auto-hide="false"
+              style="cursor: pointer"
+              (click)="onLogout()"
+            >
+              <ion-item
+                routerDirection="root"
+                lines="none"
+                detail="false"
+                routerLinkActive="selected"
+              >
+                <ion-icon
+                  aria-hidden="true"
+                  slot="start"
+                  name="log-in-outline"
+                ></ion-icon>
                 <ion-label>Logout</ion-label>
               </ion-item>
             </ion-menu-toggle>
@@ -40,7 +100,12 @@
           <ion-list id="labels-list">
             <ion-list-header>Labels</ion-list-header>
             <ion-item lines="none" *ngFor="let label of labels" [button]="true">
-              <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
+              <ion-icon
+                aria-hidden="true"
+                slot="start"
+                ios="bookmark-outline"
+                md="bookmark-sharp"
+              ></ion-icon>
               <ion-label>{{ label.title }}</ion-label>
             </ion-item>
           </ion-list>

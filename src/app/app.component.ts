@@ -1,50 +1,49 @@
-import {CommonModule} from '@angular/common';
-import {Component, DoCheck, inject, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DoCheck, inject, OnInit } from '@angular/core';
 import {
-  Router,
   NavigationEnd,
+  Router,
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
 import {
   IonApp,
-  IonSplitPane,
-  IonMenu,
   IonContent,
+  IonIcon,
+  IonItem,
+  IonLabel,
   IonList,
   IonListHeader,
-  IonNote,
+  IonMenu,
   IonMenuToggle,
-  IonItem,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
+  IonNote,
   IonRouterLink,
+  IonRouterOutlet,
+  IonSplitPane,
 } from '@ionic/angular/standalone';
-import {addIcons} from 'ionicons';
+import { addIcons } from 'ionicons';
 import {
-  homeOutline,
-  homeSharp,
+  bookmarkOutline,
+  bookmarkSharp,
+  calendarOutline,
+  calendarSharp,
+  cashSharp,
+  chatbubbleSharp,
+  checkboxSharp,
   fileTrayStackedOutline,
   fileTrayStackedSharp,
   flowerOutline,
   flowerSharp,
-  bookmarkOutline,
-  bookmarkSharp,
-  logOut,
-  logInOutline,
-  readerSharp,
-  cashSharp,
-  checkboxSharp,
-  chatbubbleSharp,
+  homeOutline,
+  homeSharp,
   layersOutline,
   layersSharp,
-  calendarSharp,
-  calendarOutline,
+  logInOutline,
+  readerSharp,
 } from 'ionicons/icons';
-import {ApiService} from './services/api.service';
-import {User} from './models/interfaces';
-import {AuthService} from './services/auth.service';
+import { User } from './models/interfaces';
+import { ApiService } from './services/api.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -77,21 +76,21 @@ export class AppComponent implements OnInit, DoCheck {
 
   loggedUser: User = JSON.parse(localStorage.getItem('user') ?? '{}');
 
-
   public appPages = [
-    {title: 'Inicio', url: '/start', icon: 'home'},
-    {title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked'},
-    {title: 'Agendar', url: '/schedule', icon: 'calendar'},
-    {title: 'Cursos', url: '/courses', icon: 'layers'},
-    {title: 'Foro', url: '/foro', icon: 'chatbubble'},
-    {title: 'Tareas', url: '/homeworks-list', icon: 'checkbox'},
-    {title: 'Documentos', url: '/documents', icon: 'reader'},
-    {title: 'Pagos', url: '/payments-list', icon: 'cash'},
-    {title: 'Configuraciones', url: '/setting', icon: 'flower'},
-    {title: 'Logout', url: '/login', icon: 'log-in-outline'},
+    { title: 'Inicio', url: '/start', icon: 'home' },
+    { title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked' },
+    { title: 'Agendar', url: '/schedule', icon: 'calendar' },
+    { title: 'AgendarTest', url: '/schedule-test', icon: 'calendar' },
+    { title: 'Cursos', url: '/courses', icon: 'layers' },
+    { title: 'Foro', url: '/foro', icon: 'chatbubble' },
+    { title: 'Tareas', url: '/homeworks-list', icon: 'checkbox' },
+    { title: 'Documentos', url: '/documents', icon: 'reader' },
+    { title: 'Pagos', url: '/payments-list', icon: 'cash' },
+    { title: 'Configuraciones', url: '/setting', icon: 'flower' },
+    { title: 'Logout', url: '/login', icon: 'log-in-outline' },
   ];
   public labels = [
-    {title: 'Blog', url: '/folder/inbox', icon: 'home'},
+    { title: 'Blog', url: '/folder/inbox', icon: 'home' },
     {
       title: 'Nuestra Historia',
       url: '/folder/outbox',
@@ -115,13 +114,16 @@ export class AppComponent implements OnInit, DoCheck {
       logInOutline,
       readerSharp,
       cashSharp,
-      calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleSharp, checkboxSharp
+      calendarOutline,
+      calendarSharp,
+      layersSharp,
+      layersOutline,
+      chatbubbleSharp,
+      checkboxSharp,
     });
   }
 
   ngOnInit() {
-
-
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
@@ -135,7 +137,6 @@ export class AppComponent implements OnInit, DoCheck {
     if (user) {
       this.loggedUser = user;
     }
-
   }
 
   onLogout() {
@@ -147,6 +148,4 @@ export class AppComponent implements OnInit, DoCheck {
         this.router.navigate(['/login']);
       });
   }
-
-
 }

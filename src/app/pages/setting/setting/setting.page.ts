@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,22 +8,22 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  IonHeader,
-  IonTitle,
-  IonGrid,
-  IonRow,
+  IonButton,
+  IonButtons,
   IonCol,
   IonContent,
-  IonToolbar,
-  IonButtons,
-  IonMenuButton,
+  IonDatetime,
+  IonGrid,
+  IonHeader,
   IonInput,
   IonItem,
-  IonButton,
-  IonDatetime,
-  IonText,
-  IonPopover,
   IonLabel,
+  IonMenuButton,
+  IonPopover,
+  IonRow,
+  IonText,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/angular/standalone';
 import { User } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
@@ -58,7 +58,7 @@ import { UtilsService } from 'src/app/services/utils.service';
     ReactiveFormsModule,
   ],
 })
-export class SettingPage implements OnInit {
+export class SettingPage {
   api = inject(ApiService);
 
   user: User = JSON.parse(localStorage.getItem('user') ?? '{}');
@@ -99,5 +99,4 @@ export class SettingPage implements OnInit {
       console.log('Formulario inválido');
     }
   }
-  ngOnInit(): void {}
 }
