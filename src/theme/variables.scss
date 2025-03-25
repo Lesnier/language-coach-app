@@ -2,21 +2,24 @@
 // http://ionicframework.com/docs/theming/
 
 :root {
-  --ion-color-yellow-light: #f4ef99;
+
+  --ion-font-family: 'Open Sans', sans-serif;
+
+  --ion-color-yellow-light: #113531;
   --ion-color-yellow-light-rgb: 244, 239, 153;
-  --ion-color-yellow-light-contrast: #4a8f86;
+  --ion-color-yellow-light-contrast: #ffffff;
   --ion-color-yellow-light-contrast-rgb: 0, 0, 0;
   --ion-color-yellow-light-shade: #d7d287;
   --ion-color-yellow-light-tint: #f5f1a3;
 
-  --ion-color-yellow: #fbe08f;
+  --ion-color-yellow: #e5ba61;
   --ion-color-yellow-rgb: 251, 224, 143;
-  --ion-color-yellow-contrast: #368379;
+  --ion-color-yellow-contrast: #ffffff;
   --ion-color-yellow-contrast-rgb: 0, 0, 0;
   --ion-color-yellow-shade: #ddc57e;
-  --ion-color-yellow-tint: #fbe39a;
+  --ion-color-yellow-tint: #dfea6d;
 
-  --ion-color-green: #368379;
+  --ion-color-green: #627e58;
   --ion-color-green-rgb: 54, 131, 121;
   --ion-color-green-contrast: #fff;
   --ion-color-green-contrast-rgb: 0, 0, 0;
@@ -30,9 +33,9 @@
   --ion-color-green-light-shade: #4ea69d;
   --ion-color-green-light-tint: #6ac4ba;
 
-  --ion-color-azul-light: #1599bc;
+  --ion-color-azul-light: #6c9671;
   --ion-color-azul-light-rgb: 21, 153, 188;
-  --ion-color-azul-light-contrast: #fff;
+  --ion-color-azul-light-contrast: #f6f8fb;
   --ion-color-azul-light-contrast-rgb: 0, 0, 0;
   --ion-color-azul-light-shade: #1287a5;
   --ion-color-azul-light-tint: #2ca3c3;
@@ -43,7 +46,10 @@
   --ion-color-amarillo-contrast-rgb: 0, 0, 0;
   --ion-color-amarillo-shade: #d88d25;
   --ion-color-amarillo-tint: #f7aa3f;
+
 }
+
+
 
 .ion-color-yellow-light {
   --ion-color-base: var(--ion-color-yellow-light);

@@ -8,20 +8,32 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-grid>
+<ion-content [fullscreen]="true" >
+  <ion-grid >
     <ion-row>
       <ion-col>
-        <ion-card color="yellow-light" button="true" style="height: 150px" [routerLink]="'/schedule'">
-          <ion-card-header>
+        <ion-card  button="true" style="height: 150px;border-radius: 15px;display: flex;align-items: center;" [routerLink]="'/schedule'">
+          <img src="assets/banner-app.jpg" alt="">
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-item-group>
+      <ion-item-divider>
+        <h4 style="font-weight: bold; color: #2a2a2a; font-weight: 700">Opciones de Academia</h4>
+      </ion-item-divider>
+    </ion-item-group>
+    <ion-row>
+      <ion-col>
+        <ion-card color="yellow-light" button="true" style="height: 150px;border-radius: 15px;display: flex;align-items: center;" [routerLink]="'/schedule'">
+          <ion-card-header style="display: flex;align-items: center;">
             <ion-icon name="calendar-sharp" size="large"></ion-icon>
             <ion-card-title>Agendar</ion-card-title>
           </ion-card-header>
         </ion-card>
       </ion-col>
       <ion-col
-        ><ion-card color="green" button="true" style="height: 150px" [routerLink]="'/courses'">
-          <ion-card-header>
+        ><ion-card color="green" button="true" style="height: 150px; border-radius: 15px; display: flex;align-items: center;" [routerLink]="'/courses'">
+          <ion-card-header style="display: flex;align-items: center;">
             <ion-icon name="layers-sharp" size="large"></ion-icon>
             <ion-card-title>Cursos</ion-card-title>
           </ion-card-header>
@@ -30,16 +42,16 @@
     </ion-row>
     <ion-row>
       <ion-col
-        ><ion-card color="green-light" button="true" style="height: 150px"  [routerLink]="'/foro'">
-          <ion-card-header>
+        ><ion-card color="green-light" button="true" style="height: 150px; border-radius: 15px; display: flex;align-items: center;"  [routerLink]="'/foro'">
+          <ion-card-header style="display: flex;align-items: center;">
             <ion-icon name="chatbubble-sharp" size="large"></ion-icon>
             <ion-card-title>Foro</ion-card-title>
           </ion-card-header>
         </ion-card></ion-col
       >
       <ion-col
-        ><ion-card color="yellow" button="true" style="height: 150px" [routerLink]="'/homeworks-list'">
-          <ion-card-header>
+        ><ion-card color="yellow" button="true" style="height: 150px; border-radius: 15px; display: flex;align-items: center;" [routerLink]="'/homeworks-list'">
+          <ion-card-header style="display: flex;align-items: center;">
             <ion-icon name="checkbox-sharp" size="large"></ion-icon>
             <ion-card-title>Tareas</ion-card-title>
           </ion-card-header>
@@ -48,48 +60,46 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid>
-    <ion-item-group>
-    <ion-item-divider>
-      <ion-label>Estudiantes Destacados</ion-label>
-    </ion-item-divider>
+  <!--Estudiantes Destacados-->
+  <ion-grid style="background-color: #617d57">
+    <ion-item-group >
+      <ion-item-divider style="background-color: #617d57; border-bottom: white 1px solid">
+        <h4 style="font-weight: bold; color: #2a2a2a; font-weight: 700; color: white">Estudiantes Destacados</h4>
+      </ion-item-divider>
     </ion-item-group>
-    <ion-row>
+    <ion-row >
       <ion-col>
-        <ion-card color="yellow-light" button="true" style="height: 150px" [routerLink]="'/schedule'">
-          <ion-card-header>
-            <ion-icon name="calendar-sharp" size="large"></ion-icon>
-            <ion-card-title>Agendar</ion-card-title>
+        <ion-card  button="true" style="height: 270px; border-radius: 15px; background: rgba(0,0,0,0);" [routerLink]="'/schedule'">
+          <div  style="background: url('assets/alumnos/alumno_1.jpg'); background-size: cover; height: 200px; background-position: center;"  ></div>
+          <ion-card-header  color="yellow-light"  style="padding-top: 10px">
+            <ion-card-title style="height: 74px">Adela Saldivar</ion-card-title>
           </ion-card-header>
         </ion-card>
       </ion-col>
-      <ion-col
-      ><ion-card color="green" button="true" style="height: 150px" [routerLink]="'/courses'">
-        <ion-card-header>
-          <ion-icon name="layers-sharp" size="large"></ion-icon>
-          <ion-card-title>Cursos</ion-card-title>
-        </ion-card-header>
-      </ion-card></ion-col
-      >
-    </ion-row>
-    <ion-row>
-      <ion-col
-      ><ion-card color="green-light" button="true" style="height: 150px"  [routerLink]="'/foro'">
-        <ion-card-header>
-          <ion-icon name="chatbubble-sharp" size="large"></ion-icon>
-          <ion-card-title>Foro</ion-card-title>
-        </ion-card-header>
-      </ion-card></ion-col
-      >
-      <ion-col
-      ><ion-card color="yellow" button="true" style="height: 150px" [routerLink]="'/homeworks-list'">
-        <ion-card-header>
-          <ion-icon name="checkbox-sharp" size="large"></ion-icon>
-          <ion-card-title>Tareas</ion-card-title>
-        </ion-card-header>
-      </ion-card></ion-col
-      >
+      <ion-col>
+        <ion-card  button="true" style="height: 270px; border-radius: 15px;background: rgba(0,0,0,0); " [routerLink]="'/schedule'">
+          <div  style=" background: url('assets/alumnos/alumno_2.jpg'); background-size: cover; height: 200px; background-position: center;"  ></div>
+          <ion-card-header  color="yellow-light"  style="padding-top: 10px">
+            <ion-card-title style="height: 74px">Elena Rumichaca</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card  button="true" style="height: 270px; border-radius: 15px; background: rgba(0,0,0,0);" [routerLink]="'/schedule'">
+          <div  style=" background: url('assets/alumnos/alumno_3.jpg'); background-size: cover; height: 200px; background-position: center;"  ></div>
+          <ion-card-header  color="yellow-light"  style="padding-top: 10px">
+            <ion-card-title style="height: 74px">Adela Saldivar</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card  button="true" style="height: 270px; border-radius: 15px; background: rgba(0,0,0,0);" [routerLink]="'/schedule'">
+          <div  style=" background: url('assets/alumnos/alumno_4.jpg'); background-size: cover; height: 200px; background-position: center;"  ></div>
+          <ion-card-header  color="yellow-light"  style="padding-top: 10px;">
+            <ion-card-title style="height: 74px">Luisa Gonzalez</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

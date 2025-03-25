@@ -18,7 +18,7 @@ import {
     IonButton,
     IonMenuButton,
     IonRouterLink,
-    IonItemDivider, IonItemGroup, IonLabel
+    IonItemDivider, IonItemGroup, IonLabel,
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { calendarOutline, calendarSharp, layersSharp, layersOutline, chatbubbleSharp, checkboxSharp, chevronBackOutline } from "ionicons/icons";

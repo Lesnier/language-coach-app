@@ -24,8 +24,23 @@
             locale="es-ES"
             class="custom-datetime"
           >
+            <span slot="time-label">Tiempo</span>
           </ion-datetime>
+          <ion-list>
+            <ion-item>
+              <ion-select aria-label="Fruit" placeholder="Selecciona horario" [multiple]="true">
+                <ion-select-option value="apples">Apples</ion-select-option>
+                <ion-select-option value="oranges">Oranges</ion-select-option>
+                <ion-select-option value="bananas">Bananas</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
         </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+
       </ion-col>
     </ion-row>
     <ion-row>
