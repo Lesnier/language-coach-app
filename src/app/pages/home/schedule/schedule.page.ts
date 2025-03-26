@@ -19,7 +19,7 @@ import {
   IonButton,
   IonLabel,
   IonList,
-  IonNote, IonBadge, IonItemGroup, IonItemDivider,
+  IonNote, IonBadge, IonItemGroup, IonItemDivider, IonSelect, IonSelectOption,
 } from '@ionic/angular/standalone';
 
 import {ApiService} from 'src/app/services/api.service';
@@ -59,6 +59,8 @@ import {Observable} from "rxjs";
     IonBadge,
     IonItemGroup,
     IonItemDivider,
+    IonSelect,
+    IonSelectOption,
   ],
 })
 export class SchedulePage implements OnInit {
@@ -134,6 +136,7 @@ export class SchedulePage implements OnInit {
     if (token) {
       this.api.getAvailabilities(token);
       this.api.daysAvailable$.subscribe((availabilities: Availability[]) => {
+        console.log('disponibilidades', availabilities)
         if (availabilities) {
           this.availabilities = availabilities;
           if (this.datePicker) {
@@ -166,7 +169,6 @@ export class SchedulePage implements OnInit {
       availableDay.setHours(0, 0, 0, 0);
       return date.getTime() == availableDay.getTime();
     })
-
   };
 
 

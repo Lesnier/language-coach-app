@@ -23,6 +23,7 @@ import { UtilsService } from '../services/utils.service';
 export class LoginPage {
   loginForm: FormGroup;
   utils = inject(UtilsService);
+  logo = "./assets/logo.jpg";
 
   constructor(
     private fb: FormBuilder,
