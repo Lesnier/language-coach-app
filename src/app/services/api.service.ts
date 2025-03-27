@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {Availability} from "../models/interfaces";
-import {environment} from "../../environments/environment";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { Availability } from '../models/interfaces';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-
   public apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -22,13 +23,39 @@ export class ApiService {
   }
 
   getAgendas(token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${this.apiUrl}/agendas`, { headers });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    console.log('API: Fetching agendas');
+
+    return this.http.get<any>(`${this.apiUrl}/agendas`, { headers }).pipe(
+      tap((response) => console.log('API: Agendas fetched successfully')),
+      catchError((error) => {
+        console.error('API: Error fetching agendas:', error);
+        return throwError(error);
+      })
+    );
   }
 
   postAgenda(data: any, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(`${this.apiUrl}/agendas`, data, { headers });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    console.log('API: Posting agenda with data:', data);
+
+    return this.http
+      .post<any>(`${this.apiUrl}/agendas`, data, { headers })
+      .pipe(
+        tap((response) => console.log('API: Agenda post response:', response)),
+        catchError((error) => {
+          console.error('API: Error posting agenda:', error);
+          return throwError(error);
+        })
+      );
   }
 
   getCourses(token: string): Observable<any> {
@@ -118,15 +145,12 @@ export class ApiService {
   private daysAvailableSubject = new BehaviorSubject<Availability[]>([]); // Inicia con un array vacío
   daysAvailable$ = this.daysAvailableSubject.asObservable(); // Observable accesible desde fuera
 
-  getAvailabilities(token: string){
+  getAvailabilities(token: string) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get<Availability[]>(`${this.apiUrl}/availabilities`, { headers }).subscribe( availabilities => {
-      this.daysAvailableSubject.next(availabilities);
-    });
+    this.http
+      .get<Availability[]>(`${this.apiUrl}/availabilities`, { headers })
+      .subscribe((availabilities) => {
+        this.daysAvailableSubject.next(availabilities);
+      });
   }
-
-
-
-
-
 }

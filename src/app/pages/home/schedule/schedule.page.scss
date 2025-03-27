@@ -1,28 +1,226 @@
-//:host {
-//  --allowed-date-color: #4CAF50; /* Verde para fechas permitidas */
-//  --disabled-date-color: #393939; /* Gris para fechas deshabilitadas */
-//}
-//
-//.custom-datetime::part(calendar-day) {
-//  color: #393939; /* Todas las fechas en gris */
-//  font-weight: bold;
-//}
-//
-//.custom-datetime::part(active) {
-//  color: #eaeaea; /* Todas las fechas en gris */
-//  font-weight: bold;
-//}
-//
-//.custom-datetime::part(disabled) {
-//  color: #4c4c4c; /* Todas las fechas en gris */
-//  font-weight: normal !important;
-//}
-//
-//
-//
-//.custom-datetime::part(calendar-day-selected),
-//.custom-datetime::part(calendar-day-today) {
-//  color: white !important;
-//  background-color: var(--allowed-date-color) !important; /* Cambiar color de fondo de fechas permitidas */
-//  border-radius: 80%;
-//}
+ion-content {
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+
+  ion-card {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0;
+  }
+}
+
+ion-datetime {
+  width: 100%;
+  max-width: 100%;
+}
+
+// Calendar customization for highlighting scheduled days
+ion-datetime::part(calendar-day) {
+  border-radius: 50%;
+}
+
+// Style for the scheduled dates (custom class applied in code)
+:host ::ng-deep .user-scheduled-date {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--ion-color-green, #2dd36f); // Match the legend color
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+  }
+}
+
+// Make the today date indicator more visible
+ion-datetime::part(calendar-day-today) {
+  border: 1px solid var(--ion-color-medium);
+}
+
+// Stronger highlight for scheduled dates in the calendar
+ion-datetime::part(calendar-day).calendar-day-has-events {
+  background-color: rgba(var(--ion-color-green-rgb, 45, 211, 111), 0.2);
+  font-weight: bold;
+}
+
+.custom-datetime {
+  --background: #ffffff;
+  --color: #333333;
+  margin: 0;
+
+  // Change blue highlight colors to green
+  --ion-color-primary: #113531;
+
+  // Calendar day colors
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: var(--ion-color-green-shade, #27bb62);
+  --ion-color-primary-tint: var(--ion-color-green-tint, #42d77d);
+
+  // Use dark green for header
+  --background-color: #0a2420;
+}
+
+// Style the header with dark green
+ion-datetime::part(header) {
+  background: #0a2420 !important;
+}
+
+// Style calendar headers and buttons
+ion-datetime::part(calendar-day-active) {
+  color: #ffffff;
+  background-color: var(--ion-color-green, #2dd36f) !important;
+}
+
+ion-datetime::part(calendar-day-today) {
+  border: 1px solid var(--ion-color-green, #2dd36f);
+}
+
+// Style navigation buttons and month/year selections
+ion-datetime::part(navigation) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+ion-datetime::part(month-year-button) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+ion-datetime::part(calendar-month-year) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+// Style time controls
+ion-datetime::part(time-button) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+ion-datetime::part(wheel-item-active) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+// Style confirmation buttons
+ion-datetime::part(buttons) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+ion-datetime::part(action-button) {
+  color: var(--ion-color-green, #2dd36f);
+}
+
+.schedule-button {
+  margin: 20px 0;
+  width: 100%;
+
+  ion-button {
+    --border-radius: 8px;
+    min-height: 48px;
+    font-weight: 500;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.notification-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+
+  ion-note {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+
+    &[color="danger"] {
+      background-color: rgba(var(--ion-color-danger-rgb), 0.1);
+    }
+
+    &[color="success"] {
+      background-color: rgba(var(--ion-color-success-rgb), 0.1);
+    }
+  }
+}
+
+.agenda-list {
+  margin-top: 20px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+
+  ion-item-divider {
+    --background: transparent;
+    --color: var(--ion-color-medium);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  ion-item {
+    --border-radius: 12px;
+    --background: #f5f5f5;
+    margin-bottom: 10px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --border-width: 0;
+    --border-style: none;
+    --border-color: transparent;
+    --inner-border-width: 0;
+    --min-height: auto;
+  }
+}
+
+.time-select {
+  font-size: 1.1rem;
+  --placeholder-opacity: 0.75;
+  --padding-start: 8px;
+  width: 100%;
+  max-width: 150px;
+}
+
+ion-select::part(text) {
+  font-weight: 500;
+}
+
+ion-select-option {
+  font-size: 1.1rem;
+}
+
+// Add a specific style for the calendar legend
+.calendar-legend {
+  margin-top: 5px;
+
+  small {
+    font-size: 0.85rem;
+    color: #ffffff;
+  }
+}
+
+// Style for state badges
+.state-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
