@@ -6,7 +6,7 @@
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title> este es el forum de laravel, cualquier duda por aca </ion-title>
+    <ion-title>{{ title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,6 +17,9 @@
     </ion-toolbar>
   </ion-header>
   <div class="chat-container">
+    <div *ngIf="comments.length === 0" class="no-comments">
+      <p>No hay comentarios aún. Sé el primero en comentar.</p>
+    </div>
     @for (comment of comments; track $index) { @if (this.user.id ===
     comment.user_id) {
     <div class="message-wrapper" [class.admin-message]="true">
@@ -24,18 +27,18 @@
         <div class="bubble-container">
           <div class="bubble">
             <h3>{{comment.response.name}}</h3>
-            <p>{{ comment.response.text}}</p>
+            <p>{{comment.response.text}}</p>
           </div>
         </div>
       </div>
     </div>
-    }@else {
+    } @else {
     <div class="message-wrapper">
       <div class="message-content">
         <div class="bubble-container">
           <div class="bubble">
             <h3>{{comment.response.name}}</h3>
-            <p>{{ comment.response.text}}</p>
+            <p>{{comment.response.text}}</p>
           </div>
         </div>
       </div>
