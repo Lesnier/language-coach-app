@@ -46,10 +46,31 @@
     <ion-row style="margin: 0 10px 10px">
       <ion-col size="12" size-md="12"
         ><ion-item>
-          <ion-select [(ngModel)]="this.course_id" label="Curso" placeholder="Curso">
+          <ion-select
+            [(ngModel)]="this.course_id"
+            label="Curso"
+            placeholder="Curso"
+          >
             @for (item of this.courses; track $index) {
             <ion-select-option value="{{item.id}}"
               >{{item.name}}</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin: 0 10px 10px">
+      <ion-col size="12" size-md="12"
+        ><ion-item>
+          <ion-select
+            [(ngModel)]="this.professor_id"
+            label="Profesor"
+            placeholder="Profesor"
+          >
+            @for (professor of this.professors; track $index) {
+            <ion-select-option value="{{professor.id}}"
+              >{{professor.name}}</ion-select-option
             >
             }
           </ion-select>

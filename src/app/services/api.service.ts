@@ -96,6 +96,17 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/students`, { headers });
   }
 
+  getProfessors(token: string) {
+    return this.http.get<{ message: string; Professors: any[] }>(
+      `${this.apiUrl}/professors`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+
   postThreadReply(
     token: string,
     threadId: any,

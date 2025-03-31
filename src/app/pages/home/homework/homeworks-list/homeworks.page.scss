@@ -1,32 +1,173 @@
 .task-card {
-    background-color: #3880ff;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-    ion-card-content {
-      padding: 16px;
+  background: linear-gradient(135deg, #617d57 0%, #526b48 100%);
+  margin: 16px 8px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &:active {
+    transform: translateY(3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  ion-card-content {
+    padding: 0;
+  }
+
+  .task-content {
+    padding: 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: background-color 0.2s ease;
+      z-index: -1;
     }
-  
-    h2 {
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      margin: 0;
-    }
-  
-    p {
-      color: white;
-      margin: 8px 0;
-      font-size: 14px;
-    }
-  
-    ion-button {
-      --color: #ffffff;
-      --padding-start: 4px;
-      --padding-end: 4px;
+
+    &:hover::before {
+      background-color: rgba(255, 255, 255, 0.05);
     }
   }
 
-  
-  
+  h2 {
+    color: white;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 8px 0;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .task-date {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-block;
+  }
+
+  .task-note {
+    margin-top: 12px;
+    padding-top: 12px;
+
+    strong {
+      font-weight: 600;
+      opacity: 0.9;
+    }
+  }
+
+  // Actions row styles
+  ion-row:last-child {
+    margin-top: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  ion-button {
+    &.delete-btn {
+      --background: transparent;
+      --background-hover: rgba(255, 59, 48, 0.15);
+      --ripple-color: rgba(255, 59, 48, 0.2);
+      --color: rgba(255, 255, 255, 0.85);
+      --border-radius: 50%;
+      height: 42px;
+      width: 42px;
+      margin: 6px 8px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle,
+            transparent 1%,
+            rgba(255, 59, 48, 0.15) 1%
+          )
+          center/15000%;
+        opacity: 0;
+        transition: opacity 0.3s, background-size 0.3s;
+      }
+
+      &:active::after {
+        opacity: 1;
+        background-size: 100%;
+        transition: 0s;
+      }
+
+      &:hover {
+        --color: rgb(255, 95, 82);
+        --background: rgba(255, 59, 48, 0.12);
+      }
+
+      ion-icon {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+// Improve list appearance
+ion-list {
+  background: transparent;
+  padding: 0 8px;
+}
+
+// More specific selector for the add button
+ion-button[color="secondary"] {
+  --ion-color-secondary: #59bdb2 !important;
+  --ion-color-secondary-shade: #4aa89e !important;
+  --ion-color-secondary-tint: #6ac4ba !important;
+  --ion-color-secondary-contrast: #ffffff !important;
+  --background: #59bdb2 !important;
+  --background-hover: #4aa89e !important;
+  --background-activated: #4aa89e !important;
+  --border-radius: 12px;
+  height: 48px;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 16px 8px;
+  --box-shadow: 0 4px 10px rgba(89, 189, 178, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    --box-shadow: 0 6px 12px rgba(89, 189, 178, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    --box-shadow: 0 2px 6px rgba(89, 189, 178, 0.3);
+  }
+}
+
+// Direct style for add button as a separate approach
+.add-task-btn {
+  --background: #59bdb2 !important;
+  --background-hover: #4aa89e !important;
+  --background-activated: #4aa89e !important;
+  --background-focused: #59bdb2 !important;
+  --color: white;
+}
