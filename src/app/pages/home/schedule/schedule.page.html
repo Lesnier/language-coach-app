@@ -87,10 +87,6 @@
         <span *ngIf="!isLoading">Agendar</span>
       </ion-button>
     </div>
-
-    <div class="notification-container">
-      <ion-note color="danger" *ngIf="invalidDate">Fecha inválida</ion-note>
-    </div>
   </div>
 
   <div class="agenda-list">
@@ -154,6 +150,17 @@
               </ion-col>
             </ion-row>
           </ion-grid>
+
+          <!-- Add delete button - only show for active agendas -->
+          <ion-button
+            fill="clear"
+            slot="end"
+            color="danger"
+            *ngIf="item.state === 'Active'"
+            (click)="deleteAgenda(item.id)"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
         </ion-item>
         }
       </ion-item-group>

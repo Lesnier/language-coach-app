@@ -1,11 +1,16 @@
 import { inject, Injectable } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  ToastController,
+} from '@ionic/angular';
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
   toastController = inject(ToastController);
   loadingController = inject(LoadingController);
+  alertController = inject(AlertController);
   private activeLoader: HTMLIonLoadingElement | null = null;
 
   constructor() {}
@@ -63,5 +68,33 @@ export class UtilsService {
       console.log('Error dismissing loader, might already be dismissed');
       this.activeLoader = null;
     }
+  }
+
+  /**
+   * Shows a confirmation alert with custom buttons and handlers
+   * @param header The header text
+   * @param message The message text
+   * @param buttons Array of buttons with text, role and handler
+   * @returns The alert instance
+   */
+  async showConfirm(
+    header: string,
+    message: string,
+    buttons: Array<{
+      text: string;
+      role?: string;
+      handler?: () => void | boolean;
+    }>
+  ) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons,
+      cssClass: 'confirmation-alert',
+      backdropDismiss: false, // Prevent dismissing by clicking outside
+    });
+
+    await alert.present();
+    return alert;
   }
 }

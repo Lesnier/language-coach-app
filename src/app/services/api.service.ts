@@ -58,6 +58,14 @@ export class ApiService {
       );
   }
 
+  deleteAgenda(agendaId: number, token: string) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    return this.http.delete(`${this.apiUrl}/agendas/${agendaId}`, { headers });
+  }
+
   getCourses(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/courses`, { headers });

@@ -30,7 +30,12 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { calendarOutline, chevronBackOutline } from 'ionicons/icons';
+import {
+  calendarOutline,
+  chevronBackOutline,
+  refreshOutline,
+  trashOutline,
+} from 'ionicons/icons';
 import { agenda, agendas, Availability } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
@@ -93,7 +98,12 @@ export class SchedulePage implements OnInit {
 
   constructor() {
     this.fechaActual = new Date();
-    addIcons({ calendarOutline, chevronBackOutline });
+    addIcons({
+      calendarOutline,
+      chevronBackOutline,
+      refreshOutline,
+      trashOutline,
+    });
   }
 
   ngOnInit() {
@@ -103,19 +113,38 @@ export class SchedulePage implements OnInit {
   }
 
   onDateChange(event: any) {
-    const selectedDate = new Date(event.detail.value);
-    this.updateAvailableTimes(selectedDate);
+    console.log('Raw date change value:', event.detail.value);
+
+    // Store the raw selected date string (including the T part)
+    this.fechaModel = event.detail.value;
+
+    // Fix timezone issues by working with the date string directly
+    const dateString = event.detail.value.split('T')[0];
+    console.log('Extracted date string:', dateString);
+
+    // Create a date that preserves the selected date
+    const localDate = new Date(dateString + 'T12:00:00');
+    console.log('Created local date object:', localDate);
+
+    this.updateAvailableTimes(localDate, dateString);
   }
 
-  updateAvailableTimes(date: Date) {
+  // Add dateString parameter with default value for backward compatibility
+  updateAvailableTimes(date: Date, dateString?: string) {
     this.availableTimes = [];
     this.timeMap = {}; // Reset the time mapping
-    const formattedDate = date.toISOString().split('T')[0];
 
-    // Find availability for selected date
+    // Use provided dateString if available, otherwise extract from date
+    const formattedDate = dateString || date.toISOString().split('T')[0];
+
+    // Find availability for selected date using strict string comparison
     const availability = this.availabilities.find((item) => {
-      const availDate = new Date(item.day_of_week);
-      return availDate.toISOString().split('T')[0] === formattedDate;
+      const availDateStr =
+        typeof item.day_of_week === 'string'
+          ? item.day_of_week.split('T')[0]
+          : new Date(item.day_of_week).toISOString().split('T')[0];
+
+      return availDateStr === formattedDate;
     });
 
     if (availability) {
@@ -156,46 +185,61 @@ export class SchedulePage implements OnInit {
       return;
     }
 
-    const selectedDate = new Date(this.fechaModel);
     const token = localStorage.getItem('access_token');
 
-    // Format date strictly to YYYY-MM-DD
-    const formattedDate = selectedDate.toISOString().split('T')[0];
+    // Extract date directly from the string without creating a Date object
+    // This avoids timezone shifts
+    const formattedDate = this.fechaModel.split('T')[0];
+
+    // Log the date for verification
+    console.log('Selected date (raw):', this.fechaModel);
+    console.log('Formatted date for API:', formattedDate);
 
     // Convert from display format to API format
     const formattedTime = this.getApiTimeFormat(this.selectedTime);
-
-    console.log(
-      `Scheduling appointment for date: ${formattedDate}, time: ${formattedTime} (display: ${this.selectedTime})`
-    );
 
     const agendarData: agenda = {
       date: formattedDate,
       time: formattedTime,
     };
 
+    console.log('Sending to API:', agendarData);
+
     if (token) {
       this.isLoading = true;
       this.utils.showLoading('Agendando tu cita...').then(() => {
-        console.log('Sending agenda data:', agendarData);
-
         this.api.postAgenda(agendarData, token).subscribe(
-          (res) => {
-            console.log('Agenda creation response:', res);
+          (res: any) => {
             this.utils.dismissLoading();
             this.isLoading = false;
-            this.createdDate = true;
-            this.invalidDate = false;
-            this.utils.showToast('Cita agendada con éxito', 'success');
 
-            // Reset selection
-            this.selectedTime = '';
+            // Check if the response contains an error message despite 200 status
+            if (res.error) {
+              console.warn('API returned error:', res.error);
+              this.createdDate = false;
+              this.invalidDate = true;
 
-            // Force refresh with multiple attempts
-            this.refreshAgendasWithRetry();
+              // Display the error message to the user
+              this.utils.showToast(
+                res.error === 'The user have an agenda in the selected date'
+                  ? 'Ya tienes una cita agendada para esta fecha'
+                  : res.error,
+                'warning'
+              );
+            } else {
+              // Success case - no errors
+              this.createdDate = true;
+              this.invalidDate = false;
+              this.utils.showToast('Cita agendada con éxito', 'success');
+
+              // Reset selection
+              this.selectedTime = '';
+
+              // Refresh agendas once
+              this.fetchAgendas(true);
+            }
           },
           (error) => {
-            console.error('Agenda creation error:', error);
             this.utils.dismissLoading();
             this.isLoading = false;
             this.createdDate = false;
@@ -210,29 +254,10 @@ export class SchedulePage implements OnInit {
     }
   }
 
-  // New method to refresh agendas with retry logic
-  refreshAgendasWithRetry(attempts = 3, delay = 500) {
-    console.log(`Refreshing agendas (attempts left: ${attempts})`);
-
-    // First attempt
-    this.fetchAgendas(true);
-
-    // Set up retries with increasing delays
-    if (attempts > 1) {
-      for (let i = 1; i < attempts; i++) {
-        setTimeout(() => {
-          console.log(`Retry attempt ${i} for fetching agendas`);
-          this.fetchAgendas(true);
-        }, delay * i);
-      }
-    }
-  }
-
   // Add a new method that explicitly fetches and refreshes agendas
   fetchAgendas(forceRefresh = false) {
     let token = localStorage.getItem('access_token');
     if (token) {
-      console.log('Fetching agendas...');
       this.api.getAgendas(token).subscribe(
         (res) => {
           console.log('Fetched agendas:', res);
@@ -293,15 +318,55 @@ export class SchedulePage implements OnInit {
     if (token) {
       this.api.getAvailabilities(token);
       this.api.daysAvailable$.subscribe((availabilities: Availability[]) => {
-        console.log('disponibilidades', availabilities);
-        if (availabilities) {
-          this.availabilities = availabilities;
+        console.log('Raw availabilities from API:', availabilities);
+
+        if (availabilities && availabilities.length > 0) {
+          // Normalize dates to ensure consistent format
+          this.availabilities = availabilities.map((item) => {
+            // Ensure day_of_week is consistently formatted
+            if (typeof item.day_of_week === 'string') {
+              item.day_of_week = item.day_of_week.split('T')[0]; // Keep only YYYY-MM-DD part
+            }
+            return item;
+          });
+
+          console.log('Normalized availabilities:', this.availabilities);
+
+          // Create lookup array of just the date strings
+          const availableDateStrings = this.availabilities.map((item) =>
+            typeof item.day_of_week === 'string'
+              ? item.day_of_week
+              : new Date(item.day_of_week).toISOString().split('T')[0]
+          );
+
+          console.log('Available dates for lookup:', availableDateStrings);
+
+          // Set up date picker with normalized date handling
           if (this.datePicker) {
-            this.datePicker.isDateEnabled = (dateString: string) =>
-              this.isDateEnabled(dateString);
+            this.datePicker.isDateEnabled = (dateString: string) => {
+              const date = new Date(dateString);
+              // Disable past dates
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              if (date < today) return false;
+
+              // Use the date string directly to avoid timezone issues
+              const formattedDateStr = dateString.split('T')[0];
+              const isEnabled = availableDateStrings.includes(formattedDateStr);
+
+              if (isEnabled) {
+                console.log(`Date ${formattedDateStr} is enabled`);
+              }
+              return isEnabled;
+            };
           }
-          // Update times for initial date
-          this.updateAvailableTimes(new Date(this.fechaModel));
+
+          // Update for initial date - carefully handle initial date string
+          const initialDate = new Date(this.fechaModel);
+          const initialDateStr = this.fechaModel.split('T')[0];
+          this.updateAvailableTimes(initialDate, initialDateStr);
+        } else {
+          console.warn('No availabilities returned from API');
         }
       });
     }
@@ -309,6 +374,71 @@ export class SchedulePage implements OnInit {
 
   back() {
     this.navCtrl.back();
+  }
+
+  // Add method to delete an agenda
+  deleteAgenda(agendaId: number) {
+    // Confirm before deleting
+    this.utils.showConfirm(
+      'Cancelar cita',
+      '¿Estás seguro que deseas cancelar esta cita?',
+      [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.performAgendaDeletion(agendaId);
+          },
+        },
+      ]
+    );
+  }
+
+  // Separate method to perform the actual deletion after confirmation
+  private performAgendaDeletion(agendaId: number) {
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+      this.utils.showToast(
+        'No se pudo autenticar. Inicia sesión nuevamente.',
+        'danger'
+      );
+      return;
+    }
+
+    this.isLoading = true;
+    this.utils.showLoading('Cancelando cita...').then(() => {
+      this.api.deleteAgenda(agendaId, token).subscribe(
+        (res: any) => {
+          this.utils.dismissLoading();
+          this.isLoading = false;
+
+          // Check if response contains an error
+          if (res && res.error) {
+            this.utils.showToast(res.error, 'danger');
+            return;
+          }
+
+          // Success case
+          this.utils.showToast('Cita cancelada con éxito', 'success');
+
+          // Refresh the agendas list
+          this.fetchAgendas(true);
+        },
+        (error: { error: { message: string } }) => {
+          this.utils.dismissLoading();
+          this.isLoading = false;
+
+          // Handle error response
+          const errorMessage =
+            error.error?.message || 'Error al cancelar la cita';
+          this.utils.showToast(errorMessage, 'danger');
+        }
+      );
+    });
   }
 
   allowedRanges = [
@@ -320,23 +450,4 @@ export class SchedulePage implements OnInit {
     { date: new Date(2025, 1, 18) },
     { date: new Date(2025, 1, 19) },
   ];
-
-  isDateEnabled = (dateString: string): boolean => {
-    const date = new Date(dateString);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Disable past dates
-    if (date < today) {
-      return false;
-    }
-
-    // Check if date is in availabilities
-    return this.availabilities.some((item) => {
-      date.setHours(0, 0, 0, 0);
-      let availableDay = new Date(item.day_of_week);
-      availableDay.setHours(0, 0, 0, 0);
-      return date.getTime() === availableDay.getTime();
-    });
-  };
 }
