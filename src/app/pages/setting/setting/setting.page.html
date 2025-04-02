@@ -9,6 +9,52 @@
 
 <ion-content [fullscreen]="true">
   <ion-grid style="margin-top: 40px">
+    <ion-row>
+      <ion-col size="12">
+        <div class="upload-container">
+          <div class="upload-header">
+            <h3>Foto de perfil</h3>
+            <p>Sube una imagen para tu perfil</p>
+          </div>
+
+          <div
+            class="file-upload-area"
+            (click)="fileInput.click()"
+            *ngIf="!selectedImage"
+          >
+            <ion-icon
+              name="cloud-upload-outline"
+              class="upload-icon"
+            ></ion-icon>
+            <div class="upload-text">
+              <p>Haz clic para seleccionar</p>
+              <span>O arrastra y suelta aquí</span>
+            </div>
+          </div>
+
+          <div class="file-preview" *ngIf="selectedImage">
+            <div class="preview-content">
+              <img [src]="selectedImage" class="preview-image" />
+              <ion-button
+                fill="clear"
+                class="remove-file-btn"
+                (click)="removeFile()"
+              >
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            #fileInput
+            (change)="onFileChange($event)"
+          />
+        </div>
+      </ion-col>
+    </ion-row>
     <ion-text style="margin: 100px 15px 15px">Nombre</ion-text>
     <ion-row style="margin: 10px 10px 10px">
       <ion-col size="12" size-md="12"
@@ -49,6 +95,18 @@
     </ion-item>
   </ion-grid>
   <ion-grid>
+    <ion-row *ngIf="isUploading">
+      <ion-col size="12">
+        <div class="progress-container">
+          <ion-progress-bar [value]="uploadProgress"></ion-progress-bar>
+          <p class="progress-text">
+            {{ Math.round(uploadProgress * 100) }}% Cargando...
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
     <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
       <ion-grid>
         <ion-row style="margin: 10px 10px 10px">
@@ -78,43 +136,41 @@
         <ion-row style="margin: 10px 10px 10px">
           <ion-col size="12">
             <ion-label position="floating">Nueva Contraseña</ion-label>
-          <ion-item>
-            
-            <ion-input
-              type="password"
-              formControlName="new_password"
-              required
-            ></ion-input>
-          </ion-item>
-        </ion-col>
+            <ion-item>
+              <ion-input
+                type="password"
+                formControlName="new_password"
+                required
+              ></ion-input>
+            </ion-item>
+          </ion-col>
         </ion-row>
         <ion-row style="margin: 10px 10px 10px">
           <ion-col size="12">
-          <div
-            *ngIf="
+            <div
+              *ngIf="
           changePasswordForm.get('new_password')?.touched &&
           changePasswordForm.get('new_password')?.invalid
         "
-            class="error-message"
-            style="color: red"
-          >
-            La nueva contraseña es obligatoria y debe tener al menos 8
-            caracteres.
-          </div>
-        </ion-col>
+              class="error-message"
+              style="color: red"
+            >
+              La nueva contraseña es obligatoria y debe tener al menos 8
+              caracteres.
+            </div>
+          </ion-col>
         </ion-row>
         <ion-row style="margin: 10px 10px 10px">
           <ion-col size="12">
             <ion-label position="floating">Confirmar Contraseña</ion-label>
-          <ion-item>
-         
-            <ion-input
-              type="password"
-              formControlName="confirm_password"
-              required
-            ></ion-input>
-          </ion-item>
-        </ion-col>
+            <ion-item>
+              <ion-input
+                type="password"
+                formControlName="confirm_password"
+                required
+              ></ion-input>
+            </ion-item>
+          </ion-col>
         </ion-row>
         <ion-row style="margin: 10px 10px 10px">
           <div
@@ -131,14 +187,14 @@
         </ion-row>
         <ion-row style="margin: 10px 10px 10px">
           <ion-col size="12">
-          <ion-button
-            expand="block"
-            type="submit"
-            [disabled]="!changePasswordForm.valid"
-          >
-            Aceptar
-          </ion-button>
-        </ion-col>
+            <ion-button
+              expand="block"
+              type="submit"
+              [disabled]="!changePasswordForm.valid"
+            >
+              Aceptar
+            </ion-button>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </form>

@@ -161,6 +161,31 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/payments`, data, { headers });
   }
 
+  uploadProfilePicture(formData: FormData, token: string) {
+    console.log('API: Uploading profile picture'); // Debugging log
+    return this.http
+      .post(`${this.apiUrl}/user/profile-picture`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap(() => console.log('API: Profile picture uploaded successfully')), // Debugging log
+        catchError((error) => {
+          console.error('API: Error uploading profile picture:', error); // Debugging log
+          return throwError(error);
+        })
+      );
+  }
+
+  updateUserProfile(formData: FormData, token: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/update-profile`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   private daysAvailableSubject = new BehaviorSubject<Availability[]>([]); // Inicia con un array vacío
   daysAvailable$ = this.daysAvailableSubject.asObservable(); // Observable accesible desde fuera
 

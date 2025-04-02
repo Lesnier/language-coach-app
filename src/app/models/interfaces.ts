@@ -10,6 +10,7 @@ export interface User {
   };
   locale: string;
   updated_at: string;
+  profile_picture?: string;
 }
 
 export interface agenda {
@@ -29,8 +30,6 @@ export interface agendas {
   student: User;
   state: string;
 }
-
-
 
 export interface data {
   current_password: string;
@@ -77,6 +76,3 @@ export interface Availability {
   start_time: string;
   end_time: string;
 }
-
-
-

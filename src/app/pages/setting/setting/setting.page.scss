@@ -1,0 +1,130 @@
+img {
+  display: block;
+  margin: 0 auto;
+}
+
+// Upload container
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+.upload-header {
+  margin-bottom: 16px;
+  text-align: center;
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+.file-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #59bdb2;
+  border-radius: 12px;
+  padding: 32px 20px;
+  transition: all 0.2s ease;
+  background-color: rgba(89, 189, 178, 0.05);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(89, 189, 178, 0.1);
+  }
+
+  .upload-icon {
+    font-size: 48px;
+    color: #59bdb2;
+    margin-bottom: 16px;
+  }
+
+  .upload-text {
+    text-align: center;
+
+    p {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    span {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+// File preview
+.file-preview {
+  position: relative;
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .preview-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .preview-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    background-color: #f0f0f0;
+  }
+
+  .remove-file-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    --background: rgba(0, 0, 0, 0.5);
+    --color: white;
+    --border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    z-index: 10;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+// Progress bar
+.progress-container {
+  margin: 16px 0;
+
+  ion-progress-bar {
+    --buffer-background: rgba(89, 189, 178, 0.2);
+    --progress-background: #59bdb2;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-text {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+}
