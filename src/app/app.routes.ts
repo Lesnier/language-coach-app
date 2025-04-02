@@ -25,14 +25,6 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'schedule-test',
-    loadComponent: () =>
-      import('./pages/home/schedule-test/schedule-test.page').then(
-        (m) => m.ScheduleTestPage
-      ),
-    canActivate: [AuthGuardService],
-  },
-  {
     path: 'courses',
     loadComponent: () =>
       import('./pages/home/course/course.page').then((m) => m.CoursePage),
