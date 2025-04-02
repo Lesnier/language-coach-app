@@ -80,7 +80,6 @@ export class AppComponent implements OnInit, DoCheck {
     { title: 'Inicio', url: '/start', icon: 'home' },
     { title: 'Secretaría', url: '/secretary', icon: 'file-tray-stacked' },
     { title: 'Agendar', url: '/schedule', icon: 'calendar' },
-    { title: 'AgendarTest', url: '/schedule-test', icon: 'calendar' },
     { title: 'Cursos', url: '/courses', icon: 'layers' },
     { title: 'Foro', url: '/foro', icon: 'chatbubble' },
     { title: 'Tareas', url: '/homeworks-list', icon: 'checkbox' },

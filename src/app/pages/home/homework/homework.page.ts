@@ -1,22 +1,21 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import {
+  IonBackButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
   IonContent,
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonButtons,
-  IonBackButton,
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCardContent,
 } from '@ionic/angular/standalone';
 import { ApiService } from 'src/app/services/api.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import {environment} from "../../../../environments/environment";
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-homework',
   templateUrl: './homework.page.html',
@@ -59,7 +58,7 @@ export class HomeworkPage implements OnInit {
       res.forEach((element: any) => {
         if (element.id == this.id) {
           this.task = element;
-          this.task.image = this.apiUrl + element.image;
+          this.task.image = element.image_url; // Use the image_url property directly
         }
       });
     });

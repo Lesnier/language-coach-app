@@ -11,85 +11,141 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-grid style="margin-top: 10px">
-    <ion-row>
-      <ion-col>
-        <div class="upload-container">
-          <!-- Texto encima del avatar -->
-          <div class="upload-text">
-            <h3>Subir foto</h3>
+  <div class="form-container">
+    <ion-grid class="form-grid">
+      <!-- File Upload Section -->
+      <ion-row>
+        <ion-col>
+          <div class="upload-container">
+            <div class="upload-header">
+              <h3>Envío de tarea</h3>
+              <p>Sube una imagen o documento para tu tarea</p>
+            </div>
+
+            <div
+              class="file-upload-area"
+              (click)="fileInput.click()"
+              *ngIf="!selectedImage && !fileType"
+            >
+              <ion-icon
+                name="cloud-upload-outline"
+                class="upload-icon"
+              ></ion-icon>
+              <div class="upload-text">
+                <p>Haz clic para seleccionar</p>
+                <span>O arrastra y suelta aquí</span>
+              </div>
+            </div>
+
+            <div class="file-preview" *ngIf="selectedImage || fileType">
+              <div class="preview-content">
+                <!-- Image preview -->
+                <img
+                  *ngIf="selectedImage"
+                  [src]="selectedImage"
+                  class="preview-image"
+                />
+
+                <!-- Document icon for non-image files -->
+                <div
+                  *ngIf="!selectedImage && fileType"
+                  class="document-preview"
+                >
+                  <ion-icon
+                    name="document-outline"
+                    class="document-icon"
+                  ></ion-icon>
+                  <span>{{ imageFile?.name }}</span>
+                </div>
+
+                <!-- Remove button -->
+                <ion-button
+                  fill="clear"
+                  class="remove-file-btn"
+                  (click)="removeFile()"
+                  *ngIf="!isUploading"
+                >
+                  <ion-icon name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+
+            <!-- Hidden file input -->
+            <input
+              type="file"
+              #fileInput
+              (change)="onFileChange($event)"
+              accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
+              style="display: none"
+            />
           </div>
+        </ion-col>
+      </ion-row>
 
-          <!-- Contenedor del avatar con el input file -->
-          <ion-avatar class="upload-area" (click)="fileInput.click()">
-            <!-- Icono de cámara si no hay imagen seleccionada -->
-            <ion-icon
-              *ngIf="!selectedImage"
-              name="camera-outline"
-              class="camera-icon"
-            ></ion-icon>
-            <!-- Imagen seleccionada como fondo -->
-            <img *ngIf="selectedImage" [src]="selectedImage" />
-          </ion-avatar>
-
-          <!-- Input oculto -->
-          <input
-            type="file"
-            #fileInput
-            (change)="onFileChange($event)"
-            accept="image/*"
-            style="display: none"
-          />
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row style="margin: 0 10px 10px">
-      <ion-col size="12" size-md="12"
-        ><ion-item>
-          <ion-select
-            [(ngModel)]="this.course_id"
-            label="Curso"
-            placeholder="Curso"
-          >
-            @for (item of this.courses; track $index) {
-            <ion-select-option value="{{item.id}}"
-              >{{item.name}}</ion-select-option
+      <!-- Form Fields -->
+      <ion-row>
+        <ion-col>
+          <ion-item class="custom-select">
+            <ion-label position="floating">Curso</ion-label>
+            <ion-select
+              [(ngModel)]="this.course_id"
+              placeholder="Selecciona un curso"
             >
-            }
-          </ion-select>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row style="margin: 0 10px 10px">
-      <ion-col size="12" size-md="12"
-        ><ion-item>
-          <ion-select
-            [(ngModel)]="this.professor_id"
-            label="Profesor"
-            placeholder="Profesor"
-          >
-            @for (professor of this.professors; track $index) {
-            <ion-select-option value="{{professor.id}}"
-              >{{professor.name}}</ion-select-option
-            >
-            }
-          </ion-select>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+              @for (item of this.courses; track $index) {
+              <ion-select-option value="{{item.id}}"
+                >{{item.name}}</ion-select-option
+              >
+              }
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="12">
-        <ion-button
-          expand="block"
-          (click)="onSubmit()"
-          color="secondary"
-          style="margin: 0 10px"
-          >Aceptar</ion-button
-        >
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item class="custom-select">
+            <ion-label position="floating">Profesor</ion-label>
+            <ion-select
+              [(ngModel)]="this.professor_id"
+              placeholder="Selecciona un profesor"
+            >
+              @for (professor of this.professors; track $index) {
+              <ion-select-option value="{{professor.id}}"
+                >{{professor.name}}</ion-select-option
+              >
+              }
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- Upload progress -->
+      <ion-row *ngIf="isUploading">
+        <ion-col>
+          <div class="progress-container">
+            <ion-progress-bar [value]="uploadProgress"></ion-progress-bar>
+            <p class="progress-text">
+              {{ Math.round(uploadProgress * 100) }}% Cargando...
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- Submit Button -->
+      <ion-row>
+        <ion-col>
+          <ion-button
+            expand="block"
+            (click)="onSubmit()"
+            color="secondary"
+            class="submit-button"
+            [disabled]="isUploading || !imageFile || !course_id || !professor_id"
+          >
+            <ion-spinner name="crescent" *ngIf="isUploading"></ion-spinner>
+            <span *ngIf="!isUploading">Registrar Tarea</span>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

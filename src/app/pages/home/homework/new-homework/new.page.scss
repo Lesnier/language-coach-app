@@ -1,40 +1,337 @@
+ion-content {
+  --background: #f8f9fa;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.form-grid {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 20px 16px;
+  margin-top: 16px;
+}
+
+// Upload container
 .upload-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
+  flex-direction: column;
+  margin-bottom: 24px;
 }
 
-.upload-area {
-  width: 500px;
-  height: 500px;
-  background-color: #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.upload-area img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.upload-text {
-  position: absolute;
-  color: #666666;
-  font-size: 10px;
-  font-weight: bold;
+.upload-header {
+  margin-bottom: 16px;
   text-align: center;
-  z-index: 1;
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: #666;
+  }
 }
 
-.camera-icon {
-  font-size: 50px;
-  color: #ffffff;
-  z-index: 0;
+.file-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #59bdb2;
+  border-radius: 12px;
+  padding: 32px 20px;
+  transition: all 0.2s ease;
+  background-color: rgba(89, 189, 178, 0.05);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(89, 189, 178, 0.1);
+  }
+
+  .upload-icon {
+    font-size: 48px;
+    color: #59bdb2;
+    margin-bottom: 16px;
+  }
+
+  .upload-text {
+    text-align: center;
+
+    p {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    span {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+// File preview
+.file-preview {
+  position: relative;
+  margin-top: 8px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .preview-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .preview-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    background-color: #f0f0f0;
+  }
+
+  .document-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 24px;
+    width: 100%;
+
+    .document-icon {
+      font-size: 48px;
+      color: #59bdb2;
+      margin-bottom: 8px;
+    }
+
+    span {
+      font-size: 14px;
+      color: #333;
+      text-align: center;
+      word-break: break-all;
+      max-width: 100%;
+    }
+  }
+
+  .remove-file-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    --background: rgba(0, 0, 0, 0.5);
+    --color: white;
+    --border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    z-index: 10;
+
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+// Form styling
+.custom-select {
+  // Removed `display: none` to make the selectors visible
+  --background: transparent;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --border-style: solid;
+  --border-width: 1px;
+  --padding-start: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+
+  &.item-has-focus {
+    --border-color: #59bdb2;
+    --highlight-color-focused: #59bdb2;
+  }
+
+  ion-label {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  ion-select {
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-size: 16px;
+    color: #333;
+  }
+}
+
+.custom-textarea {
+  display: none;
+}
+
+// Enhanced selectors
+.selector-container {
+  margin-bottom: 20px;
+}
+
+.selector-label {
+  display: block;
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.custom-select-wrapper {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #59bdb2;
+    pointer-events: none;
+  }
+}
+
+.enhanced-select {
+  --background: white;
+  --placeholder-color: #666;
+  --placeholder-opacity: 0.8;
+  --padding-start: 16px;
+  --padding-end: 40px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+
+  &.select-expanded {
+    --border-color: #59bdb2;
+    box-shadow: 0 0 0 2px rgba(89, 189, 178, 0.2);
+  }
+
+  &::part(placeholder) {
+    color: #666;
+    opacity: 0.8;
+  }
+
+  &::part(text) {
+    color: #333;
+    font-weight: 500;
+  }
+
+  &::part(icon) {
+    display: none;
+  }
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+
+  strong {
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+// Override Ion-Select action sheet styles
+:host ::ng-deep {
+  .action-sheet-group {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .action-sheet-title {
+    color: #333;
+    font-weight: 600;
+  }
+
+  .action-sheet-button {
+    --button-color: #333;
+  }
+
+  .action-sheet-selected {
+    color: #59bdb2;
+    font-weight: 600;
+  }
+}
+
+// Progress bar
+.progress-container {
+  margin: 16px 0;
+
+  ion-progress-bar {
+    --buffer-background: rgba(89, 189, 178, 0.2);
+    --progress-background: #59bdb2;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-text {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+// Submit button
+.submit-button {
+  --background: #59bdb2;
+  --background-hover: #4aa89e;
+  --background-activated: #4aa89e;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 10px rgba(89, 189, 178, 0.3);
+  --color: white;
+  height: 48px;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 12px 0;
+  transition: all 0.2s ease;
+
+  &:hover:not(.button-disabled) {
+    --box-shadow: 0 6px 12px rgba(89, 189, 178, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    --box-shadow: 0 2px 6px rgba(89, 189, 178, 0.3);
+  }
+
+  &.button-disabled {
+    --background: #c5c5c5;
+    --box-shadow: none;
+    opacity: 0.7;
+  }
+
+  ion-spinner {
+    margin-right: 8px;
+  }
 }

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import {
+  IonAvatar,
   IonButton,
   IonButtons,
   IonCard,
@@ -13,6 +14,8 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonItem,
+  IonLabel,
   IonList,
   IonMenuButton,
   IonRouterLink,
@@ -29,6 +32,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-homeworks-list',
@@ -51,12 +55,14 @@ import { ApiService } from 'src/app/services/api.service';
     IonCol,
     IonGrid,
     IonRouterLink,
-    IonRouterLink,
     RouterLink,
     RouterLinkActive,
     IonIcon,
     IonRow,
     IonButton,
+    IonItem,
+    IonAvatar,
+    IonLabel,
   ],
 })
 export class HomeworksPage implements OnInit {
@@ -65,13 +71,14 @@ export class HomeworksPage implements OnInit {
   router = inject(Router);
   tasks: any[] = [];
   professors: any = {}; // Cache for professor data
+  baseUrl: string = environment.apiUrl; // Use the apiUrl from the environment
 
   constructor() {
     addIcons({ chevronBackOutline, trashOutline, createOutline, addOutline });
   }
 
   ngOnInit() {
-    this.getTask();
+    this.getTasks();
     this.getProfessors();
   }
 
@@ -88,16 +95,21 @@ export class HomeworksPage implements OnInit {
   deleteTask(id: number) {
     const token = localStorage.getItem('access_token');
     if (token)
-      this.api.deleteTask(token, id).subscribe((res) => {
-        this.getTask();
+      this.api.deleteTask(token, id).subscribe(() => {
+        this.getTasks();
       });
   }
 
-  getTask() {
+  getTasks() {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.getTask(token).subscribe((res) => {
-        this.tasks = res;
+        // Return the response
+
+        // Clear the tasks array before populating it
+        this.tasks = []; // Clear the array to avoid duplicates
+        // Populate the tasks array with the response data
+        this.tasks = res; // Assign the response to the tasks array
         console.log(this.tasks);
       });
   }
@@ -107,9 +119,7 @@ export class HomeworksPage implements OnInit {
     if (token) {
       this.api.getProfessors(token).subscribe((response) => {
         if (response && response.Professors) {
-          // Extract the professors array from the response
           const professors = response.Professors;
-          // Convert array to lookup object for easier access
           professors.forEach((prof) => {
             this.professors[prof.id] =
               prof.name || prof.username || 'Profesor ' + prof.id;
