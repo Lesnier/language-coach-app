@@ -123,9 +123,9 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/user-info`, { headers });
   }
 
-  changePassword(data: any, token: string): Observable<any> {
+  updatePassword(data: any, token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(`${this.apiUrl}/change-password`, data, { headers });
+    return this.http.post(`${this.apiUrl}/update-password`, data, { headers });
   }
 
   getTask(token: string): Observable<any> {

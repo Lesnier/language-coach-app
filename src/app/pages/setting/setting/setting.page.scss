@@ -128,3 +128,12 @@ img {
     color: #666;
   }
 }
+
+ion-button {
+  &.ion-color-tertiary {
+    --background: #f4a261;
+    --background-activated: #e76f51;
+    --background-focused: #f4a261;
+    --color: white;
+  }
+}

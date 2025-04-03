@@ -79,6 +79,14 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
+    path: 'change-password',
+    loadComponent: () =>
+      import('./pages/setting/change-password/change-password.page').then(
+        (m) => m.ChangePasswordPage
+      ),
+    canActivate: [AuthGuardService],
+  },
+  {
     path: 'modules',
     loadComponent: () =>
       import('./pages/home/course/modules/modules.page').then(
