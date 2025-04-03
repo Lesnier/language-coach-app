@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, ViewWillEnter } from '@ionic/angular';
 import {
   IonAvatar,
   IonButton,
@@ -65,7 +65,7 @@ import { environment } from 'src/environments/environment';
     IonLabel,
   ],
 })
-export class HomeworksPage implements OnInit {
+export class HomeworksPage implements OnInit, ViewWillEnter {
   navCtrl = inject(NavController);
   api = inject(ApiService);
   router = inject(Router);
@@ -80,6 +80,10 @@ export class HomeworksPage implements OnInit {
   ngOnInit() {
     this.getTasks();
     this.getProfessors();
+  }
+
+  ionViewWillEnter() {
+    this.getTasks(); // Fetch updated tasks when the page is entered
   }
 
   back() {

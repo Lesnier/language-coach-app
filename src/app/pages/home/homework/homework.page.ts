@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonCard,
   IonCardContent,
@@ -11,6 +12,7 @@ import {
   IonCardTitle,
   IonContent,
   IonHeader,
+  IonItem,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
@@ -34,6 +36,8 @@ import { environment } from '../../../../environments/environment';
     IonToolbar,
     CommonModule,
     FormsModule,
+    IonItem,
+    IonButton,
   ],
 })
 export class HomeworkPage implements OnInit {

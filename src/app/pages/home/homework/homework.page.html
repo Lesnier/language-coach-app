@@ -3,18 +3,23 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tasks"></ion-back-button>
     </ion-buttons>
-    <ion-title>Task Details</ion-title>
+    <ion-title>Detalles de Tarea</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-card>
-    <img src="{{task?.image}}" alt="Task Photo" class="task-photo" />
+    <ng-container *ngIf="task?.image; else noImage">
+      <img [src]="task.image" alt="Task Photo" class="task-photo" />
+    </ng-container>
+    <ng-template #noImage>
+      <p class="no-image-message">No hay imagen disponible para esta tarea.</p>
+    </ng-template>
     <ion-card-header>
-      <ion-card-title>{{task?.course.name}}</ion-card-title>
+      <ion-card-title>Curso: {{task?.course.name}}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <h2>Teachers Note:</h2>
+      <h2>Nota del profesor:</h2>
       <p>{{task?.teacher_note}}</p>
     </ion-card-content>
   </ion-card>
