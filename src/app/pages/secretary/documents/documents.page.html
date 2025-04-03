@@ -26,10 +26,11 @@
   </ion-grid>
   <ion-list>
     @for (file of documentos; track $index) {
-    <ion-item (click)="view(file.download_link)">
-      <ion-icon slot="start"></ion-icon>
+    <ion-item>
+      <ion-icon slot="start" name="document-outline"></ion-icon>
       <ion-label>
-        <a href="{{apiUrl +file.file}}">{{file.name}}</a>
+        <h2>{{file.name}}</h2>
+        <p>Subido: {{file.upload_date}}</p>
       </ion-label>
     </ion-item>
     }

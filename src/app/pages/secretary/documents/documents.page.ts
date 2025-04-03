@@ -1,6 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import {
   IonButton,
   IonButtons,
@@ -8,18 +10,16 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
   IonMenuButton,
   IonRow,
   IonTitle,
   IonToolbar,
-  IonIcon,
-  IonList,
-  IonLabel,
-  IonItem,
-  IonListHeader,
 } from '@ionic/angular/standalone';
-import { Router, RouterLink } from '@angular/router';
-import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   chevronBackOutline,
@@ -27,7 +27,7 @@ import {
   trashOutline,
 } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
-import {environment} from "../../../../environments/environment";
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.page.html',
@@ -73,10 +73,21 @@ export class DocumentsPage implements OnInit {
     const token = localStorage.getItem('access_token');
     if (token)
       this.api.getFiles(token).subscribe((res) => {
-        this.documentos = res;
+        this.documentos = res.map(
+          (doc: {
+            file: string;
+            name: any;
+            created_at: string | number | Date;
+          }) => {
+            const fileData = JSON.parse(doc.file)[0];
+            return {
+              name: doc.name,
+              upload_date: new Date(doc.created_at).toLocaleDateString(),
+              original_name: fileData.original_name,
+            };
+          }
+        );
         console.log(this.documentos);
-
-        // this.filterPdfFiles();
       });
   }
 
@@ -86,7 +97,6 @@ export class DocumentsPage implements OnInit {
 
   filterPdfFiles() {
     this.documentos = this.file.filter((file) => {
-
       file.name.endsWith('.pdf');
     });
     console.log(this.documentos);

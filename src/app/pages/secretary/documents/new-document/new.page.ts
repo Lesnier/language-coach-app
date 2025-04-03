@@ -1,24 +1,24 @@
-import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import {
+  IonAvatar,
+  IonButton,
+  IonButtons,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
+  IonIcon,
+  IonMenuButton,
+  IonRow,
   IonTitle,
   IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonAvatar,
-  IonCol,
-  IonGrid,
-  IonIcon,
-  IonRow,
-  IonButton,
 } from '@ionic/angular/standalone';
-import { ApiService } from 'src/app/services/api.service';
-import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-new',
   templateUrl: './new.page.html',
@@ -73,9 +73,18 @@ export class NewPage implements OnInit {
       });
   }
 
+  removeFile() {
+    this.selectedDocument = null;
+    this.name = '';
+    this.type = '';
+    this.file = null!;
+  }
+
   back() {
     this.navCtrl.back();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('NewPage component initialized');
+  }
 }
