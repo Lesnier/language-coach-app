@@ -1,28 +1,29 @@
-import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import {
+  IonAvatar,
+  IonButton,
+  IonButtons,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonMenuButton,
+  IonRow,
+  IonSelect,
+  IonSelectOption,
   IonTitle,
   IonToolbar,
-  IonButtons,
-  IonMenuButton,
-  IonItem,
-  IonAvatar,
-  IonCol,
-  IonGrid,
-  IonIcon,
-  IonRow,
-  IonButton,
-  IonInput,
-  IonSelectOption,
-  IonSelect,
 } from '@ionic/angular/standalone';
-import { ApiService } from 'src/app/services/api.service';
-import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
+import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-new',
   templateUrl: './new.page.html',
@@ -51,14 +52,13 @@ import { chevronBackOutline } from 'ionicons/icons';
     ReactiveFormsModule,
   ],
 })
-export class NewPage implements OnInit {
+export class NewPage {
   api = inject(ApiService);
   navCtrl = inject(NavController);
-  user_id: string = '';
+  router = inject(Router);
   transaction_code: string = '';
   image!: File;
   selectedDocument: string | null = null;
-  students: any[] = [];
   constructor() {
     addIcons({ chevronBackOutline });
   }
@@ -69,29 +69,26 @@ export class NewPage implements OnInit {
 
   submit(): void {
     const formData = new FormData();
-    formData.append('user_id', this.user_id);
     formData.append('transaction_code', this.transaction_code);
     formData.append('image', this.image);
 
     const token = localStorage.getItem('access_token');
     if (token)
-      this.api.uploadPayment(token, formData).subscribe((res) => {
-        console.log(res);
-      });
+      this.api.uploadPayment(token, formData).subscribe(
+        (res) => {
+          console.log(res);
+          // Navigate to /payments-list and trigger refetch
+          this.router.navigate(['/payments-list'], {
+            queryParams: { refetch: true },
+          });
+        },
+        (error) => {
+          console.error('Error uploading payment:', error);
+        }
+      );
   }
 
   back() {
     this.navCtrl.back();
-  }
-
-  getStudent() {
-    const token = localStorage.getItem('access_token');
-    if (token)
-      this.api.getStudents(token).subscribe((res) => {
-        this.students = res.Students;
-      });
-  }
-  ngOnInit() {
-    this.getStudent();
   }
 }

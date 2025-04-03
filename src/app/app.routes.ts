@@ -57,14 +57,6 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'payments',
-    loadComponent: () =>
-      import('./pages/secretary/payments/payments.page').then(
-        (m) => m.PaymentsPage
-      ),
-    canActivate: [AuthGuardService],
-  },
-  {
     path: 'documents',
     loadComponent: () =>
       import('./pages/secretary/documents/documents.page').then(

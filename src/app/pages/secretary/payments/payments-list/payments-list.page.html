@@ -1,13 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-
       <ion-menu-button></ion-menu-button>
       <ion-button (click)="back()">
         <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Pagos</ion-title>
+    <ion-title>Facturas</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -20,7 +19,7 @@
           color="secondary"
           style="margin: 10px 10px"
           [routerLink]="'/new_payment'"
-          >Añadir pago</ion-button
+          >Añadir factura</ion-button
         >
       </ion-col>
     </ion-row>
@@ -29,21 +28,33 @@
   <ion-grid style="margin-top: 10px">
     @for (item of this.payments; track $index) {
     <ion-row>
-      <ion-col
-        ><ion-card (click)="goPayment(item.id)" color="azul-light" button="true" style="margin: 0 10px">
+      <ion-col>
+        <ion-card
+          (click)="goPayment(item.id)"
+          color="azul-light"
+          button="true"
+          style="margin: 0 10px"
+        >
           <ion-grid>
             <ion-row class="ion-align-items-center">
-              <ion-col size="10">
+              <ion-col>
                 <ion-card-header>
-                  <ion-card-title
-                    >{{item.created_at  | date:'yyyy-MM-dd'}} – Pago {{item.id}}
+                  <ion-card-title>
+                    ID de Factura: {{ item.id }}
                   </ion-card-title>
+                  <ion-card-subtitle>
+                    Código de Transacción: {{ item.transaction_code }}
+                  </ion-card-subtitle>
+                  <ion-card-subtitle>
+                    Fecha de creación: {{ item.created_at | date: 'yyyy-MM-dd'
+                    }}
+                  </ion-card-subtitle>
                 </ion-card-header>
               </ion-col>
             </ion-row>
           </ion-grid>
-        </ion-card></ion-col
-      >
+        </ion-card>
+      </ion-col>
     </ion-row>
     }
   </ion-grid>
