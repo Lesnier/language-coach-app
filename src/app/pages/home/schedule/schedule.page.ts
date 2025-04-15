@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   IonBadge,
@@ -73,7 +79,7 @@ import { UtilsService } from 'src/app/services/utils.service';
     IonSpinner,
   ],
 })
-export class SchedulePage implements OnInit {
+export class SchedulePage implements OnInit, AfterViewInit {
   api = inject(ApiService);
   http = inject(HttpClient);
   navCtrl = inject(NavController);
@@ -93,8 +99,29 @@ export class SchedulePage implements OnInit {
   highlightedDates: any[] = [];
   isLoading: boolean = false;
 
+  // Add a property to store available dates for the template
+  availableDateStrings: string[] = [];
+
   // Add a property to store the time in API format
   timeMap: { [displayTime: string]: string } = {};
+
+  // Add a property to store the professor_id for each date
+  professorMap: { [date: string]: number } = {};
+
+  // Create an isDateEnabled function that can be bound to the date picker
+  isDateEnabled = (dateString: string): boolean => {
+    // Extract just the date portion for comparison
+    const formattedDateStr = dateString.split('T')[0];
+
+    // Check if this exact date string is in our available dates array
+    const isAvailable = this.availableDateStrings.includes(formattedDateStr);
+
+    if (isAvailable) {
+      console.log(`Date ${formattedDateStr} is enabled`);
+    }
+
+    return isAvailable;
+  };
 
   constructor() {
     this.fechaActual = new Date();
@@ -112,20 +139,44 @@ export class SchedulePage implements OnInit {
     this.getAvailabilities();
   }
 
+  ngAfterViewInit() {
+    // Set up the date picker filter once the view is initialized
+    setTimeout(() => {
+      if (this.datePicker) {
+        this.datePicker.isDateEnabled = (dateIsoString: string) => {
+          const dateStr = dateIsoString.split('T')[0];
+          return this.availableDateStrings.includes(dateStr);
+        };
+      }
+    }, 500);
+  }
+
   onDateChange(event: any) {
-    console.log('Raw date change value:', event.detail.value);
+    console.log('Date changed. Raw value:', event.detail.value);
 
-    // Store the raw selected date string (including the T part)
-    this.fechaModel = event.detail.value;
+    if (!event.detail.value) return;
 
-    // Fix timezone issues by working with the date string directly
+    // Extract the date part
     const dateString = event.detail.value.split('T')[0];
-    console.log('Extracted date string:', dateString);
 
-    // Create a date that preserves the selected date
+    // Check if this is an available date
+    if (!this.availableDateStrings.includes(dateString)) {
+      // If the selected date is not available, reset to first available date
+      if (this.availableDateStrings.length > 0) {
+        this.utils.showToast(
+          'Fecha no disponible, selecciona otra fecha',
+          'warning'
+        );
+        const firstDate = this.availableDateStrings[0];
+        this.fechaModel = `${firstDate}T00:00:00.000Z`;
+        this.updateAvailableTimes(new Date(this.fechaModel), firstDate);
+      }
+      return;
+    }
+
+    // Valid date selected, continue normal processing
+    this.fechaModel = event.detail.value;
     const localDate = new Date(dateString + 'T12:00:00');
-    console.log('Created local date object:', localDate);
-
     this.updateAvailableTimes(localDate, dateString);
   }
 
@@ -137,23 +188,54 @@ export class SchedulePage implements OnInit {
     // Use provided dateString if available, otherwise extract from date
     const formattedDate = dateString || date.toISOString().split('T')[0];
 
-    // Find availability for selected date using strict string comparison
+    console.log('Finding availability for date:', formattedDate);
+
+    // Find availability for selected date
     const availability = this.availabilities.find((item) => {
       const availDateStr =
-        typeof item.day_of_week === 'string'
-          ? item.day_of_week.split('T')[0]
-          : new Date(item.day_of_week).toISOString().split('T')[0];
+        typeof item.date === 'string'
+          ? item.date.split('T')[0]
+          : new Date(item.date).toISOString().split('T')[0];
 
-      return availDateStr === formattedDate;
+      const matches = availDateStr === formattedDate;
+      if (matches) {
+        console.log('Found matching availability:', item);
+      }
+      return matches;
     });
 
     if (availability) {
-      const startHour = parseInt(availability.start_time.split(':')[0]);
-      const endHour = parseInt(availability.end_time.split(':')[0]);
+      console.log(
+        'Processing availability times:',
+        availability.start_time,
+        'to',
+        availability.end_time
+      );
+
+      // Parse the ISO date-time strings to get the actual hours
+      let startHour, endHour;
+
+      if (availability.start_time.includes('T')) {
+        // For ISO format dates, create proper Date objects to handle timezone correctly
+        const startDate = new Date(availability.start_time);
+        const endDate = new Date(availability.end_time);
+
+        // Get local hours (browser's timezone)
+        startHour = startDate.getHours();
+        endHour = endDate.getHours();
+
+        console.log(`Timezone adjusted hours: ${startHour} to ${endHour}`);
+      } else {
+        // Handle time-only format (HH:MM:SS)
+        startHour = parseInt(availability.start_time.split(':')[0]);
+        endHour = parseInt(availability.end_time.split(':')[0]);
+      }
+
+      console.log(`Final hours for display: ${startHour} to ${endHour}`);
 
       for (let hour = startHour; hour < endHour; hour++) {
         // Format for API (24-hour)
-        const apiFormat = hour.toString().padStart(2, '0') + ':00';
+        const apiFormat = hour.toString().padStart(2, '0') + ':00:00';
 
         // Format for display (12-hour with AM/PM)
         let displayHour = hour % 12;
@@ -166,6 +248,10 @@ export class SchedulePage implements OnInit {
 
         this.availableTimes.push(displayFormat);
       }
+
+      console.log('Available times generated:', this.availableTimes);
+    } else {
+      console.warn('No availability found for selected date:', formattedDate);
     }
 
     this.selectedTime =
@@ -188,19 +274,26 @@ export class SchedulePage implements OnInit {
     const token = localStorage.getItem('access_token');
 
     // Extract date directly from the string without creating a Date object
-    // This avoids timezone shifts
     const formattedDate = this.fechaModel.split('T')[0];
 
-    // Log the date for verification
-    console.log('Selected date (raw):', this.fechaModel);
-    console.log('Formatted date for API:', formattedDate);
-
-    // Convert from display format to API format
+    // Get the time from our mapping
     const formattedTime = this.getApiTimeFormat(this.selectedTime);
+
+    // Get the professor_id for the selected date
+    const professorId = this.professorMap[formattedDate];
+
+    if (!professorId) {
+      this.utils.showToast(
+        'Error: No se encontró profesor para esta fecha',
+        'danger'
+      );
+      return;
+    }
 
     const agendarData: agenda = {
       date: formattedDate,
       time: formattedTime,
+      professor_id: professorId,
     };
 
     console.log('Sending to API:', agendarData);
@@ -317,56 +410,95 @@ export class SchedulePage implements OnInit {
     let token = localStorage.getItem('access_token');
     if (token) {
       this.api.getAvailabilities(token);
-      this.api.daysAvailable$.subscribe((availabilities: Availability[]) => {
-        console.log('Raw availabilities from API:', availabilities);
+      this.api.daysAvailable$.subscribe((response: any) => {
+        console.log('Raw API response:', response);
+
+        // Extract availabilities from the response object
+        let availabilities: Availability[] = [];
+        if (response && response.availabilities) {
+          availabilities = response.availabilities;
+        } else if (Array.isArray(response)) {
+          availabilities = response;
+        }
+
+        console.log('Extracted availabilities:', availabilities);
 
         if (availabilities && availabilities.length > 0) {
-          // Normalize dates to ensure consistent format
-          this.availabilities = availabilities.map((item) => {
-            // Ensure day_of_week is consistently formatted
-            if (typeof item.day_of_week === 'string') {
-              item.day_of_week = item.day_of_week.split('T')[0]; // Keep only YYYY-MM-DD part
-            }
-            return item;
-          });
+          // Get the dates of existing agendas (user's appointments)
+          const existingAgendaDates = this.agendas
+            .filter((agenda) => agenda.state === 'Active')
+            .map((agenda) => agenda.date);
 
-          console.log('Normalized availabilities:', this.availabilities);
-
-          // Create lookup array of just the date strings
-          const availableDateStrings = this.availabilities.map((item) =>
-            typeof item.day_of_week === 'string'
-              ? item.day_of_week
-              : new Date(item.day_of_week).toISOString().split('T')[0]
+          console.log(
+            'User already has agendas on dates:',
+            existingAgendaDates
           );
 
-          console.log('Available dates for lookup:', availableDateStrings);
+          // Filter out availabilities for dates where the user already has an agenda
+          const filteredAvailabilities = availabilities.filter((item) => {
+            const dateStr =
+              typeof item.date === 'string'
+                ? item.date.split('T')[0]
+                : item.date;
 
-          // Set up date picker with normalized date handling
+            // Return true only if user doesn't have agenda on this date
+            const userHasAgendaOnDate = existingAgendaDates.includes(dateStr);
+            if (userHasAgendaOnDate) {
+              console.log(
+                `Filtering out availability for ${dateStr} because user already has an agenda`
+              );
+            }
+            return !userHasAgendaOnDate;
+          });
+
+          console.log('Filtered availabilities:', filteredAvailabilities);
+
+          this.availabilities = filteredAvailabilities;
+
+          // Reset arrays
+          this.availableDateStrings = [];
+          this.professorMap = {};
+
+          // Process each availability item
+          filteredAvailabilities.forEach((item) => {
+            const dateStr =
+              typeof item.date === 'string'
+                ? item.date.split('T')[0]
+                : item.date;
+
+            console.log(`Processing date from API: ${item.date} => ${dateStr}`);
+
+            // Store date string in our lookup array
+            this.availableDateStrings.push(dateStr);
+
+            // Map professor_id to this date
+            this.professorMap[dateStr] = item.professor_id;
+          });
+
+          console.log('Available date strings:', this.availableDateStrings);
+
+          // Update the date filter on the datepicker component directly
           if (this.datePicker) {
-            this.datePicker.isDateEnabled = (dateString: string) => {
-              const date = new Date(dateString);
-              // Disable past dates
-              const today = new Date();
-              today.setHours(0, 0, 0, 0);
-              if (date < today) return false;
-
-              // Use the date string directly to avoid timezone issues
-              const formattedDateStr = dateString.split('T')[0];
-              const isEnabled = availableDateStrings.includes(formattedDateStr);
-
-              if (isEnabled) {
-                console.log(`Date ${formattedDateStr} is enabled`);
-              }
-              return isEnabled;
+            this.datePicker.isDateEnabled = (dateIsoString: string) => {
+              const dateStr = dateIsoString.split('T')[0];
+              return this.availableDateStrings.includes(dateStr);
             };
           }
 
-          // Update for initial date - carefully handle initial date string
-          const initialDate = new Date(this.fechaModel);
-          const initialDateStr = this.fechaModel.split('T')[0];
-          this.updateAvailableTimes(initialDate, initialDateStr);
+          // Pre-select first available date if we have any
+          if (this.availableDateStrings.length > 0) {
+            const firstDate = this.availableDateStrings[0];
+            this.fechaModel = `${firstDate}T00:00:00.000Z`;
+            this.updateAvailableTimes(new Date(this.fechaModel), firstDate);
+          } else {
+            this.availableTimes = [];
+            this.selectedTime = '';
+          }
         } else {
           console.warn('No availabilities returned from API');
+          this.availableDateStrings = [];
+          this.availableTimes = [];
+          this.selectedTime = '';
         }
       });
     }
@@ -450,4 +582,19 @@ export class SchedulePage implements OnInit {
     { date: new Date(2025, 1, 18) },
     { date: new Date(2025, 1, 19) },
   ];
+
+  // Add this method to initialize the date filter
+  setupDateFilter() {
+    // Create a direct date filter function that checks against the availableDateStrings array
+    this.isDateEnabled = (dateString: string): boolean => {
+      // Extract just the date part (YYYY-MM-DD)
+      const formattedDateStr = dateString.split('T')[0];
+
+      // Check if this exact date string is in our available dates
+      const isEnabled = this.availableDateStrings.includes(formattedDateStr);
+
+      console.log(`Date check: ${formattedDateStr}, enabled: ${isEnabled}`);
+      return isEnabled;
+    };
+  }
 }

@@ -16,6 +16,7 @@ export interface User {
 export interface agenda {
   date: string;
   time: string;
+  professor_id: number;
 }
 
 export interface agendas {
@@ -72,7 +73,9 @@ export interface models {
 }
 
 export interface Availability {
-  day_of_week: string;
+  id?: number;
+  professor_id: number;
+  date: string;
   start_time: string;
   end_time: string;
 }

@@ -16,8 +16,6 @@
       <ion-datetime
         #datePicker
         [(ngModel)]="fechaModel"
-        displayFormat="YYYY-MM-DDTHH:mm"
-        pickerFormat="YYYY-MM-DDTHH:mm"
         presentation="date"
         locale="es-ES"
         class="custom-datetime"
@@ -25,8 +23,7 @@
         (ionChange)="onDateChange($event)"
       >
         <span slot="time-label">Tiempo</span>
-        <!-- Update the calendar legend with colors that match the actual calendar -->
-        <div slot="title" class="calendar-legend ion-padding-bottom">
+        <div slot="title" class="ion-padding-bottom calendar-legend">
           <small
             style="display: flex; align-items: center; gap: 5px; color: #ffffff"
           >
@@ -44,7 +41,7 @@
           </small>
         </div>
       </ion-datetime>
-
+      <!-- Time selection -->
       <ion-list lines="none" *ngIf="availableTimes.length > 0">
         <ion-item>
           <ion-label position="stacked">Horarios disponibles</ion-label>
@@ -94,14 +91,6 @@
       <ion-item-group>
         <ion-item-divider>
           <ion-label>Lista de Agendamientos</ion-label>
-          <ion-button
-            fill="clear"
-            slot="end"
-            size="small"
-            (click)="fetchAgendas()"
-          >
-            <ion-icon name="refresh-outline"></ion-icon>
-          </ion-button>
         </ion-item-divider>
 
         <ion-item *ngIf="agendas.length === 0" lines="none">

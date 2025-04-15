@@ -1,7 +1,10 @@
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SchedulePage } from './schedule.page';
 import { ApiService } from 'src/app/services/api.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { SchedulePage } from './schedule.page';
 
 describe('SchedulePage', () => {
   let component: SchedulePage;
@@ -12,7 +15,7 @@ describe('SchedulePage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ApiService]
+      providers: [ApiService],
     });
 
     fixture = TestBed.createComponent(SchedulePage);
@@ -32,19 +35,23 @@ describe('SchedulePage', () => {
 
   it('should get availabilities', () => {
     const mockLoginResponse = { access_token: 'mockAccessToken' };
-    const mockAvailabilityResponse = { data: [{ day_of_week: 1, start_time: '09:00' }] }; // Simula la respuesta de disponibilidad
+    const mockAvailabilityResponse = {
+      data: [{ date: 1, start_time: '09:00' }],
+    }; // Simula la respuesta de disponibilidad
 
     // Simula la llamada de inicio de sesión
     api.login('carlos@mail.com', 'password').subscribe((res) => {
       expect(res.access_token).toBe(mockLoginResponse.access_token);
 
       // Llama a getAvailabilities después de iniciar sesión
-      api.getAvailabilities(res.access_token).subscribe((availabilityRes) => {
-        expect(availabilityRes.data).toBeDefined();
-        expect(availabilityRes.data.length).toBeGreaterThan(0);
-        expect(availabilityRes.data[0].day_of_week).toBeDefined();
-        expect(availabilityRes.data[0].start_time).toBeDefined();
-      });
+      api
+        .getAvailabilities(res.access_token)
+        .subscribe((availabilityRes: { data: string | any[] }) => {
+          expect(availabilityRes.data).toBeDefined();
+          expect(availabilityRes.data.length).toBeGreaterThan(0);
+          expect(availabilityRes.data[0].date).toBeDefined();
+          expect(availabilityRes.data[0].start_time).toBeDefined();
+        });
     });
 
     // Simula la respuesta de inicio de sesión

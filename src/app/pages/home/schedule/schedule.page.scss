@@ -60,6 +60,13 @@ ion-datetime::part(calendar-day).calendar-day-has-events {
   font-weight: bold;
 }
 
+// Add stronger styling for disabled dates
+ion-datetime::part(calendar-day-disabled) {
+  color: #cccccc !important;
+  opacity: 0.4 !important;
+  text-decoration: line-through;
+}
+
 .custom-datetime {
   --background: #ffffff;
   --color: #333333;
@@ -223,4 +230,14 @@ ion-select-option {
   display: inline-block;
   min-width: 80px;
   text-align: center;
+}
+
+// Add a debug info style
+.debug-info {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium);
+  margin-top: 10px;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
 }
