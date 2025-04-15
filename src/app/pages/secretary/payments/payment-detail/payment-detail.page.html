@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      <ion-button (click)="back()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Detalles de Factura</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-loading [isOpen]="isLoading" message="Cargando..."></ion-loading>
+
+  <div *ngIf="payment" class="payment-detail-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Payment Information</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>ID:</ion-label>
+          <div>{{ payment.id }}</div>
+        </ion-item>
+        <ion-item>
+          <ion-label>Transaction Code:</ion-label>
+          <div>{{ payment.transaction_code || 'N/A' }}</div>
+        </ion-item>
+        <ion-item *ngIf="payment.amount">
+          <ion-label>Amount:</ion-label>
+          <div>${{ payment.amount }}</div>
+        </ion-item>
+        <ion-item *ngIf="payment.payment_date">
+          <ion-label>Payment Date:</ion-label>
+          <div>{{ payment.payment_date | date:'medium' }}</div>
+        </ion-item>
+        <ion-item *ngIf="payment.status">
+          <ion-label>Status:</ion-label>
+          <div>{{ payment.status }}</div>
+        </ion-item>
+        <!-- Only show student if available -->
+        <ion-item *ngIf="payment.student">
+          <ion-label>Student:</ion-label>
+          <div>{{ payment.student?.name }}</div>
+        </ion-item>
+        <ion-item *ngIf="payment.description">
+          <ion-label>Description:</ion-label>
+          <div>{{ payment.description }}</div>
+        </ion-item>
+        <ion-item>
+          <ion-label>Created:</ion-label>
+          <div>{{ payment.created_at | date:'medium' }}</div>
+        </ion-item>
+        <ion-item *ngIf="payment.updated_at">
+          <ion-label>Last Updated:</ion-label>
+          <div>{{ payment.updated_at | date:'medium' }}</div>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Invoice Confirmation</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="upload-container">
+          <div class="upload-header">
+            <p *ngIf="!payment.image">
+              Please upload a confirmation image for this invoice
+            </p>
+          </div>
+
+          <!-- Show file preview if image exists -->
+          <div *ngIf="payment.image" class="file-preview">
+            <div class="preview-content">
+              <img
+                [src]="getImageUrl()"
+                class="preview-image"
+                alt="Invoice Confirmation"
+              />
+            </div>
+            <ion-button
+              class="remove-file-btn"
+              fill="clear"
+              (click)="uploadReceiptImage()"
+            >
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </div>
+
+          <!-- Show upload area if no image is present -->
+          <div
+            *ngIf="!payment.image"
+            class="file-upload-area"
+            (click)="uploadReceiptImage()"
+          >
+            <ion-icon
+              name="cloud-upload-outline"
+              class="upload-icon"
+            ></ion-icon>
+            <div class="upload-text">
+              <p>Upload Invoice Confirmation</p>
+              <span>Click to select a file</span>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

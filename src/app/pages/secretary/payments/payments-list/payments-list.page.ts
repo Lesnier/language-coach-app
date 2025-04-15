@@ -106,6 +106,9 @@ export class PaymentsListPage implements OnInit {
   }
 
   goPayment(id: number) {
-    this.router.navigate(['/payments'], { queryParams: { id: id } });
+    console.log('Navigating to payment with ID:', id);
+    this.router.navigate(['/payments/payment-detail'], {
+      queryParams: { id: id },
+    });
   }
 }

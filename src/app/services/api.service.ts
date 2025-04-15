@@ -197,4 +197,27 @@ export class ApiService {
         this.daysAvailableSubject.next(availabilities);
       });
   }
+
+  getPaymentDetails(token: string, paymentId: number) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    return this.http.get<any>(`${this.apiUrl}/payments/${paymentId}`, {
+      headers,
+    });
+  }
+
+  uploadPaymentReceipt(token: string, paymentId: number, base64Image: string) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const body = {
+      receipt_image: base64Image,
+    };
+    return this.http.post<any>(
+      `${this.apiUrl}/payments/${paymentId}/upload-receipt`,
+      body,
+      { headers }
+    );
+  }
 }
