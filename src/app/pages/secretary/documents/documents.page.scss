@@ -4,6 +4,22 @@ ion-item {
   margin-bottom: 8px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --background: white;
+
+  h2 {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+  }
+
+  p {
+    color: #666;
+    font-size: 14px;
+    margin: 2px 0;
+  }
 }
 
 ion-item-sliding {
@@ -37,4 +53,52 @@ ion-icon {
 ion-item-option {
   --padding-start: 16px;
   --padding-end: 16px;
+}
+
+// Submit button styles copied from the homework page
+.submit-button {
+  --background: #59bdb2;
+  --background-hover: #4aa89e;
+  --background-activated: #4aa89e;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 10px rgba(89, 189, 178, 0.3);
+  --color: white;
+  height: 48px;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 12px 0;
+  transition: all 0.2s ease;
+
+  &:hover:not(.button-disabled) {
+    --box-shadow: 0 6px 12px rgba(89, 189, 178, 0.4);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    --box-shadow: 0 2px 6px rgba(89, 178, 0.3);
+  }
+
+  &.button-disabled {
+    --background: #c5c5c5;
+    --box-shadow: none;
+    opacity: 0.7;
+  }
+
+  ion-spinner {
+    margin-right: 8px;
+  }
+}
+
+// Add some spacing and styling to the document list
+ion-list {
+  margin: 0 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+ion-icon[name="document-outline"] {
+  color: #59bdb2;
+  font-size: 24px;
 }

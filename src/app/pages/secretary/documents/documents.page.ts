@@ -25,6 +25,7 @@ import {
   chevronBackOutline,
   cloudDownloadOutline,
   documentOutline,
+  eyeOutline,
   trashOutline,
 } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
@@ -66,6 +67,7 @@ export class DocumentsPage implements OnInit {
       cloudDownloadOutline,
       trashOutline,
       documentOutline,
+      eyeOutline,
     });
   }
   file: any[] = [];
@@ -140,11 +142,13 @@ export class DocumentsPage implements OnInit {
   }
 
   view(link: string) {
-    window.open(this.apiUrl + '/' + link, '_blank');
+    // Use the direct file path route for viewing
+    window.open(this.apiUrl + '/files/' + link, '_blank');
   }
 
-  downloadDocument(downloadLink: string) {
-    window.open(this.apiUrl + '/' + downloadLink, '_blank');
+  downloadDocument(docId: number) {
+    // Use the download route with the document id
+    window.open(this.apiUrl + '/files/' + docId + '/download', '_blank');
   }
 
   ionViewWillEnter() {

@@ -16,8 +16,7 @@
       <ion-col size="12" size-md="12">
         <ion-button
           expand="block"
-          color="secondary"
-          style="margin: 10px 10px"
+          class="submit-button"
           [routerLink]="'/new_document'"
           >Añadir Documento</ion-button
         >
@@ -40,7 +39,7 @@
         <p>Subido: {{ doc.upload_date }}</p>
         <p>Tipo: {{ doc.type }}</p>
       </ion-label>
-      <!-- <ion-buttons slot="end">
+      <ion-buttons slot="end">
         @if (doc.download_link) {
         <ion-button
           color="primary"
@@ -49,15 +48,15 @@
         >
           <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
         </ion-button>
-        <ion-button
+        <!-- <ion-button
           color="success"
-          (click)="downloadDocument(doc.download_link)"
+          (click)="downloadDocument(doc.id)"
           title="Descargar documento"
         >
           <ion-icon name="cloud-download-outline" slot="icon-only"></ion-icon>
-        </ion-button>
+        </ion-button> -->
         }
-      </ion-buttons> -->
+      </ion-buttons>
     </ion-item>
     }
   </ion-list>
