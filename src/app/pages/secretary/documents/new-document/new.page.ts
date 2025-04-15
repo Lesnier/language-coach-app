@@ -11,13 +11,21 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
   IonMenuButton,
   IonRow,
   IonTitle,
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBackOutline } from 'ionicons/icons';
+import {
+  chevronBackOutline,
+  cloudUploadOutline,
+  documentOutline,
+  trashOutline,
+} from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-new',
@@ -39,13 +47,21 @@ import { ApiService } from 'src/app/services/api.service';
     IonIcon,
     IonRow,
     IonButton,
+    IonInput,
+    IonItem,
+    IonLabel,
   ],
 })
 export class NewPage implements OnInit {
   api = inject(ApiService);
   navCtrl = inject(NavController);
   constructor() {
-    addIcons({ chevronBackOutline });
+    addIcons({
+      chevronBackOutline,
+      cloudUploadOutline,
+      documentOutline,
+      trashOutline,
+    });
   }
 
   selectedDocument: string | null = null;
@@ -53,24 +69,69 @@ export class NewPage implements OnInit {
   name: string = '';
   type: string = '';
   file!: File;
+  originalFileName: string = '';
 
   onFileChange(event: any) {
-    this.file = event.target.files[0];
-    this.name = event.target.files[0].name;
-    this.type = event.target.files[0].type;
+    if (event.target.files && event.target.files.length > 0) {
+      this.file = event.target.files[0];
+      this.originalFileName = this.file.name;
+
+      // Set suggested name from file name but allow user to change it
+      this.name = this.originalFileName;
+
+      this.type = this.file.type;
+
+      // Create a preview for the selected file
+      if (this.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.selectedDocument = e.target.result;
+        };
+        reader.readAsDataURL(this.file);
+      } else {
+        // For non-image files, just set selectedDocument to a non-null value
+        this.selectedDocument = 'document';
+      }
+    }
   }
 
   onSubmit() {
+    if (!this.file || !this.name) {
+      console.error('File and name are required');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', this.name);
-    formData.append('type', this.type);
+    formData.append('type', this.type || 'option1'); // Default type if not specified
     formData.append('file', this.file);
 
     const token = localStorage.getItem('access_token');
-    if (token)
-      this.api.uploadFile(token, formData).subscribe((response) => {
-        console.log('File uploaded successfully:', response);
-      });
+    if (token) {
+      this.api.uploadFile(token, formData).subscribe(
+        (response) => {
+          console.log('File uploaded successfully:', response);
+
+          // Navigate to documents route instead of using navCtrl.back()
+          // This ensures the route change is properly detected
+          this.navCtrl.navigateRoot('/documents', {
+            animationDirection: 'back',
+          });
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+
+          // Handle specific error cases
+          if (error.error && error.error.errors && error.error.errors.name) {
+            alert('Error: ' + error.error.errors.name[0]);
+          } else {
+            alert(
+              'Error al subir el documento. Por favor, inténtalo de nuevo.'
+            );
+          }
+        }
+      );
+    }
   }
 
   removeFile() {
@@ -78,6 +139,7 @@ export class NewPage implements OnInit {
     this.name = '';
     this.type = '';
     this.file = null!;
+    this.originalFileName = '';
   }
 
   back() {

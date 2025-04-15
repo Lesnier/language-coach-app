@@ -75,6 +75,24 @@
         </ion-col>
       </ion-row>
 
+      <!-- Document Name Input -->
+      <ion-row *ngIf="selectedDocument">
+        <ion-col>
+          <ion-item lines="full" class="custom-item">
+            <ion-label position="stacked">Nombre del documento*</ion-label>
+            <ion-input
+              [(ngModel)]="name"
+              placeholder="Ingresa un nombre para el documento"
+              required
+              class="custom-input"
+            ></ion-input>
+          </ion-item>
+          <div class="helper-text">
+            Este nombre identificará el documento en el sistema
+          </div>
+        </ion-col>
+      </ion-row>
+
       <ion-row>
         <ion-col>
           <ion-button
@@ -82,7 +100,7 @@
             (click)="onSubmit()"
             color="secondary"
             class="submit-button"
-            [disabled]="!file"
+            [disabled]="!file || !name"
           >
             Subir Documento
           </ion-button>

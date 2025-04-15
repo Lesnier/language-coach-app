@@ -24,15 +24,46 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-list>
-    @for (file of documentos; track $index) {
-    <ion-item>
+
+  @if (documentos && documentos.length > 0) {
+  <ion-list style="margin: 20px 20px; padding: 10px">
+    @for (doc of documentos; track doc.id) {
+    <ion-item lines="full">
       <ion-icon slot="start" name="document-outline"></ion-icon>
       <ion-label>
-        <h2>{{file.name}}</h2>
-        <p>Subido: {{file.upload_date}}</p>
+        <h2>{{ doc.name }}</h2>
+        <p>
+          <span *ngIf="doc.original_name && doc.original_name !== doc.name">
+            Archivo: {{ doc.original_name }}
+          </span>
+        </p>
+        <p>Subido: {{ doc.upload_date }}</p>
+        <p>Tipo: {{ doc.type }}</p>
       </ion-label>
+      <!-- <ion-buttons slot="end">
+        @if (doc.download_link) {
+        <ion-button
+          color="primary"
+          (click)="view(doc.download_link)"
+          title="Ver documento"
+        >
+          <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button
+          color="success"
+          (click)="downloadDocument(doc.download_link)"
+          title="Descargar documento"
+        >
+          <ion-icon name="cloud-download-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        }
+      </ion-buttons> -->
     </ion-item>
     }
   </ion-list>
+  } @else {
+  <div class="ion-text-center ion-padding">
+    <p>No hay documentos disponibles</p>
+  </div>
+  }
 </ion-content>
