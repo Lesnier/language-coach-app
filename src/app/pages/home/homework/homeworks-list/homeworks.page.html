@@ -35,18 +35,24 @@
           <ion-row class="ion-align-items-center">
             <ion-col size="7">
               <!-- <ion-text>
-                <h2>Tarea {{$index+1}}</h2>
+                <h2>Curso {{task.course.name }} </h2>
               </ion-text> -->
             </ion-col>
             <ion-col size="5" class="ion-text-end">
-              <span class="task-date"
-                >{{task.created_at | date:'dd/MM/yyyy'}}</span
-              >
+              <span class="task-date">
+                {{task.created_at | date:'dd/MM/yyyy'}}
+              </span>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col size="12">
+              <div class="task-professor">
+                <p>
+                  <strong>Curso:</strong>
+                  {{task.course.name || 'No asignado'}}
+                </p>
+              </div>
               <div class="task-professor">
                 <p>
                   <strong>Profesor:</strong>
@@ -57,7 +63,7 @@
           </ion-row>
           <ion-row>
             <ion-col size="12">
-              <div class="task-note">
+              <div class="task-note" style="margin: 0;">
                 <p><strong>Nota del profesor:</strong> {{task.teacher_note}}</p>
               </div>
             </ion-col>

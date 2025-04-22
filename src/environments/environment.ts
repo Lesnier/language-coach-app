@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   // apiUrl: 'http://192.168.100.6:8000/api',
   apiUrl: 'http://localhost:8000/api',
+  storageUrl: 'http://localhost:8000/storage',
   featureFlag: true,
 };
 

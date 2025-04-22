@@ -114,8 +114,7 @@ export class ContentPage implements OnInit, DoCheck {
       this.sanitizer.bypassSecurityTrustHtml(processedContent);
   }
 
-  private processContent(content: string): string {
-    content = content.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
+  private processContent(content: string): string {    
     content = content.replace(/(.+?)(\n\n|$)/g, '<p>$1</p>');
     const listItems = content.match(/(?:^|\n)- (.+?)(?=\n|$)/g);
     if (listItems) {

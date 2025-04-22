@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, ActivatedRoute } from '@angular/router';
 import { NavController, ViewWillEnter } from '@ionic/angular';
 import {
   IonAvatar,
@@ -66,6 +66,7 @@ import { environment } from 'src/environments/environment';
   ],
 })
 export class HomeworksPage implements OnInit, ViewWillEnter {
+  activeRoute = inject(ActivatedRoute);
   navCtrl = inject(NavController);
   api = inject(ApiService);
   router = inject(Router);
@@ -87,7 +88,7 @@ export class HomeworksPage implements OnInit, ViewWillEnter {
   }
 
   back() {
-    this.navCtrl.back();
+    this.router.navigate(['/start']);
   }
 
   goTask(id: number) {

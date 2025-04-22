@@ -11,6 +11,8 @@ export interface User {
   locale: string;
   updated_at: string;
   profile_picture?: string;
+  birth_date?: string;
+  is_outstanding?: boolean; 
 }
 
 export interface agenda {

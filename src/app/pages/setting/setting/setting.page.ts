@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -25,6 +25,11 @@ import {
 import { User } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
+import { environment } from 'src/environments/environment';
+import {
+  closeOutline,
+} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-setting',
@@ -59,7 +64,7 @@ import { UtilsService } from 'src/app/services/utils.service';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class SettingPage {
+export class SettingPage implements OnInit {
   api = inject(ApiService);
   router = inject(Router);
 
@@ -72,7 +77,22 @@ export class SettingPage {
   isUploading: boolean = false;
   uploadProgress: number = 0;
 
-  constructor() {}
+
+  constructor() {
+    addIcons({
+      closeOutline
+    });
+  }
+
+
+  ngOnInit() {
+    this.date = this.user.birth_date;
+    if (this.user.profile_picture) {
+      this.selectedImage = environment.storageUrl + '/' + this.user.profile_picture;
+    } else {
+      this.selectedImage = null;  
+    }
+  }
 
   updateProfile() {
     const token = localStorage.getItem('access_token');
@@ -94,9 +114,11 @@ export class SettingPage {
     this.api.updateUserProfile(formData, token).subscribe(
       (res) => {
         this.utils.showToast('Perfil actualizado correctamente', 'success');
-        this.user.profile_picture = res.profile_picture;
-        this.user.name = res.name;
-        this.date = res.birth_date;
+        this.user.profile_picture = res.user.profile_picture;
+        this.user.name = res.user.name;
+        this.date = res.user.birth_date;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.selectedImage = environment.storageUrl + '/' +  res.user.profile_picture;
       },
       (error) => {
         console.error('Error al actualizar el perfil:', error);

@@ -486,14 +486,14 @@ export class SchedulePage implements OnInit, AfterViewInit {
           }
 
           // Pre-select first available date if we have any
-          if (this.availableDateStrings.length > 0) {
-            const firstDate = this.availableDateStrings[0];
-            this.fechaModel = `${firstDate}T00:00:00.000Z`;
-            this.updateAvailableTimes(new Date(this.fechaModel), firstDate);
-          } else {
-            this.availableTimes = [];
-            this.selectedTime = '';
-          }
+          // if (this.availableDateStrings.length > 0) {
+          //   const firstDate = this.availableDateStrings[0];
+          //   this.fechaModel = `${firstDate}T00:00:00.000Z`;
+          //   this.updateAvailableTimes(new Date(this.fechaModel), firstDate);
+          // } else {
+          //   this.availableTimes = [];
+          //   this.selectedTime = '';
+          // }
         } else {
           console.warn('No availabilities returned from API');
           this.availableDateStrings = [];
