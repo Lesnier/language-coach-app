@@ -81,3 +81,71 @@ export interface Availability {
   start_time: string;
   end_time: string;
 }
+
+export interface Bill {
+  id: number;
+  description: string;
+  emitter: string;
+  user_id: number;
+  payment_id: number | null;
+  subscription_id: number;
+  notified: number;
+  emission_date: string;
+  paid_date: string | null;
+  status: string;
+  subtotal: number;
+  tax: number;
+  amount_tax: number;
+  total: number;
+  created_at: string;
+  updated_at: string;
+  user: {
+    id: number;
+    role_id: number;
+    name: string;
+    birth_date: string;
+    is_outstanding: boolean;
+    email: string;
+    email_verified_at: string | null;
+    profile_picture: string;
+    settings: {
+      locale: string;
+    };
+    created_at: string;
+    updated_at: string;
+  };
+  subscription: {
+    id: number;
+    user_id: number;
+    status: string;
+    period_start: string;
+    period_end: string;
+    created_at: string;
+    updated_at: string;
+    suscription_code: string;
+    products:Product[];
+  };
+  payment: Payment | null;
+  products: any[];
+}
+
+export interface Payment {
+  id: number;
+  user_id: number;
+  image: string;
+  transaction_code: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  amount: number;
+  total: number;
+  created_at: string;
+  updated_at: string;
+}
+
+

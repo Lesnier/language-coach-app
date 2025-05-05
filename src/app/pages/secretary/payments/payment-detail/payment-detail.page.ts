@@ -16,6 +16,7 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+
   IonContent,
   IonHeader,
   IonIcon,
@@ -26,14 +27,14 @@ import {
   IonMenuButton,
   IonRow,
   IonTitle,
-  IonToolbar,
-} from '@ionic/angular/standalone';
+  IonToolbar, IonList, IonGrid, IonCol } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   chevronBackOutline,
   cloudUploadOutline,
   createOutline,
 } from 'ionicons/icons';
+import { Bill } from 'src/app/models/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { environment } from 'src/environments/environment';
 
@@ -42,7 +43,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './payment-detail.page.html',
   styleUrls: ['./payment-detail.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonCol, IonGrid, IonList, 
     CommonModule,
     FormsModule,
     IonHeader,
@@ -73,9 +74,9 @@ export class PaymentDetailPage implements OnInit {
   loadingCtrl = inject(LoadingController);
   alertCtrl = inject(AlertController);
   toastCtrl = inject(ToastController);
-
-  paymentId: number | undefined;
-  payment: any;
+  
+  billId: number | undefined;
+  bill: Bill | undefined;
   isLoading: boolean = false;
   baseUrl: string = environment.apiUrl;
 
@@ -86,7 +87,7 @@ export class PaymentDetailPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       if (params['id']) {
-        this.paymentId = params['id'];
+        this.billId = params['id'];
         this.loadPaymentDetails();
       }
     });
@@ -100,12 +101,13 @@ export class PaymentDetailPage implements OnInit {
     this.isLoading = true;
     const token = localStorage.getItem('access_token');
 
-    if (token && this.paymentId) {
+    if (token && this.billId) {
       try {
-        this.payment = await this.api
-          .getPaymentDetails(token, this.paymentId)
+        this.bill = await this.api
+          .getBillDetails(token, this.billId)
           .toPromise();
-        console.log('Payment details:', this.payment);
+        this.getImageUrl();
+        console.log('Payment details:', this.bill);
       } catch (error) {
         console.error('Error loading payment details:', error);
         this.showToast('Error loading payment details', 'danger');
@@ -119,25 +121,49 @@ export class PaymentDetailPage implements OnInit {
   }
 
   getImageUrl(): string {
-    if (this.payment && this.payment.image) {
-      // If the image already has a full URL, return it
-      if (this.payment.image.startsWith('http')) {
-        return this.payment.image;
-      }
+    if (this.bill && this.bill?.payment?.image) {
+      // Replace backslashes with forward slashes in the image path
+      const normalizedPath = this.bill.payment.image.replace(/\\/g, '/');
 
-      // Otherwise, construct the full URL using the baseUrl
-      // Remove any leading slashes from the image path
-      const imagePath = this.payment.image.startsWith('/')
-        ? this.payment.image.substring(1)
-        : this.payment.image;
-
-      // Construct the storage URL for the image
-      return `${this.baseUrl}/storage/${imagePath}`;
+      // Construct the full URL using the storageUrl environment variable
+      return `${environment.storageUrl}/${normalizedPath}`;
     }
     return '';
   }
 
+  
+
   async uploadReceiptImage() {
+    if(this.bill?.payment){
+      // Check if the payment already has an image
+      if (this.bill.payment.image) {
+        const alert = await this.alertCtrl.create({
+          header: 'Confirmation',
+          message: 'Do you want to replace the existing image?',
+          buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+            },
+            {
+              text: 'Replace',
+              handler: () => {
+                this.selectImage();
+              },
+            },
+          ],
+        });
+        await alert.present();
+      } else {
+        this.selectImage();
+      }
+    }else{
+      this.selectImage();
+    }
+   
+  }
+
+  async selectImage(){
     // Create a file input element and trigger it
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -146,18 +172,25 @@ export class PaymentDetailPage implements OnInit {
     fileInput.onchange = async (event) => {
       const target = event.target as HTMLInputElement;
       if (target.files && target.files.length > 0) {
-        const file = target.files[0];
-        const reader = new FileReader();
+      const file = target.files[0];
 
-        reader.onload = async (e) => {
-          if (e.target?.result) {
-            // Get base64 string without the prefix (data:image/jpeg;base64,)
-            const base64String = e.target.result.toString().split(',')[1];
-            await this.uploadImage(base64String);
-          }
-        };
+      // Check file size (2 MB = 2 * 1024 * 1024 bytes)
+      if (file.size > 2 * 1024 * 1024) {
+        this.showToast('La imagen no debe exeder los 2 MB', 'danger');
+        return;
+      }
 
-        reader.readAsDataURL(file);
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        if (e.target?.result) {
+        // Get base64 string without the prefix (data:image/jpeg;base64,)
+        const base64String = e.target.result.toString().split(',')[1];
+        await this.uploadImage(base64String);
+        }
+      };
+
+      reader.readAsDataURL(file);
       }
     };
 
@@ -174,20 +207,42 @@ export class PaymentDetailPage implements OnInit {
 
     try {
       if (token) {
-        if (this.paymentId !== undefined) {
-          const response = await this.api
-            .uploadPaymentReceipt(token, this.paymentId, base64Image)
+        if (this.billId !== undefined) {          
+          if(this.bill?.payment){
+            const response = await this.api
+            .uploadPaymentReceipt(token, this.bill.payment.id, base64Image)
             .toPromise();
 
-          // Update the payment object with the new image information
-          if (response && response.image) {
-            this.payment.image = response.image;
+          // Update the payment object with the new image information      
+          if (response.payment !== undefined) {
+            if (this.bill?.payment) {             
+               this.bill.payment = response.payment;                   
+              }      
           }
-
           this.showToast(
             'Invoice confirmation uploaded successfully',
             'success'
           );
+          }else{            
+            if (this.bill?.user) {
+              const response = await this.api
+            .createPaymentReceipt(token, this.bill.id, base64Image)
+            .toPromise();
+
+          // Update the payment object with the new image information
+          if (response.payment !== undefined) {
+            if (!this.bill?.payment) {             
+              this.bill.payment = response.payment;     
+              }      
+          }
+          this.showToast(
+            'Invoice confirmation uploaded successfully',
+            'success'
+          );
+            }
+            
+          }
+         
         } else {
           this.showToast('Payment ID is missing', 'danger');
         }

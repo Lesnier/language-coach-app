@@ -20,8 +20,7 @@ import {
   IonRow,
   IonThumbnail,
   IonTitle,
-  IonToolbar,
-} from '@ionic/angular/standalone';
+  IonToolbar, IonLabel, IonCardContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBackOutline } from 'ionicons/icons';
 import { ApiService } from 'src/app/services/api.service';
@@ -31,7 +30,7 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './payments-list.page.html',
   styleUrls: ['./payments-list.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonCardContent, IonLabel, 
     IonButtons,
     IonContent,
     IonHeader,
@@ -65,8 +64,9 @@ export class PaymentsListPage implements OnInit {
   }
 
   payments: any[] = [];
+  bills: any[] = [];
   ngOnInit() {
-    this.getPayments();
+    this.getBills();
   }
 
   ionViewWillEnter() {
@@ -90,6 +90,15 @@ export class PaymentsListPage implements OnInit {
       });
   }
 
+  getBills() {
+    const token = localStorage.getItem('access_token');
+    if (token)
+      this.api.getBills(token).subscribe((res) => {
+        console.log(res);
+        this.bills = res.bills;
+      });
+  }
+
   fetchPayments() {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -107,7 +116,7 @@ export class PaymentsListPage implements OnInit {
 
   goPayment(id: number) {
     console.log('Navigating to payment with ID:', id);
-    this.router.navigate(['/payments/payment-detail'], {
+    this.router.navigate(['/bills/bill-detail'], {
       queryParams: { id: id },
     });
   }

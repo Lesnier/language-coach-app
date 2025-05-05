@@ -12,7 +12,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-grid style="margin-top: 10px">
-    @for (item of this.payments; track $index) {
+    @for (item of this.bills; track $index) {
     <ion-row>
       <ion-col>
         <ion-card
@@ -20,25 +20,27 @@
           color="azul-light"
           button="true"
           style="margin: 0 10px"
-        >
-          <ion-grid>
-            <ion-row class="ion-align-items-center">
-              <ion-col>
-                <ion-card-header>
-                  <ion-card-title>
-                    ID de Factura: {{ item.id }}
-                  </ion-card-title>
-                  <ion-card-subtitle>
-                    Código de Transacción: {{ item.transaction_code }}
-                  </ion-card-subtitle>
-                  <ion-card-subtitle>
-                    Fecha de creación: {{ item.created_at | date: 'yyyy-MM-dd'
-                    }}
-                  </ion-card-subtitle>
-                </ion-card-header>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+        >         
+                  <ion-card-header>
+                    <ion-card-title>
+                      Factura: {{ item.description }}
+                    </ion-card-title>
+                    <ion-card-subtitle >
+                      Emitida por: {{ item.emitter }}
+                    </ion-card-subtitle>
+                    <ion-card-subtitle>
+                      Fecha de emisión: {{ item.emission_date | date: 'yyyy-MM-dd' }}
+                    </ion-card-subtitle>
+                    <ion-card-subtitle>
+                      Estado: {{ item.status }}
+                    </ion-card-subtitle>
+                  </ion-card-header>
+                  <ion-card-content style="border-top: 1px solid rgba(255, 255, 255, 0.267); padding-top: 10px;">
+                    <p style="font-size: medium;"><strong>Subtotal:</strong> ${{ item.subtotal }}</p>
+                    <p style="font-size: medium;"><strong>Impuesto:</strong> ${{ item.amount_tax }} ({{ item.tax }}%)</p>
+                    <p style="font-size: medium;"><strong>Total:</strong> ${{ item.total }}</p>
+                  </ion-card-content>
+                
         </ion-card>
       </ion-col>
     </ion-row>

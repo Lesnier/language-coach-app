@@ -103,7 +103,7 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'payments-list',
+    path: 'bills-list',
     loadComponent: () =>
       import(
         './pages/secretary/payments/payments-list/payments-list.page'
@@ -135,7 +135,7 @@ export const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   {
-    path: 'payments/payment-detail',
+    path: 'bills/bill-detail',
     loadComponent: () =>
       import(
         './pages/secretary/payments/payment-detail/payment-detail.page'

@@ -140,11 +140,7 @@ export class ApiService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(`${this.apiUrl}/files`, { headers });
   }
-
-  getPayments(token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${this.apiUrl}/payments`, { headers });
-  }
+  
   uploadFile(token: string, data: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     console.log(data);
@@ -207,17 +203,47 @@ export class ApiService {
     });
   }
 
+  getPayments(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/payments`, { headers });
+  }
+
   uploadPaymentReceipt(token: string, paymentId: number, base64Image: string) {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
     const body = {
-      receipt_image: base64Image,
+      image: base64Image,
     };
     return this.http.post<any>(
-      `${this.apiUrl}/payments/${paymentId}/upload-receipt`,
+      `${this.apiUrl}/payments/${paymentId}`,
       body,
       { headers }
     );
+  }
+
+  createPaymentReceipt(token: string, billId:number, base64Image: string) {
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const body = {
+      image: base64Image,
+      billId
+    };
+    return this.http.post<any>(
+      `${this.apiUrl}/payments`,
+      body,
+      { headers }
+    );
+  }
+
+  getBills(token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/bills`, { headers });
+  }
+
+  getBillDetails(token: string, billId: number): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.apiUrl}/bills-detail/${billId}`, { headers });
   }
 }
