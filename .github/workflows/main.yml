@@ -43,5 +43,4 @@ jobs:
           server: posgradomedicobrasil.com
           username: app-postgrado
           password: 61Fh6#3oh
-          protocol: ftps-legacy
           local-dir: ./www/
