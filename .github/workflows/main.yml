@@ -11,29 +11,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clonar el repositorio
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # 2. Configurar Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Ajusta según tu proyecto
+          node-version: '18'
 
-      # 3. Instalar dependencias
       - name: Install Dependencies
         run: npm install
 
-      # 4. Construir la aplicación Ionic para producción
       - name: Build Ionic App
         run: npm run build --prod
 
-      # 5. Subir archivos a cPanel vía FTP con entorno diferenciado
-      - name: Deploy to cPanel via FTP (Dev or Prod)
+      # Despliegue para rama dev
+      - name: Deploy to DEV
+        if: github.ref == 'refs/heads/dev'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ github.ref == 'refs/heads/main' && secrets.CPANEL_FTP_SERVER_PROD || secrets.CPANEL_FTP_SERVER }}
-          username: ${{ github.ref == 'refs/heads/main' && secrets.CPANEL_FTP_USER_PROD || secrets.CPANEL_FTP_USER }}
-          password: ${{ github.ref == 'refs/heads/main' && secrets.CPANEL_FTP_PASSWORD_PROD || secrets.CPANEL_FTP_PASSWORD }}
+          server: ${{ secrets.CPANEL_FTP_SERVER }}
+          username: ${{ secrets.CPANEL_FTP_USER }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          local-dir: ./www/
+
+      # Despliegue para rama main (producción)
+      - name: Deploy to PROD
+        if: github.ref == 'refs/heads/main'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.CPANEL_FTP_SERVER_PROD }}
+          username: ${{ secrets.CPANEL_FTP_USER_PROD }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD_PROD }}
           local-dir: ./www/
