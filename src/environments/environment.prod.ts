@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://posgradomedicobrasil.com/api',
-  storageUrl: 'https://posgradomedicobrasil.com/storage',
+  apiUrl: 'https://admin.posgradomedicobrasil.com/api',
+  storageUrl: 'https://admin.posgradomedicobrasil.com/storage',
   featureFlag: false,
 };
