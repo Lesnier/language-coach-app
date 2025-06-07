@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://language-coach-back.lesinnovations.tech/api',
-  storageUrl: 'https://language-coach-back.lesinnovations.tech/storage',
-  featureFlag: false
+  apiUrl: 'https://posgradomedicobrasil.com//api',
+  storageUrl: 'https://posgradomedicobrasil.com//storage',
+  featureFlag: false,
 };
