@@ -1,18 +1,32 @@
 <ion-content style="margin-top: 50px" class="ion-padding ion-text-center">
-  <div class="ion-justify-content-center ion-align-items-center " style="height: 50%; display: flex; flex-direction: column">
-    <ion-img [src]="logo" style="width: 150px"></ion-img>
-    <ion-text style="margin-top: 50px; font-size: xx-large">Entrar al sistema</ion-text>
+  <div
+    class="ion-justify-content-center ion-align-items-center"
+    style="height: 50%; display: flex; flex-direction: column"
+  >
+    <img [src]="logo" style="width: 150px" />
+    <ion-text style="margin-top: 50px; font-size: xx-large"
+      >Entrar al sistema</ion-text
+    >
   </div>
-  <div class="ion-justify-content-center ion-align-items-center" style="display: flex;">
+  <div
+    class="ion-justify-content-center ion-align-items-center"
+    style="display: flex"
+  >
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <ion-item>
         <ion-label position="floating">Email</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
-      <ion-note color="danger" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+      <ion-note
+        color="danger"
+        *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched"
+      >
         El correo es obligatorio.
       </ion-note>
-      <ion-note color="danger" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+      <ion-note
+        color="danger"
+        *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched"
+      >
         Introduce un correo válido.
       </ion-note>
 
@@ -20,13 +34,21 @@
         <ion-label position="floating">Contraseña</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item>
-      <ion-note color="danger" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+      <ion-note
+        color="danger"
+        *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched"
+      >
         La contraseña es obligatoria.
       </ion-note>
 
-      <ion-button color="green" expand="block" type="submit" style="margin-top: 50px">Iniciar Sesión</ion-button>
+      <ion-button
+        color="green"
+        expand="block"
+        type="submit"
+        style="margin-top: 50px"
+        >Iniciar Sesión</ion-button
+      >
       <!--<ion-button expand="block" type="submit" style="margin-top: 50px" [disabled]="loginForm.invalid">Iniciar Sesión</ion-button>-->
     </form>
   </div>
-
 </ion-content>
