@@ -468,6 +468,13 @@ export class SchedulePage implements OnInit, AfterViewInit {
 
             console.log(`Processing date from API: ${item.date} => ${dateStr}`);
 
+            // Skip dates in the past
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (dateStr < todayStr) {
+              console.log(`Skipping past date: ${dateStr}`);
+              return;
+            }
+
             // Store date string in our lookup array
             this.availableDateStrings.push(dateStr);
 
