@@ -84,7 +84,7 @@
         <ion-card-title>Products</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-item *ngIf="bill?.products && bill?.products?.length == 0">
+        <ion-item *ngIf="bill?.products && bill?.products?.length === 0">
           <ion-card-subtitle>Sin productos adicionales</ion-card-subtitle>
         </ion-item>
         <ion-item *ngFor="let product of bill?.products">
